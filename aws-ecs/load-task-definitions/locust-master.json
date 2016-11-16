@@ -1,0 +1,36 @@
+{
+    "family": "locust-master",
+    "containerDefinitions": [
+        {
+            "name": "locust-master",
+            "image": "hyperpilot/locust",
+            "cpu": 100,
+            "memory": 150,
+            "command": [
+              "locust",
+              "--master",
+              "--consumer",
+              "--consumer-influx-endpoint=influxsrv:8086",
+              "--consumer-influx-db=locust_results",
+              "-f",
+              "/home/ec2-user/locust/locust.py"
+             ],
+            "portMappings": [
+                {
+                    "containerPort": 8089,
+                    "hostPort": 8089
+                },
+                {
+                    "containerPort": 5557,
+                    "hostPort": 5557
+                },
+                {
+                    "containerPort": 5558,
+                    "hostPort": 5558
+                }
+
+            ],
+            "essential": true
+        }
+   ]
+}

@@ -4,7 +4,7 @@
         {
             "name": "influxsrv",
             "image": "tutum/influxdb",
-            "cpu": 2048,
+            "cpu": 500,
             "memory": 300,
             "portMappings": [
                 {

@@ -1,0 +1,19 @@
+{
+    "family": "locust-slave",
+    "containerDefinitions": [
+        {
+            "name": "locust-slave",
+            "image": "hyperpilot/locust",
+            "command": [
+              "locust",
+              "--slave",
+              "--master=locust-master:5557",
+              "-f",
+              "/home/ec2-user/locust/locust.py"
+            ],
+            "cpu": 1024,
+            "memory": 300,
+            "essential": true
+        }
+   ]
+}

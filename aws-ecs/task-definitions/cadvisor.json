@@ -4,8 +4,8 @@
         {
             "name": "cadvisor",
             "image": "google/cadvisor",
-            "cpu": 512,
-            "memory": 300,
+            "cpu": 10,
+            "memory": 100,
             "portMappings": [
                 {
                     "containerPort": 8080,

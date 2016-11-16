@@ -1,0 +1,18 @@
+{
+      "family": "daemon-ecs-scheduler",
+      "containerDefinitions": [
+                {
+                              "name": "daemon-ecs-scheduler",
+                              "image": "hyperpilot/daemon-ecs-scheduler",
+                              "cpu": 256,
+                              "memory": 50,
+                              "portMappings": [
+                                                {
+                                                                      "containerPort": 9990,
+                                                                      "hostPort": 9990
+                                                }
+                                            ],
+                              "essential": true
+                }
+            ]
+}

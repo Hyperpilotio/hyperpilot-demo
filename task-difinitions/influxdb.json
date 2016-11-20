@@ -1,0 +1,50 @@
+{
+    "family": "monitor",
+    "containerDefinitions": [
+        {
+            "name": "influxsrv",
+            "image": "tutum/influxdb",
+            "cpu": 2,
+            "memory": 300,
+            "portMappings": [
+                {
+                    "containerPort": 8083,
+                    "hostPort": 8083
+                },
+                {
+                    "containerPort": 8086,
+                    "hostPort": 8086
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {"name": "PRE_CREATE_DB", "value": "cadvisor"},
+                {"name": "ADMIN_USER", "value": "root"},
+                {"name": "INFLUXDB_INIT_PWD", "value": "hyperpilot"}
+            ]
+        },
+        {
+            "name": "grafana",
+            "image": "grafana/grafana",
+            "cpu": 2,
+            "memory": 300,
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "hostPort": 3000
+                }
+            ],
+            "essential": true,
+            "links": ["influxsrv"],
+            "environment": [
+                {"name": "INFLUXDB_HOST", "value": "localhost"},
+                {"name": "INFLUXDB_PORT", "value": "8086"},
+                {"name": "INFLUXDB_NAME", "value": "cadvisor"},
+                {"name": "GF_INSTALL_PLUGINS", "value": "grafana-clock-panel,grafana-piechart-panel"},
+                {"name": "INFLUXDB_USER", "value": "root"},
+                {"name": "INFLUXDB_PASS", "value": "hyperpilot"}
+            ]
+        }
+    ],
+    "volumes": []
+}

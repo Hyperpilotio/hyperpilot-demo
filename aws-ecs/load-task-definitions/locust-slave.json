@@ -9,11 +9,25 @@
               "--slave",
               "--master=locust-master:5557",
               "-f",
-              "/home/ec2-user/locust/locust.py"
+              "/locust_file/locustfile.py"
             ],
             "cpu": 1024,
             "memory": 300,
-            "essential": true
+            "essential": true,
+            "mountPoints": [
+                     {
+                                 "sourceVolume": "locust_file",
+                                 "containerPath": "/locust_file"
+                               }
+                   ]
         }
-   ]
+   ],
+   "volumes": [
+         {
+                 "name": "locust_file",
+                 "host": {
+                           "sourcePath": "/home/ec2-user/locust_file/"
+                         }
+               }
+       ]
 }

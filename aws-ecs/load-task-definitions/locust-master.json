@@ -13,7 +13,7 @@
               "--consumer-influx-endpoint=influxsrv:8086",
               "--consumer-influx-db=locust_results",
               "-f",
-              "/home/ec2-user/locust/locust.py"
+              "/locust_file/locustfile.py"
              ],
             "portMappings": [
                 {
@@ -30,7 +30,21 @@
                 }
 
             ],
-            "essential": true
+            "essential": true,
+           "mountPoints": [
+                     {
+                                 "sourceVolume": "locust_file",
+                                 "containerPath": "/locust_file"
+                               }
+                   ]
         }
-   ]
+   ],
+   "volumes": [
+         {
+                 "name": "locust_file",
+                 "host": {
+                           "sourcePath": "/home/ec2-user/locust_file/"
+                         }
+               }
+       ]
 }

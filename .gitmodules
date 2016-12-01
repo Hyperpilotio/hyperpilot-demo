@@ -1,9 +1,6 @@
 [submodule "microservices-demo"]
 	path = microservices-demo
 	url = https://github.com/Hyperpilotio/microservices-demo
-[submodule "locust"]
-	path = locust
-	url = https://github.com/Hyperpilotio/locust
 [submodule "load-test"]
 	path = load-test
 	url = https://github.com/microservices-demo/load-test

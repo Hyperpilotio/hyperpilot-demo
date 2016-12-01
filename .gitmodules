@@ -4,3 +4,6 @@
 [submodule "load-test"]
 	path = load-test
 	url = https://github.com/microservices-demo/load-test
+[submodule "hyper-locust"]
+	path = hyper-locust
+	url = https://github.com/Hyperpilotio/hyper-locust

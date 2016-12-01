@@ -5,13 +5,13 @@
             "name": "locust-slave",
             "image": "hyperpilot/locust",
             "command": [
-              "locust",
               "--slave",
-              "--master=locust-master:5557",
+              "--master-host=locust-master",
+              "--host=front-end:80",
               "-f",
               "/locust_file/locustfile.py"
             ],
-            "cpu": 1024,
+            "cpu": 1000,
             "memory": 300,
             "essential": true,
             "mountPoints": [

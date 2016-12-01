@@ -41,3 +41,10 @@ aws ecs create-service\
  --task-definition locust-slave \
  --desired-count $NUMBER_OF_SLAVES > /dev/null
 echo "done."
+
+echo -n "Updating Security Group (weave-ecs-demo) .. "
+SECURITY_GROUP_ID=$(aws ec2 describe-security-groups --query 'SecurityGroups[?GroupName==`weave-ecs-demo`]' | jq .[0].GroupId | cut -d'"' -f2)
+# Wait for the group to get associated with the VPC
+aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 8089 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 8083 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 8086 --cidr 0.0.0.0/0

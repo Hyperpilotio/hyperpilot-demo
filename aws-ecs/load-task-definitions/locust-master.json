@@ -8,6 +8,7 @@
             "memory": 150,
             "command": [
               "--master",
+              "--host=http://front-end:8079",
               "--consumer",
               "--consumer-influx-endpoint=influxsrv:8086",
               "--consumer-influx-db=locust_results",

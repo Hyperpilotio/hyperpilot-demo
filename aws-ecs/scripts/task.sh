@@ -20,7 +20,15 @@ aws ecs create-service \
         --task-definition monitor \
         --desired-count 1 >/dev/null
 
+echo "Starting daemon-scheduler on AWS ECS / Local machine..."
+./scheduler.sh
+
 echo "Starting cadvisors on each host..."
 # Replace this with daemon ecs scheduler
-aws ecs list-container-instances --cluster weave-ecs-demo-cluster | jq .containerInstanceArns[] | cut -d"/" -f2 | cut -d"\"" -f1 | xargs -I{} \
-    sh -c 'echo "Starting cadvisor on instance {}"; aws ecs start-task --cluster weave-ecs-demo-cluster --task-definition cadvisor --container-instances {} > /dev/null'
+ENV_NAME="cadvisor"
+TASK_DEFINITION="cadvisor"
+# FIXME deploy daemon-scheduler on AWS ECS
+CADVISOR_DEPLOYMENT_TOKEN=$(./blox-create-environment.py --environment $ENV_NAME --cluster "weave-ecs-demo-cluster" --task-definition $TASK_DEFINITION | jq .deploymentToken | cut -d"\"" -f2)
+./blox-create-deployment.py --environment $ENV_NAME --deployment-token $CADVISOR_DEPLOYMENT_TOKEN
+#CADVISOR_DEPLOYMENT_TOKEN=$(./blox-create-environment.py --region $AWS_REGION  --environment $ENV_NAME --cluster "weave-ecs-demo-cluster" --task-definition $TASK_DEFINITION | jq .deploymentToken | cut -d"\"" -f2)
+#./blox-create-deployment.py --region $AWS_REGION --environment $ENV_NAME --deployment-token $CADVISOR_DEPLOYMENT_TOKEN

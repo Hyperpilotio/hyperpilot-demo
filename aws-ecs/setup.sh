@@ -11,6 +11,6 @@ cwd=$(pwd)
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd $DIR/../microservices-demo/deploy/aws-ecs
-./setup.sh
+STORE_DNS_NAME_HERE=ecs-endpoint ./setup.sh
 cd $cwd
 $DIR/scripts/task.sh

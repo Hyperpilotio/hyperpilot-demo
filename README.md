@@ -8,6 +8,10 @@ Pre-reqs:
 - Need to install aws-cli python package, [envtpl](https://github.com/andreasjansson/envtpl),  and jq library
 - Create AWS IAM policy for daemon-scheduler. Check the [deployment guide](https://github.com/blox/blox/tree/master/deploy)
 
+Setup daemon scheduler
+
+`aws-ecs/setup_scheduler.sh`
+
 Setup Infra and workload:
 
 aws-ecs/setup.sh

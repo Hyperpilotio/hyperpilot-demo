@@ -7,5 +7,3 @@ $DIR/scripts/cleanup.sh
 
 cd $DIR/../microservices-demo/deploy/aws-ecs
 ./cleanup.sh
-
-cd $cwd

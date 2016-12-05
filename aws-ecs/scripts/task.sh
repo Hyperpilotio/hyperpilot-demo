@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cwd=$(pwd)
 
 # Task definitions
 echo "Registering Hyperpilot ECS Task Definitions..."
@@ -20,7 +21,20 @@ aws ecs create-service \
         --task-definition monitor \
         --desired-count 1 >/dev/null
 
+if [[ "X$AWS_CLOUDFORMATION_STACK" == "X" ]]; then
+  echo "AWS_CLOUDFORMATION_STACK is not exist. Use BloxAws as defalut value."
+  AWS_CLOUDFORMATION_STACK="BloxAws"
+fi
+
+echo "Starting daemon-scheduler on AWS ECS ..."
+$cwd/scripts/scheduler.sh
+
 echo "Starting cadvisors on each host..."
 # Replace this with daemon ecs scheduler
-aws ecs list-container-instances --cluster weave-ecs-demo-cluster | jq .containerInstanceArns[] | cut -d"/" -f2 | cut -d"\"" -f1 | xargs -I{} \
-    sh -c 'echo "Starting cadvisor on instance {}"; aws ecs start-task --cluster weave-ecs-demo-cluster --task-definition cadvisor --container-instances {} > /dev/null'
+ENV_NAME="cadvisor"
+TASK_DEFINITION="cadvisor"
+CADVISOR_DEPLOYMENT_TOKEN=$($DIR/../../../blox/deploy/demo-cli/blox-create-environment.py --apigateway --stack $AWS_CLOUDFORMATION_STACK --environment $ENV_NAME --cluster "weave-ecs-demo-cluster" --task-definition $TASK_DEFINITION | jq .deploymentToken | cut -d"\"" -f2)
+$DIR/../../../blox/deploy/demo-cli/blox-create-deployment.py \
+      --apigateway --stack $AWS_CLOUDFORMATION_STACK \
+      --environment $ENV_NAME \
+      --deployment-token $CADVISOR_DEPLOYMENT_TOKEN

@@ -26,14 +26,11 @@ if [[ "X$AWS_CLOUDFORMATION_STACK" == "X" ]]; then
   AWS_CLOUDFORMATION_STACK="BloxAws"
 fi
 
-echo "Starting daemon-scheduler on AWS ECS ..."
-$cwd/scripts/scheduler.sh
-
 echo "Starting cadvisors on each host..."
 # Replace this with daemon ecs scheduler
 ENV_NAME="cadvisor"
 TASK_DEFINITION="cadvisor"
-CADVISOR_DEPLOYMENT_TOKEN=$($DIR/../../../blox/deploy/demo-cli/blox-create-environment.py --apigateway --stack $AWS_CLOUDFORMATION_STACK --environment $ENV_NAME --cluster "weave-ecs-demo-cluster" --task-definition $TASK_DEFINITION | jq .deploymentToken | cut -d"\"" -f2)
+CADVISOR_DEPLOYMENT_TOKEN="$($DIR/../../blox/deploy/demo-cli/blox-create-environment.py --apigateway --stack $AWS_CLOUDFORMATION_STACK --environment $ENV_NAME --cluster "weave-ecs-demo-cluster" --task-definition $TASK_DEFINITION | jq .deploymentToken | cut -d"\"" -f2)"
 $DIR/../../../blox/deploy/demo-cli/blox-create-deployment.py \
       --apigateway --stack $AWS_CLOUDFORMATION_STACK \
       --environment $ENV_NAME \

@@ -6,6 +6,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 aws ecs update-service --cluster weave-ecs-demo-cluster --service monitor-service --desired-count 0 >/dev/null
 aws ecs delete-service --cluster weave-ecs-demo-cluster --service monitor-service >/dev/null
 
+if [[ "X$AWS_CLOUDFORMATION_STACK" == "X" ]]; then
+  echo "AWS_CLOUDFORMATION_STACK = BloxAws"
+  AWS_CLOUDFORMATION_STACK="BloxAws"
+fi
+
+# Remove cadvisor from daemon scheduler
+$DIR/../../blox/deploy/demo-cli/blox-delete-environment.py --apigateway --stack $AWS_CLOUDFORMATION_STACK --environment cadvisor --cluster "weave-ecs-demo-cluster"
+
 #echo -n "Deleting ECS Services..."
 #for td in task-definitions/*.json
 #do

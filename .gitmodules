@@ -3,10 +3,10 @@
 	url = https://github.com/Hyperpilotio/microservices-demo
 [submodule "load-test"]
 	path = load-test
-	url = https://github.com/microservices-demo/load-test
+	url = https://github.com/Hyperpilotio/microservice-load-test
 [submodule "hyper-locust"]
 	path = hyper-locust
 	url = https://github.com/Hyperpilotio/hyper-locust
 [submodule "blox"]
 	path = blox
-	url = git@github.com:Hyperpilotio/blox.git
+	url = https://github.com/Hyperpilotio/blox

@@ -16,3 +16,8 @@ echo -n "Deleting blox-aws-role IAM role (blox-aws-role) .. "
 aws iam delete-role-policy --role-name blox-aws-role --policy-name blox-aws-policy
 aws iam delete-role --role-name blox-aws-role
 echo "done"
+
+echo -n "Deleting daemon-scheduler key pair.."
+aws ec2 delete-key-pair --key-name daemon-scheduler-key
+rm -f $DIR/daemon-scheduler-key.pem
+echo "done"

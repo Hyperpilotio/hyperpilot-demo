@@ -14,6 +14,13 @@
             ],
             "cpu": 1000,
             "memory": 300,
+            "ulimits": [
+              {
+                "softLimit": 12000,
+                "hardLimit": 12000,
+                "name": "nofile"
+              }
+            ],
             "essential": true,
             "mountPoints": [
                      {

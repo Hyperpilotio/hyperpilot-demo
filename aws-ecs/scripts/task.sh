@@ -31,7 +31,7 @@ echo "Starting cadvisors on each host..."
 ENV_NAME="cadvisor"
 TASK_DEFINITION="cadvisor"
 CADVISOR_DEPLOYMENT_TOKEN="$($DIR/../../blox/deploy/demo-cli/blox-create-environment.py --apigateway --stack $AWS_CLOUDFORMATION_STACK --environment $ENV_NAME --cluster "weave-ecs-demo-cluster" --task-definition $TASK_DEFINITION | jq .deploymentToken | cut -d"\"" -f2)"
-$DIR/../../../blox/deploy/demo-cli/blox-create-deployment.py \
+$DIR/../../blox/deploy/demo-cli/blox-create-deployment.py \
       --apigateway --stack $AWS_CLOUDFORMATION_STACK \
       --environment $ENV_NAME \
       --deployment-token $CADVISOR_DEPLOYMENT_TOKEN

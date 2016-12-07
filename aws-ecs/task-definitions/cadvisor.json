@@ -4,7 +4,7 @@
         {
             "name": "cadvisor",
             "image": "google/cadvisor",
-            "cpu": 10,
+            "cpu": 512,
             "memory": 100,
             "portMappings": [
                 {
@@ -15,28 +15,30 @@
             "essential": true,
             "command": [
                 "-storage_driver=influxdb",
+                "-storage_driver_user=root",
+                "-storage_driver_password=hyperpilot",
                 "-storage_driver_db=cadvisor",
                 "-storage_driver_host=influxsrv:8086"
             ],
             "mountPoints": [
                 {
                     "sourceVolume": "root",
-                    "containerPath": "/rootfs",
+                    "containerPath": "/rootfs:ro",
                     "readOnly": true
                 },
                 {
                     "sourceVolume": "var_run",
-                    "containerPath": "/var/run",
+                    "containerPath": "/var/run:rw",
                     "readOnly": false
                 },
                 {
                     "sourceVolume": "sys",
-                    "containerPath": "/sys",
+                    "containerPath": "/sys:ro",
                     "readOnly": true
                 },
                 {
                     "sourceVolume": "var_lib_docker",
-                    "containerPath": "/var/lib/docker",
+                    "containerPath": "/var/lib/docker:ro",
                     "readOnly": true
                 }
             ]

@@ -21,7 +21,9 @@ do
 echo "done"
 
 echo "Uploading locust load file $LOCUST_FILE to EC2 instances..."
-for instance in $(aws ec2 describe-instances | jq .Reservations[].Instances[].NetworkInterfaces[0].PrivateIpAddresses[0].Association.PublicDnsName | cut -d"\"" -f2); do
+for instance in $(aws ec2 describe-instances | \
+    jq -c '.Reservations[].Instances[] | select(.KeyName | contains("weave"))' | \
+    jq .NetworkInterfaces[0].PrivateIpAddresses[0].Association.PublicDnsName | cut -d"\"" -f2); do
     ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $KEY_FILE ec2-user@$instance 'rm -rf /home/ec2-user/locust_file;mkdir /home/ec2-user/locust_file' &> /dev/null
 
     scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $KEY_FILE $LOCUST_FILE ec2-user@$instance:/home/ec2-user/locust_file/locustfile.py

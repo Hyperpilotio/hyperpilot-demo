@@ -54,13 +54,8 @@ IS_DEPLOYMENT_EXIST="$($DIR/../../blox/deploy/demo-cli/blox-list-deployments.py 
 if [[ "X$IS_DEPLOYMENT_EXIST" == "X" ]]; then
   echo "None of daemon ($TASK_DEFINITION) is running."
 else
-    $DIR/../../blox/deploy/demo-cli/blox-delete-environment.py \
-      --apigateway --stack $AWS_CLOUDFORMATION_STACK \
-      --environment $ENV_NAME
-
-    echo "Registering task $TASK_DEFINITION on daemon scheduler.."
-    DEPLOYMENT_TOKEN="$($DIR/../../blox/deploy/demo-cli/blox-create-environment.py --apigateway --stack $AWS_CLOUDFORMATION_STACK --environment $ENV_NAME --cluster $CLUSTER --task-definition $TASK_DEFINITION | jq .deploymentToken | cut -d"\"" -f2)"
-    echo "done."
+    echo "Please launch cleanup.sh before launch setup.sh"
+    exit 1
 fi
 
 echo "Start to deploy daemons on $CLUSTER .."

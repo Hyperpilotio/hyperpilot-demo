@@ -3,8 +3,8 @@
     "containerDefinitions": [
         {
             "name": "cadvisor",
-            "image": "google/cadvisor",
-            "cpu": 512,
+            "image": "google/cadvisor:v0.24.1",
+            "cpu": 102,
             "memory": 100,
             "portMappings": [
                 {
@@ -23,22 +23,32 @@
             "mountPoints": [
                 {
                     "sourceVolume": "root",
-                    "containerPath": "/rootfs:ro",
+                    "containerPath": "/rootfs",
                     "readOnly": true
                 },
                 {
                     "sourceVolume": "var_run",
-                    "containerPath": "/var/run:rw",
+                    "containerPath": "/var/run",
                     "readOnly": false
                 },
                 {
+                    "sourceVolume": "var_log",
+                    "containerPath": "/var/log",
+                    "readOnly": true
+                },
+                {
                     "sourceVolume": "sys",
-                    "containerPath": "/sys:ro",
+                    "containerPath": "/sys",
+                    "readOnly": true
+                },
+                {
+                    "sourceVolume": "cgroup",
+                    "containerPath": "/sys/fs/cgroup",
                     "readOnly": true
                 },
                 {
                     "sourceVolume": "var_lib_docker",
-                    "containerPath": "/var/lib/docker:ro",
+                    "containerPath": "/var/lib/docker",
                     "readOnly": true
                 }
             ]
@@ -58,6 +68,12 @@
             }
         },
         {
+            "name": "var_log",
+            "host": {
+                "sourcePath": "/var/log"
+            }
+        },
+        {
             "name": "sys",
             "host": {
                 "sourcePath": "/sys"
@@ -68,6 +84,13 @@
             "host": {
                 "sourcePath": "/var/lib/docker/"
             }
+        },
+        {
+            "name": "cgroup",
+            "host": {
+                "sourcePath": "/cgroup"
+            }
         }
+
     ]
 }

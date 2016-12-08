@@ -12,7 +12,7 @@
               "-f",
               "/locust_file/locustfile.py"
             ],
-            "cpu": 1000,
+            "cpu": 500,
             "memory": 300,
             "ulimits": [
               {

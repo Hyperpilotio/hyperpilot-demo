@@ -19,7 +19,7 @@ aws-ecs/setup.sh
 Setup load test (Locust):
 
 # This runs 3 locust agents and uploads the load-test locust python file
-aws-ecs/setup_load_test.sh 3 ../load-test/locust.py
+aws-ecs/setup_load_test.sh 3 ../load-test/locustfile.py
 
 Teardown:
 

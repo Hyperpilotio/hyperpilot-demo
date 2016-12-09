@@ -26,7 +26,7 @@
         {
             "name": "grafana",
             "image": "grafana/grafana",
-            "cpu": 2,
+            "cpu": 512,
             "memory": 300,
             "portMappings": [
                 {

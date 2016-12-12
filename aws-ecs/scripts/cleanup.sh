@@ -12,7 +12,7 @@ if [[ "X$AWS_CLOUDFORMATION_STACK" == "X" ]]; then
 fi
 
 # Remove cadvisor from daemon scheduler
-$DIR/../../blox/deploy/demo-cli/blox-delete-environment.py --apigateway --stack $AWS_CLOUDFORMATION_STACK --environment cadvisor 
+$DIR/../../blox/deploy/demo-cli/blox-delete-environment.py --apigateway --stack $AWS_CLOUDFORMATION_STACK --environment cadvisor
 
 #echo -n "Deleting ECS Services..."
 #for td in task-definitions/*.json

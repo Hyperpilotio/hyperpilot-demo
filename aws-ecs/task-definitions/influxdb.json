@@ -18,7 +18,7 @@
             ],
             "essential": true,
             "environment": [
-                {"name": "PRE_CREATE_DB", "value": "cadvisor"},
+                {"name": "PRE_CREATE_DB", "value": "snap"},
                 {"name": "ADMIN_USER", "value": "root"},
                 {"name": "INFLUXDB_INIT_PWD", "value": "hyperpilot"}
             ]
@@ -39,7 +39,7 @@
             "environment": [
                 {"name": "INFLUXDB_HOST", "value": "localhost"},
                 {"name": "INFLUXDB_PORT", "value": "8086"},
-                {"name": "INFLUXDB_NAME", "value": "cadvisor"},
+                {"name": "INFLUXDB_NAME", "value": "snap"},
                 {"name": "GF_INSTALL_PLUGINS", "value": "grafana-clock-panel,grafana-piechart-panel"},
                 {"name": "INFLUXDB_USER", "value": "root"},
                 {"name": "INFLUXDB_PASS", "value": "hyperpilot"}

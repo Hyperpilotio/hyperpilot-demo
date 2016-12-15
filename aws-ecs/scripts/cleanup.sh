@@ -11,8 +11,10 @@ if [[ "X$AWS_CLOUDFORMATION_STACK" == "X" ]]; then
   AWS_CLOUDFORMATION_STACK="BloxAws"
 fi
 
-# Remove cadvisor from daemon scheduler
-$DIR/../../blox/deploy/demo-cli/blox-delete-environment.py --apigateway --stack $AWS_CLOUDFORMATION_STACK --environment cadvisor
+# Remove snap from daemon scheduler
+$DIR/../../blox/deploy/demo-cli/blox-delete-environment.py \
+  --apigateway --stack $AWS_CLOUDFORMATION_STACK \
+  --environment snap
 
 #echo -n "Deleting ECS Services..."
 #for td in task-definitions/*.json

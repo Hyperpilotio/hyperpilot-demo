@@ -1,0 +1,83 @@
+{
+    "family": "snap",
+    "containerDefinitions": [
+        {
+            "name": "snap",
+            "image": "wen777/snap:alpine",
+            "cpu": 102,
+            "memory": 100,
+            "essential": true,
+            "mountPoints": [
+                {
+                    "sourceVolume": "root",
+                    "containerPath": "/rootfs",
+                    "readOnly": true
+                },
+                {
+                    "sourceVolume": "var_run",
+                    "containerPath": "/var/run",
+                    "readOnly": false
+                },
+                {
+                    "sourceVolume": "var_log",
+                    "containerPath": "/var/log",
+                    "readOnly": false
+                },
+                {
+                    "sourceVolume": "sys",
+                    "containerPath": "/sys",
+                    "readOnly": true
+                },
+                {
+                    "sourceVolume": "cgroup",
+                    "containerPath": "/sys/fs/cgroup",
+                    "readOnly": true
+                },
+                {
+                    "sourceVolume": "var_lib_docker",
+                    "containerPath": "/var/lib/docker",
+                    "readOnly": true
+                }
+            ]
+        }
+    ],
+    "volumes": [
+        {
+            "name": "root",
+            "host": {
+                "sourcePath": "/"
+            }
+        },
+        {
+            "name": "var_run",
+            "host": {
+                "sourcePath": "/var/run"
+            }
+        },
+        {
+            "name": "var_log",
+            "host": {
+                "sourcePath": "/var/log"
+            }
+        },
+        {
+            "name": "sys",
+            "host": {
+                "sourcePath": "/sys"
+            }
+        },
+        {
+            "name": "var_lib_docker",
+            "host": {
+                "sourcePath": "/var/lib/docker/"
+            }
+        },
+        {
+            "name": "cgroup",
+            "host": {
+                "sourcePath": "/cgroup"
+            }
+        }
+
+    ]
+}

@@ -21,16 +21,16 @@ aws ecs create-service \
         --task-definition monitor \
         --desired-count 1 >/dev/null
 
-# Run cadvisor as daemon
+# Run snap as daemon
 if [[ "X$AWS_CLOUDFORMATION_STACK" == "X" ]]; then
   echo "AWS_CLOUDFORMATION_STACK is not exist. Use BloxAws as defalut value."
   AWS_CLOUDFORMATION_STACK="BloxAws"
 fi
 
 # Replace this with daemon ecs scheduler
-ENV_NAME="cadvisor"
-TASK_DEFINITION="cadvisor"
-IS_ENVIRONMENT_EXIST="$($DIR/../../blox/deploy/demo-cli/blox-list-environments.py --apigateway --stack BloxAws | sed 1,1d | jq '.items[] | select(.name == "'"$TASK_DEFINITION"'")')"
+ENV_NAME="snap"
+TASK_DEFINITION="snap"
+IS_ENVIRONMENT_EXIST="$($DIR/../../blox/deploy/demo-cli/blox-list-environments.py --apigateway --stack $AWS_CLOUDFORMATION_STACK | jq '.items[] | select(.name == "'"$TASK_DEFINITION"'")')"
 IS_DEPLOYMENT_EXIST=""
 CLUSTER="weave-ecs-demo-cluster"
 
@@ -60,7 +60,7 @@ else
 fi
 
 echo "Start to deploy daemons on $CLUSTER .."
-DEPLOYMENT_TOKEN="$($DIR/../../blox/deploy/demo-cli/blox-list-environments.py --apigateway --stack $AWS_CLOUDFORMATION_STACK | sed 1,1d | jq '.items[] | select(.name == "'"$TASK_DEFINITION"'") | .deploymentToken' | cut -d"\"" -f2)"
+DEPLOYMENT_TOKEN="$($DIR/../../blox/deploy/demo-cli/blox-list-environments.py --apigateway --stack $AWS_CLOUDFORMATION_STACK | jq '.items[] | select(.name == "'"$TASK_DEFINITION"'") | .deploymentToken' | cut -d"\"" -f2)"
 $DIR/../../blox/deploy/demo-cli/blox-create-deployment.py \
     --apigateway --stack $AWS_CLOUDFORMATION_STACK \
     --environment $ENV_NAME \

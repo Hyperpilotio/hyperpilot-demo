@@ -1,6 +1,7 @@
 {
     "name": "nginx",
     "region": "us-east-1",
+    "allowedPorts": [8083, 8086, 7777, 7778, 8089],
     "nodeMapping": [
         {
             "task": "nginx",

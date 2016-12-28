@@ -15,11 +15,11 @@
         },
         {
             "task": "monitor",
-            "id": 1
+            "id": 2
         },
         {
             "task": "snap",
-            "id": 2
+            "id": 1
         },
         {
             "task": "locust-master",

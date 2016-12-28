@@ -2,6 +2,12 @@
     "name": "nginx",
     "region": "us-east-1",
     "allowedPorts": [8083, 8086, 7777, 7778, 8089],
+    "files": [
+      {
+        "fileId": "nginx_load_test",
+        "path": "/home/ec2-user/locust_file/locustfile.py"
+      }
+    ],
     "nodeMapping": [
         {
             "task": "nginx",
@@ -202,6 +208,14 @@
             "family": "monitor"
         },
         {
+            "volumes": [
+                {
+                    "host": {
+                        "sourcePath": "\/var\/run\/docker.sock"
+                    },
+                    "name": "docker_sock"
+                }
+            ],
             "containerDefinitions": [
                 {
                     "portMappings": [
@@ -217,6 +231,12 @@
                     "name": "nginx"
                 },
                 {
+                    "mountPoints": [
+                        {
+                            "containerPath": "\/var\/run\/docker.sock",
+                            "sourceVolume": "docker_sock"
+                        }
+                    ],
                     "portMappings": [
                         {
                             "hostPort": 7778,

@@ -213,7 +213,7 @@
                     "essential": true,
                     "memory": 100,
                     "cpu": 512,
-                    "image": "hyperpilot\/redis-serve",
+                    "image": "redis:3.2.6",
                     "name": "redis-serve"
                 },
                 {

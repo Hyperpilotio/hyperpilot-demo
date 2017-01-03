@@ -10,6 +10,3 @@
 [submodule "blox"]
 	path = blox
 	url = https://github.com/Hyperpilotio/blox
-[submodule "workloads/redis/image/redis-benchmarks-ui"]
-	path = workloads/redis/image/redis-benchmarks-ui
-	url = git@github.com:compybara/redis-benchmarks-ui.git

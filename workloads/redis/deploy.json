@@ -2,8 +2,6 @@
     "name": "redis",
     "region": "us-east-1",
     "allowedPorts": [8083, 8086, 7777, 7778, 8089, 5000, 6379, 6001],
-    "files": [
-    ],
     "nodeMapping": [
         {
             "task": "redis-serve",
@@ -118,7 +116,6 @@
             "family": "snap"
         },
         {
-            "volumes": [],
             "containerDefinitions": [
                 {
                     "environment": [
@@ -259,5 +256,5 @@
             ],
             "family": "redis-bench"
         }
-    }
+    ]
 }

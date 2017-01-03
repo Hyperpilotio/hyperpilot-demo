@@ -1,0 +1,25 @@
+{
+  "name": "redis-benchmarks-ui",
+  "version": "0.0.1",
+  "description": "A Web GUI for benchmarking Redis performance",
+  "main": "bin/benchmarks-ui.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/compybara/redis-benchmarks-ui.git"
+  },
+  "author": "Adam Duston",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/compybara/redis-benchmarks-ui/issues"
+  },
+  "homepage": "https://github.com/compybara/redis-benchmarks-ui#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cfenv": "^1.0.3",
+    "express": "^4.14.0",
+    "jade": "^1.11.0"
+  }
+}

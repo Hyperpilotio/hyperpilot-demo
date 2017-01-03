@@ -1,0 +1,4 @@
+{
+  "benchmark_cmd": "/usr/bin/redis-benchmark",
+  "redis_host": "redis-serve"
+}

@@ -1,0 +1,31 @@
+extends index
+block results
+  div#benchmark_results
+    h2 Benchmark Results
+    if results
+      table#results_table
+        thead
+            td Command
+            td Requests per Second
+        tbody
+          each val, key in results
+            tr
+              td #{key}
+              td #{val}
+      script.
+        function json() {
+          window.open('data:text/json;charset=utf-8,' + '!{JSON.stringify(results)}')
+         }
+
+      br
+      button(onclick="json()")#jsonButton Save JSON
+      br
+      br
+    else
+      h2#error
+        | An error occurred running redis-benchmark:
+        br
+        br
+        | #{error}
+
+

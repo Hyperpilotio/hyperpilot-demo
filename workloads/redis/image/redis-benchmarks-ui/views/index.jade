@@ -1,0 +1,18 @@
+extends layout
+block content
+ div#benchmark_form
+  h1#title Redis Benchmark
+  form(action='/', method='post')
+    label(for='redis_host') Host
+      input(id='redis_host', type='text', value=(redis_host !== undefined ? redis_host : ''),
+            placeholder='127.0.0.1', name='redis_host', required)
+    label(for='redis_port') Port
+      input(id='redis_port', type='number', value=(redis_port !== undefined ? redis_port : 6379),
+            placeholder=6379, name='redis_port')
+    label(for='redis_pw') Password
+      input(id='redis_pw', type='password', value=(redis_pw !== undefined ? redis_pw : ''),
+            placeholder='', name='redis_pw')
+    label(for='num_requests') Requests
+      input(id='num_requests', type='number', value=(num_requests !== undefined ? num_requests : 10000),
+            placeholder=10000, name='num_requests')
+    button(type="submit")#runbutton Run

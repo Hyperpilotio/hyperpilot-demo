@@ -1,0 +1,15 @@
+extends layout
+block content
+ div#benchmark_form
+  h1#title Mysql Benchmark
+  form(action='/', method='post')
+    label(for='mysql_host') Host
+      input(id='mysql_host', type='text', value=(mysql_host !== undefined ? mysql_host : ''),
+            placeholder='mysql', name='mysql_host', required)
+    label(for='mysql_port') Port
+      input(id='mysql_port', type='number', value=(mysql_port !== undefined ? mysql_port : 3306),
+            placeholder=3306, name='mysql_port')
+    label(for='mysql_pw') Password
+      input(id='mysql_pw', type='password', value=(mysql_pw !== undefined ? mysql_pw : ''),
+            placeholder='', name='mysql_pw')
+    button(type="submit")#runbutton Run

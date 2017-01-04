@@ -1,0 +1,6 @@
+applications:
+- name: redis-benchmarks-ui
+  memory: 256MB
+  disk: 256MB
+  buildpack: nodejs_buildpack
+  stack: cflinuxfs2

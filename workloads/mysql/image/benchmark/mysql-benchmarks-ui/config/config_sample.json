@@ -1,0 +1,3 @@
+{
+  "benchmark_cmd": "./bin/redis-benchmark"
+}

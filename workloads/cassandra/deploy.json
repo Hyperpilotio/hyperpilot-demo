@@ -233,7 +233,7 @@
                     "memory": 512,
                     "cpu": 512,
                     "image": "wen777\/cassandra",
-                    "name": "cassandra"
+                    "name": "cassandra-service"
                 }
             ],
             "family": "cassandra"

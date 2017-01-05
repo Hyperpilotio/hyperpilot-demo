@@ -1,7 +1,7 @@
 {
     "name": "cassandra",
     "region": "us-east-1",
-    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 7199],
+    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 9042, 7199],
     "nodeMapping": [
         {
             "task": "cassandra",
@@ -227,6 +227,10 @@
                         {
                             "hostPort": 9160,
                             "containerPort": 9160
+                        },
+                        {
+                            "hostPort": 9042,
+                            "containerPort": 9042
                         }
                     ],
                     "essential": true,

@@ -1,0 +1,268 @@
+{
+    "name": "cassandra",
+    "region": "us-east-1",
+    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 7199],
+    "nodeMapping": [
+        {
+            "task": "cassandra",
+            "id": 1
+        },
+        {
+            "task": "monitor",
+            "id": 2
+        },
+        {
+            "task": "snap",
+            "id": 1
+        },
+        {
+            "task": "cassandra-stress",
+            "id": 2
+        }
+    ],
+    "clusterDefinition": {
+        "nodes": [
+            {
+                "instanceType": "t2.medium",
+                "id": 1
+            },
+            {
+                "instanceType": "t2.medium",
+                "id": 2
+            }
+        ]
+    },
+    "taskDefinitions": [
+        {
+            "volumes": [
+                {
+                    "host": {
+                        "sourcePath": "\/"
+                    },
+                    "name": "root"
+                },
+                {
+                    "host": {
+                        "sourcePath": "\/var\/run"
+                    },
+                    "name": "var_run"
+                },
+                {
+                    "host": {
+                        "sourcePath": "\/var\/log"
+                    },
+                    "name": "var_log"
+                },
+                {
+                    "host": {
+                        "sourcePath": "\/sys"
+                    },
+                    "name": "sys"
+                },
+                {
+                    "host": {
+                        "sourcePath": "\/var\/lib\/docker\/"
+                    },
+                    "name": "var_lib_docker"
+                },
+                {
+                    "host": {
+                        "sourcePath": "\/cgroup"
+                    },
+                    "name": "cgroup"
+                }
+            ],
+            "containerDefinitions": [
+                {
+                    "mountPoints": [
+                        {
+                            "readOnly": true,
+                            "containerPath": "\/rootfs",
+                            "sourceVolume": "root"
+                        },
+                        {
+                            "readOnly": false,
+                            "containerPath": "\/var\/run",
+                            "sourceVolume": "var_run"
+                        },
+                        {
+                            "readOnly": false,
+                            "containerPath": "\/var\/log",
+                            "sourceVolume": "var_log"
+                        },
+                        {
+                            "readOnly": true,
+                            "containerPath": "\/sys",
+                            "sourceVolume": "sys"
+                        },
+                        {
+                            "readOnly": true,
+                            "containerPath": "\/sys\/fs\/cgroup",
+                            "sourceVolume": "cgroup"
+                        },
+                        {
+                            "readOnly": true,
+                            "containerPath": "\/var\/lib\/docker",
+                            "sourceVolume": "var_lib_docker"
+                        }
+                    ],
+                    "essential": true,
+                    "memory": 200,
+                    "cpu": 128,
+                    "image": "wen777\/snap:alpine",
+                    "name": "snap"
+                }
+            ],
+            "family": "snap"
+        },
+        {
+            "volumes": [],
+            "containerDefinitions": [
+                {
+                    "environment": [
+                        {
+                            "value": "snap",
+                            "name": "PRE_CREATE_DB"
+                        },
+                        {
+                            "value": "root",
+                            "name": "ADMIN_USER"
+                        },
+                        {
+                            "value": "hyperpilot",
+                            "name": "INFLUXDB_INIT_PWD"
+                        }
+                    ],
+                    "essential": true,
+                    "portMappings": [
+                        {
+                            "hostPort": 8083,
+                            "containerPort": 8083
+                        },
+                        {
+                            "hostPort": 8086,
+                            "containerPort": 8086
+                        }
+                    ],
+                    "memory": 300,
+                    "cpu": 512,
+                    "image": "tutum\/influxdb",
+                    "name": "influxsrv"
+                },
+                {
+                    "environment": [
+                        {
+                            "value": "localhost",
+                            "name": "INFLUXDB_HOST"
+                        },
+                        {
+                            "value": "8086",
+                            "name": "INFLUXDB_PORT"
+                        },
+                        {
+                            "value": "snap",
+                            "name": "INFLUXDB_NAME"
+                        },
+                        {
+                            "value": "grafana-clock-panel,grafana-piechart-panel",
+                            "name": "GF_INSTALL_PLUGINS"
+                        },
+                        {
+                            "value": "root",
+                            "name": "INFLUXDB_USER"
+                        },
+                        {
+                            "value": "hyperpilot",
+                            "name": "INFLUXDB_PASS"
+                        }
+                    ],
+                    "links": [
+                        "influxsrv"
+                    ],
+                    "essential": true,
+                    "portMappings": [
+                        {
+                            "hostPort": 3000,
+                            "containerPort": 3000
+                        }
+                    ],
+                    "memory": 300,
+                    "cpu": 512,
+                    "image": "grafana\/grafana",
+                    "name": "grafana"
+                }
+            ],
+            "family": "monitor"
+        },
+        {
+            "volumes": [
+                {
+                    "host": {
+                        "sourcePath": "\/tmp"
+                    },
+                    "name": "tmp"
+                }
+            ],
+            "containerDefinitions": [
+                {
+                    "mountPoints": [
+                        {
+                            "containerPath": "\/var\/lib\/cassandra\/data",
+                            "sourceVolume": "tmp"
+                        }
+                    ],
+                    "portMappings": [
+                        {
+                            "hostPort": 7199,
+                            "containerPort": 7199
+                        },
+                        {
+                            "hostPort": 7000,
+                            "containerPort": 7000
+                        },
+                        {
+                            "hostPort": 7001,
+                            "containerPort": 7001
+                        },
+                        {
+                            "hostPort": 9160,
+                            "containerPort": 9160
+                        }
+                    ],
+                    "essential": true,
+                    "memory": 512,
+                    "cpu": 512,
+                    "image": "wen777\/cassandra",
+                    "name": "cassandra"
+                }
+            ],
+            "family": "cassandra"
+        },
+        {
+            "volumes": [
+                {
+                    "host": {
+                        "sourcePath": "\/tmp"
+                    },
+                    "name": "tmp"
+                }
+            ],
+            "containerDefinitions": [
+                {
+                    "mountPoints": [
+                        {
+                            "containerPath": "\/tmp",
+                            "sourceVolume": "tmp"
+                        }
+                    ],
+                    "essential": true,
+                    "memory": 250,
+                    "cpu": 1024,
+                    "image": "wen777\/cassandra-stress",
+                    "name": "cassandra-stress"
+                }
+            ],
+            "family": "cassandra-stress"
+        }
+    ]
+}

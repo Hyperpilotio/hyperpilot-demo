@@ -11,7 +11,7 @@ RUN ln -s -f /bin/true /usr/bin/chfn
 RUN apt-get update && \
     apt-get install -y dsc30 cassandra-tools && \
     rm -rf /var/lib/apt/lists/* && \
-    sudo service cassandra stop
+    service cassandra stop
 
 ADD run.sh /run.sh
 

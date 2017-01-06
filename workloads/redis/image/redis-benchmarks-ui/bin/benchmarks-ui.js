@@ -74,6 +74,8 @@ app.post('/', function(req, res) {
         "error": null
       });
 
+      // TODO influxDB
+
     } else {
       res.render('results', {
         "results": null,

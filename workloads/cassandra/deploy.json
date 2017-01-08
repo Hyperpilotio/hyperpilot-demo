@@ -236,8 +236,8 @@
                         }
                     ],
                     "essential": true,
-                    "memory": 512,
-                    "cpu": 512,
+                    "memory": 3072,
+                    "cpu": 1024,
                     "image": "wen777\/cassandra",
                     "name": "cassandra-serve"
                 },
@@ -273,8 +273,8 @@
                             "containerPort": 6001
                         }
                     ],
-                    "memory": 150,
-                    "cpu": 128,
+                    "memory": 1024,
+                    "cpu": 1024,
                     "image": "wen777\/cassandra-bench",
                     "name": "cassandra-bench"
                 }

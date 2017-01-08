@@ -29,7 +29,7 @@ function CassandraBenchmark(options) {
     var cmd_args = [config.cassandra_subCmd, util.format("n=%d", config.num_requests), util.format("cl=%s", config.cassandra_consistency), '-mode', config.cassandra_mode, '-schema', util.format("keyspace=\"%s\"", config.cassandra_keyspace), '-node', config.cassandra_host];
 
     this.getBenchmarkCommand = function() {
-        return benchmark_bin;
+        return options.benchmark_bin;
     };
 
     this.getBenchmarkArgs = function() {

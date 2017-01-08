@@ -1,10 +1,10 @@
 {
     "name": "cassandra",
     "region": "us-east-1",
-    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 9042, 7199],
+    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 6001, 7000, 7001, 7199, 8012, 9042, 9160, 61621],
     "nodeMapping": [
         {
-            "task": "cassandra",
+            "task": "cassandra-serve",
             "id": 1
         },
         {
@@ -16,7 +16,7 @@
             "id": 1
         },
         {
-            "task": "cassandra-stress",
+            "task": "cassandra-bench",
             "id": 2
         }
     ],
@@ -198,19 +198,13 @@
             "volumes": [
                 {
                     "host": {
-                        "sourcePath": "\/tmp"
+                        "sourcePath": "\/var\/run\/docker.sock"
                     },
-                    "name": "tmp"
+                    "name": "docker_sock"
                 }
             ],
             "containerDefinitions": [
                 {
-                    "mountPoints": [
-                        {
-                            "containerPath": "\/var\/lib\/cassandra\/data",
-                            "sourceVolume": "tmp"
-                        }
-                    ],
                     "portMappings": [
                         {
                             "hostPort": 7199,
@@ -231,42 +225,61 @@
                         {
                             "hostPort": 9042,
                             "containerPort": 9042
+                        },
+                        {
+                            "hostPort": 8012,
+                            "containerPort": 8012
+                        },
+                        {
+                            "hostPort": 61621,
+                            "containerPort": 61621
                         }
                     ],
                     "essential": true,
                     "memory": 512,
                     "cpu": 512,
                     "image": "wen777\/cassandra",
-                    "name": "cassandra-service"
-                }
-            ],
-            "family": "cassandra"
-        },
-        {
-            "volumes": [
-                {
-                    "host": {
-                        "sourcePath": "\/tmp"
-                    },
-                    "name": "tmp"
-                }
-            ],
-            "containerDefinitions": [
+                    "name": "cassandra-serve"
+                },
                 {
                     "mountPoints": [
                         {
-                            "containerPath": "\/tmp",
-                            "sourceVolume": "tmp"
+                            "containerPath": "\/var\/run\/docker.sock",
+                            "sourceVolume": "docker_sock"
+                        }
+                    ],
+                    "portMappings": [
+                        {
+                            "hostPort": 7778,
+                            "containerPort": 7778
                         }
                     ],
                     "essential": true,
-                    "memory": 250,
-                    "cpu": 1024,
-                    "image": "wen777\/cassandra-stress",
-                    "name": "cassandra-stress"
+                    "memory": 50,
+                    "cpu": 128,
+                    "image": "hyperpilot\/benchmark-agent",
+                    "name": "benchmark-agent"
                 }
             ],
-            "family": "cassandra-stress"
+            "family": "cassandra-serve"
+        },
+        {
+            "containerDefinitions": [
+                {
+                    "essential": true,
+                    "portMappings": [
+                        {
+                            "hostPort": 6001,
+                            "containerPort": 6001
+                        }
+                    ],
+                    "memory": 150,
+                    "cpu": 128,
+                    "image": "wen777\/cassandra-bench",
+                    "name": "cassandra-bench"
+                }
+            ],
+            "family": "cassandra-bench"
         }
     ]
 }

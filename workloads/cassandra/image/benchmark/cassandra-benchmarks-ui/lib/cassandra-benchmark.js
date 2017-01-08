@@ -11,7 +11,7 @@ var createCmdConfig = function(config) {
     // Reference:  https://docs.datastax.com/en/cassandra/3.0/cassandra/tools/toolsCStress.html
     config = Object.assign({
         benchmark_bin: "/usr/bin/cassandra-stress",
-        cassandra_host: "0.0.0.0",
+        cassandra_host: "cassandra-serve",
         cassandra_subCmd: "write",
         cassandra_mode: "native cql3",
         num_requests: 10000,

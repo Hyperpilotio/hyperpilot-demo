@@ -1,0 +1,18 @@
+extends layout
+block content
+ div#benchmark_form
+  h1#title Cassandra Benchmark
+  form(action='/', method='post')
+    label(for='cassandra_host') Host
+      input(id='cassandra_host', type='text', value=(cassandra_host !== undefined ? cassandra_host : ''),
+            placeholder='127.0.0.1', name='cassandra_host', required)
+    label(for='cassandra_port') Port
+      input(id='cassandra_port', type='number', value=(cassandra_port !== undefined ? cassandra_port : 6379),
+            placeholder=6379, name='cassandra_port')
+    label(for='cassandra_pw') Password
+      input(id='cassandra_pw', type='password', value=(cassandra_pw !== undefined ? cassandra_pw : ''),
+            placeholder='', name='cassandra_pw')
+    label(for='num_requests') Requests
+      input(id='num_requests', type='number', value=(num_requests !== undefined ? num_requests : 10000),
+            placeholder=10000, name='num_requests')
+    button(type="submit")#runbutton Run

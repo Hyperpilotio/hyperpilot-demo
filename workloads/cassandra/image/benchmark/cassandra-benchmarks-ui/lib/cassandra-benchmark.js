@@ -26,7 +26,7 @@ function CassandraBenchmark(options) {
     var config = createCmdConfig(options);
 
     // build the command-line command to run.
-    var cmd_args = [config.cassandra_subCmd, util.format("n=%d", config.num_requests), util.format("cl=%s", config.cassandra_consistency), '-mode', config.cassandra_mode, '-schema', util.format("keyspace=\"%s\"", config.cassandra_keyspace), '-node', config.cassandra_host];
+    var cmd_args = [config.cassandra_subCmd, util.format("n=%d", config.num_requests), util.format("cl=%s", config.cassandra_consistency), '-mode', config.cassandra_mode, '-schema', util.format("keyspace=%s", config.cassandra_keyspace), '-node', config.cassandra_host];
 
     this.getBenchmarkCommand = function() {
         return options.benchmark_bin;
@@ -77,17 +77,23 @@ CassandraBenchmark.prototype.run = function(num_requests, callback) {
             callback(new Error(error_output), null);
         } else { // Parse the output of cassandra-benchmark to an object.
             lines = output.split("\n");
+            var count = 0;
             for (var i in lines) {
                 // There might be an empty line at the end somewhere.
                 if (lines[i] === '') {
                     continue;
                 }
-                // Clean up quotes from each line
-                noquotes = lines[i].replace(/["]+/g, '');
+
+                columns = lines[i].split(/[ ]{1,}[:] /);
+
+                if (columns.length > 1) {
+                    benchmarkObj[columns[0]] = columns[1];
+                    continue;
+                }
 
                 // Set the first column to a key and the second column to the value in an object.
-                columns = noquotes.split(",");
-                benchmarkObj[columns[0]] = columns[1];
+                benchmarkObj[count] = lines[i];
+                count = count + 1;
             }
 
             // Return the resulting benchmarks data object.

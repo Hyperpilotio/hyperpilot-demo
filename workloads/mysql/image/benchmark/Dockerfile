@@ -1,6 +1,9 @@
-FROM    node:latest
-RUN	apt-get update && apt-get install -y redis-server
-ADD     redis-benchmarks-ui /redis-benchmarks-ui
-WORKDIR /redis-benchmarks-ui
-RUN     npm install
-CMD     node bin/benchmarks-ui.js
+FROM    hyperpilot/tpcc-mysql
+RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
+RUN apt-get install -y nodejs
+
+ADD mysql-benchmarks-ui /mysql-benchmarks-ui
+
+WORKDIR /mysql-benchmarks-ui
+
+CMD npm install && node bin/benchmarks-ui.js

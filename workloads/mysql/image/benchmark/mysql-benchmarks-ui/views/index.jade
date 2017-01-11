@@ -5,7 +5,7 @@ block content
   form(action='/', method='post')
     label(for='mysql_host') Host
       input(id='mysql_host', type='text', value=(mysql_host !== undefined ? mysql_host : ''),
-            placeholder='mysql', name='mysql_host', required)
+            placeholder='mysql-server', name='mysql_host', required)
     label(for='mysql_port') Port
       input(id='mysql_port', type='number', value=(mysql_port !== undefined ? mysql_port : 3306),
             placeholder=3306, name='mysql_port')

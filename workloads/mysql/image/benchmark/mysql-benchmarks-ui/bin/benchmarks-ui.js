@@ -6,7 +6,7 @@
  */
 var express = require('express');
 var fs = require('fs');
-var MysqlBenchmark = require('../lib/mysql-benchmark');
+var mysqllib = require('../lib/mysql-benchmark');
 var bodyParser = require('body-parser');
 
 // Initialize the express application. Use Jade as the view engine
@@ -51,7 +51,6 @@ app.post('/', function(req, res) {
         "results": outputResults,
         "mysql_host": req.body.mysql_host,
         "mysql_port": req.body.mysql_port,
-        "mysql_pw": req.body.mysql_pw,
         "error": null
       });
 
@@ -60,12 +59,33 @@ app.post('/', function(req, res) {
         "results": null,
         "mysql_host": req.body.mysql_host,
         "mysql_port": req.body.mysql_port,
-        "mysql_pw": req.body.mysql_pw,
         "error": err.message
       });
     }
 
 
+  });
+});
+
+app.post('/api/mysql-loaddata', function(req, res) {
+  var mysql_host = req.body.mysql_host !== undefined ? req.body.mysql_host : "mysql-server";
+  var mysql_port = req.body.mysql_port !== undefined ? req.body.mysql_port : 3306;
+  var tpcc_warehouses = req.body.tpcc_warehouses !== undefined ? req.body.tpcc_warehouses : 20;
+
+  loaddataOpts = {
+    "mysql_host": mysql_host,
+    "mysql_port": mysql_port,
+    "tpcc_warehouses": tpcc_warehouses
+  }
+
+  loaddata(loaddataOpts, function(err) {
+    if (err !== null) {
+      res.status(500);
+      res.status("Error loadding tpcc data: " + err);
+    } else {
+      res.status(200);
+    }
+    res.send();
   });
 });
 
@@ -76,7 +96,7 @@ app.post('/api/mysql-benchmark', function(req, res) {
   res.contentType('application/json');
 
   // Get the benchmark parameters from the request body, or use defaults.
-  var mysql_host = req.body.mysql_host !== undefined ? req.body.mysql_host : null;
+  var mysql_host = req.body.mysql_host !== undefined ? req.body.mysql_host : "mysql-server";
   var mysql_port = req.body.mysql_port !== undefined ? req.body.mysql_port : 3306;
   var mysql_pw = req.body.mysql_pw !== undefined ? req.body.mysql_pw : "";
 
@@ -84,6 +104,7 @@ app.post('/api/mysql-benchmark', function(req, res) {
   if (!mysql_host) {
     res.status(400);
     res.send();
+    return
   }
 
   benchmarkOpts = {
@@ -100,6 +121,7 @@ app.post('/api/mysql-benchmark', function(req, res) {
       res.status(200);
       res.json(results);
     }
+    res.send();
   });
 });
 
@@ -116,12 +138,21 @@ var runBenchmark = function(options, callback) {
    */
 
   // Assume the options sent are options appropriate for MysqlBenchmark
-  benchmark = new MysqlBenchmark(benchmarkOpts);
+  benchmark = new mysqllib.MysqlBenchmark(options);
 
   console.log("Running benchmark for %s:%s", options.mysql_host, options.mysql_port);
 
   // Run the benchmark and pass the output to the calling function.
-  benchmark.run(options.num_requests, function(err, output) {
+  benchmark.run(function(err, output) {
     callback(err, output);
+  });
+};
+
+var loaddata = function(options, callback) {
+  loaddata = new mysqllib.LoadData(options);
+  console.log("Loadding TPCC data")
+
+  loaddata.run(function(err) {
+    callback(err);
   });
 };

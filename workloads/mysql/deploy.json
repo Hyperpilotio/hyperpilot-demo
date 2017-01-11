@@ -1,10 +1,14 @@
 {
-    "name": "redis",
+    "name": "mysql",
     "region": "us-east-1",
-    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 5000, 6379, 6001],
+    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 5000, 6001],
     "nodeMapping": [
         {
-            "task": "redis-serve",
+            "task": "mysql",
+            "id": 1
+        },
+        {
+            "task": "snap",
             "id": 1
         },
         {
@@ -12,11 +16,7 @@
             "id": 2
         },
         {
-            "task": "snap",
-            "id": 1
-        },
-        {
-            "task": "redis-bench",
+            "task": "tpcc-bench",
             "id": 2
         }
     ],
@@ -206,15 +206,15 @@
                 {
                     "portMappings": [
                         {
-                            "hostPort": 6379,
-                            "containerPort": 6379
+                            "hostPort": 3306,
+                            "containerPort": 3306
                         }
                     ],
                     "essential": true,
-                    "memory": 100,
-                    "cpu": 512,
-                    "image": "redis:3.2.6",
-                    "name": "redis-serve"
+                    "memory": 2048,
+                    "cpu": 1024,
+                    "image": "hyperpilot/tpcc-mysql",
+                    "name": "mysql-server"
                 },
                 {
                     "mountPoints": [
@@ -236,7 +236,7 @@
                     "name": "benchmark-agent"
                 }
             ],
-            "family": "redis-serve"
+            "family": "mysql"
         },
         {
             "containerDefinitions": [
@@ -250,11 +250,11 @@
                     ],
                     "memory": 150,
                     "cpu": 128,
-                    "image": "hyperpilot\/redis-bench",
-                    "name": "redis-bench"
+                    "image": "hyperpilot\/tpcc-mysql-benchmark",
+                    "name": "tpcc-bench"
                 }
             ],
-            "family": "redis-bench"
+            "family": "tpcc-bench"
         }
     ]
 }

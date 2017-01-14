@@ -8,6 +8,26 @@ var express = require('express');
 var fs = require('fs');
 var RedisBenchmark = require('../lib/redis-benchmark');
 var bodyParser = require('body-parser');
+var os = require('os');
+var uuid = require('node-uuid');
+var querystring = require("querystring");
+var request = require('request');
+var Influx = require('influx');
+
+// init InfluxDB client
+var hostName = 'influxsrv';
+var dbName = 'redis';
+var port = '8086';
+var measurement = 'redis/benchmark';
+
+// create InfluxDB database
+request.get('http://' + hostName +':' + port + '/query?q=' + querystring.escape('CREATE DATABASE ' + dbName));
+
+var influx = new Influx.InfluxDB({
+  host: hostName,
+  port: port,
+  database: dbName
+});
 
 // Load the configuration from the config file.
 var configFile = "./config/config.json";
@@ -74,6 +94,20 @@ app.post('/', function(req, res) {
         "error": null
       });
 
+      // init write influxDb fields Object
+      var fieldObj = {};
+      fieldObj.uuid = uuid.v1();
+
+      for(var key in outputResults) {
+      	fieldObj[key] = outputResults[key];
+      }
+
+      influx.writePoints([{
+      	measurement: measurement,
+      	tags: { host: os.hostname() },
+      	fields: fieldObj,
+      }]);
+      
     } else {
       res.render('results', {
         "results": null,

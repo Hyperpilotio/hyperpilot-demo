@@ -5,7 +5,7 @@
             "containerBenchmarks": [
                 {
                     "name": "busycpu",
-                    "count": 4,
+                    "count": 2,
                     "resources": {
                         "cpushares": 256
                     },
@@ -37,7 +37,7 @@
             "containerBenchmarks": [
                 {
                     "name": "busycpu",
-                    "count": 4,
+                    "count": 2,
                     "resources": {
                         "cpushares": 512
                     },

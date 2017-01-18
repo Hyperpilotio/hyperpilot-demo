@@ -96,7 +96,7 @@ app.post('/', function(req, res) {
 
       // init write influxDb fields Object
       var fieldObj = {};
-      fieldObj.uuid = uuid.v1();
+      fieldObj.uuid = uuid.v4();
 
       for(var key in outputResults) {
       	fieldObj[key] = outputResults[key];
@@ -130,6 +130,7 @@ app.post('/api/redis-benchmark', function(req, res) {
   res.contentType('application/json');
 
   // Get the benchmark parameters from the request body, or use defaults.
+  var stage_id = req.body.stage_id !== undefined ? req.body.stage_id : uuid.v4();
   var redis_host = req.body.host !== undefined ? req.body.host : null;
   var redis_port = req.body.port !== undefined ? req.body.port : 6379;
   var redis_pw = req.body.password !== undefined ? req.body.password : "";
@@ -150,10 +151,28 @@ app.post('/api/redis-benchmark', function(req, res) {
   };
 
    runBenchmark(benchmarkOpts, function(err, results) {
+   	outputResults = null;
+   	
     if (err !== null) {
       res.status(500);
       res.status("Error running redis-benchmark: " + err);
     } else {
+      outputResults = results;
+
+      // init write influxDb fields Object
+      var fieldObj = {};
+      fieldObj.uuid = stage_id;
+
+      for(var key in outputResults) {
+      	fieldObj[key] = outputResults[key];
+      }
+
+      influx.writePoints([{
+      	measurement: measurement,
+      	tags: { host: os.hostname() },
+      	fields: fieldObj,
+      }]);
+
       res.status(200);
       res.json(results);
     }

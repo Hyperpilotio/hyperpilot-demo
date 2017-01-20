@@ -116,6 +116,7 @@
                     "name": "dd-agent"
                 }
             ],
+            "networkMode": "host",
             "family": "dd-agent"
         },
         {

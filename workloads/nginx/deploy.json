@@ -6,9 +6,17 @@
       {
         "fileId": "nginx_load_test",
         "path": "/home/ec2-user/locust_file/locustfile.py"
+      },
+      {
+        "fileId": "nginx_dd_config",
+        "path": "/home/ec2-user/dd-agent-conf.d/nginx.yaml"
       }
     ],
     "nodeMapping": [
+        {
+            "task": "dd-agent",
+            "id": 1
+        },
         {
             "task": "nginx",
             "id": 1
@@ -44,6 +52,72 @@
         ]
     },
     "taskDefinitions": [
+         {
+            "volumes": [
+                {
+                    "host": {
+                        "sourcePath": "\/proc"
+                    },
+                    "name": "proc"
+                },
+                {
+                    "host": {
+                        "sourcePath": "\/cgroup"
+                    },
+                    "name": "cgroup"
+                },
+                {
+                    "host": {
+                        "sourcePath": "\/var\/run\/docker.sock"
+                    },
+                    "name": "docker_sock"
+                },
+                {
+                    "host": {
+                        "sourcePath": "\/home\/ec2-user\/dd-agent-conf.d\/"
+                    },
+                    "name": "dd_config"
+                }
+            ],
+            "containerDefinitions": [
+                {
+                    "mountPoints": [
+                        {
+                            "readOnly": true,
+                            "containerPath": "\/host\/sys\/fs\/cgroup",
+                            "sourceVolume": "cgroup"
+                        },
+                        {
+                            "readOnly": true,
+                            "containerPath": "\/host\/proc",
+                            "sourceVolume": "proc"
+                        },
+                        {
+                            "readOnly": true,
+                            "containerPath": "\/var\/run\/docker.sock",
+                            "sourceVolume": "docker_sock"
+                        },
+                        {
+                            "readOnly": true,
+                            "containerPath": "\/conf.d",
+                            "sourceVolume": "dd_config"
+                        }
+                    ],
+                    "environment": [
+                      {
+                        "name": "API_KEY",
+                        "value": "0cdf2519ace678bb882bb352ed9b0281"
+                      }
+                    ],
+                    "essential": true,
+                    "memory": 256,
+                    "cpu": 256,
+                    "image": "datadog\/docker-dd-agent:latest",
+                    "name": "dd-agent"
+                }
+            ],
+            "family": "dd-agent"
+        },
         {
             "volumes": [
                 {

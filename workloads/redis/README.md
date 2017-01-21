@@ -1,6 +1,5 @@
 Redis uses its own benchmark tool, *redis-benchmark*. We use a simple node.js app to provide a UI to the tool. However, it has two limitations:
 - it runs the all tests (no support for the -t option)
-- it does not push the results to Influx
 
 === Steps ===
 

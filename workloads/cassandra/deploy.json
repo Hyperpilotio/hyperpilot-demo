@@ -275,7 +275,7 @@
                     ],
                     "memory": 1024,
                     "cpu": 1024,
-                    "image": "wen777\/cassandra-bench",
+                    "image": "wen777\/bench:cassandra",
                     "name": "cassandra-bench"
                 }
             ],

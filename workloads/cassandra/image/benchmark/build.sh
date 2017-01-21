@@ -1,3 +1,5 @@
-#!/usr/bin/env bash
-cd $(dirname $0)
-docker build -t wen777/cassandra-bench:latest .
+#!/bin/sh
+
+docker build -t wen777/bench:cassandra .
+
+docker push wen777/bench:cassandra

@@ -1,4 +1,0 @@
-{
-  "benchmark_cmd": "/usr/bin/cassandra-stress",
-  "cassandra_host": "cassandra-serve"
-}

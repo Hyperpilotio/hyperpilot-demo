@@ -1,5 +1,4 @@
 {
-    "benchmark_cmd": "/usr/bin/cassandra-stress",
     "influxdbHost": "influxsrv",
     "influxdbPort": "8086",
     "influxdbName": "cassandra"

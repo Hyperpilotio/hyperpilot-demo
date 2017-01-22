@@ -1,5 +1,7 @@
 ## POST /api/benchmark
 
+***NOTE: Strongly recommend you to visit the latest API document of [hyperpilotio/benchmark-controller](https://github.com/Hyperpilotio/benchmark-controller) ***
+
 Payload
 
 ```{json}
@@ -11,9 +13,10 @@ Payload
 			"name": "load-testing",
 			"binPath": "/usr/bin/redis-benchmark",
 			"args": ["-h", "redis-serve", "-p", "6379", "--csv", "-n", "100"],
-			"type": "run"
+			"type": "load-test"
 		}
-	}
+	},
+    "measurement": "redis/benchmark"
 }
 ```
 

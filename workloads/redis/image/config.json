@@ -1,0 +1,5 @@
+{
+    "influxdbHost": "influxsrv",
+    "influxdbPort": "8086",
+    "influxdbName": "redis"
+}

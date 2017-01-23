@@ -1,3 +1,0 @@
-{
-  "benchmark_cmd": "./bin/cassandra-benchmark"
-}

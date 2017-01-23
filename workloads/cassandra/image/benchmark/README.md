@@ -1,10 +1,15 @@
+# Benchmark
+
+## POST /api/benchmark
+
+```{json}
 {
-    "name": "redis",
+    "name": "cassandra",
     "region": "us-east-1",
-    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 5000, 6379, 6001],
+    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 6001, 7000, 7001, 7199, 8012, 9042, 9160, 61621],
     "nodeMapping": [
         {
-            "task": "redis-serve",
+            "task": "cassandra-serve",
             "id": 1
         },
         {
@@ -16,7 +21,7 @@
             "id": 1
         },
         {
-            "task": "redis-bench",
+            "task": "cassandra-bench",
             "id": 2
         }
     ],
@@ -116,6 +121,7 @@
             "family": "snap"
         },
         {
+            "volumes": [],
             "containerDefinitions": [
                 {
                     "environment": [
@@ -206,15 +212,39 @@
                 {
                     "portMappings": [
                         {
-                            "hostPort": 6379,
-                            "containerPort": 6379
+                            "hostPort": 7199,
+                            "containerPort": 7199
+                        },
+                        {
+                            "hostPort": 7000,
+                            "containerPort": 7000
+                        },
+                        {
+                            "hostPort": 7001,
+                            "containerPort": 7001
+                        },
+                        {
+                            "hostPort": 9160,
+                            "containerPort": 9160
+                        },
+                        {
+                            "hostPort": 9042,
+                            "containerPort": 9042
+                        },
+                        {
+                            "hostPort": 8012,
+                            "containerPort": 8012
+                        },
+                        {
+                            "hostPort": 61621,
+                            "containerPort": 61621
                         }
                     ],
                     "essential": true,
-                    "memory": 100,
-                    "cpu": 512,
-                    "image": "redis:3.2.6",
-                    "name": "redis-serve"
+                    "memory": 3072,
+                    "cpu": 1024,
+                    "image": "wen777\/cassandra",
+                    "name": "cassandra-serve"
                 },
                 {
                     "mountPoints": [
@@ -236,7 +266,7 @@
                     "name": "benchmark-agent"
                 }
             ],
-            "family": "redis-serve"
+            "family": "cassandra-serve"
         },
         {
             "containerDefinitions": [
@@ -248,13 +278,55 @@
                             "containerPort": 6001
                         }
                     ],
-                    "memory": 150,
-                    "cpu": 128,
-                    "image": "wen777\/bench:redis",
-                    "name": "redis-bench"
+                    "memory": 1024,
+                    "cpu": 1024,
+                    "image": "wen777\/bench:cassandra",
+                    "name": "cassandra-bench"
                 }
             ],
-            "family": "redis-bench"
+            "family": "cassandra-bench"
         }
     ]
 }
+```
+Sample input
+
+```{json}
+{
+	"name": "cassandra-test",
+	"workflow": ["run"],
+	"commandSet": {
+		"run": {
+			"name": "load-testing",
+			"binPath": "/usr/bin/cassandra-stress",
+			"args": ["write", "n=1000000", "-rate", "threads=50", "-node", "cassandra-serve"],
+			"type": "load-test"
+		}
+	},
+    "measurement": "cassandra/benchmark"
+}
+```
+
+Sample output
+
+```{json}
+{
+  "op rate": "14671 [WRITE:14671]",
+  "partition rate": "14671 [WRITE:14671]",
+  "row rate": "14671 [WRITE:14671]",
+  "latency mean": "3.4 [WRITE:3.4]",
+  "latency median": "2.3 [WRITE:2.3]",
+  "latency 95th percentile": "7.5 [WRITE:7.5]",
+  "latency 99th percentile": "13.1 [WRITE:13.1]",
+  "latency 99.9th percentile": "58.3 [WRITE:58.3]",
+  "latency max": "289.5 [WRITE:289.5]",
+  "Total partitions": "1000000 [WRITE:1000000]",
+  "Total errors": "0 [WRITE:0]",
+  "total gc count": "0",
+  "total gc mb": "0",
+  "total gc time (s)": "0",
+  "avg gc time(ms)": "NaN",
+  "stdev gc time(ms)": "0",
+  "Total operation time": "00:01:08"
+}
+```

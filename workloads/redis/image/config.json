@@ -1,5 +1,5 @@
 {
-    "influxdbHost": "influxsrv",
-    "influxdbPort": "8086",
-    "influxdbName": "redis"
+    "mongodbHost": "mongosrv",
+    "mongodbPort": "27017",
+    "mongodbName": "redis"
 }

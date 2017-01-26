@@ -118,6 +118,19 @@
         {
             "containerDefinitions": [
                 {
+                    "essential": true,
+                    "portMappings": [
+                        {
+                            "hostPort": 27017,
+                            "containerPort": 27017
+                        }
+                    ],
+                    "memory": 1024,
+                    "cpu": 512,
+                    "image": "mongo",
+                    "name": "mongosrv"
+                },
+                {
                     "environment": [
                         {
                             "value": "snap",

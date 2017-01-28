@@ -15,6 +15,7 @@ class Parser {
       let columns = lines[i].split(/[ ]{1,}[:] /);
 
       if (columns.length > 1) {
+        columns[0] = columns[0].replace(".", ",");
         // Set the first column to a key and the second column to the value in an object.
         benchmarkObj[columns[0]] = columns[1];
         continue;

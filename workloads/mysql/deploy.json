@@ -23,11 +23,11 @@
     "clusterDefinition": {
         "nodes": [
             {
-                "instanceType": "t2.medium",
+                "instanceType": "t2.xlarge",
                 "id": 1
             },
             {
-                "instanceType": "t2.medium",
+                "instanceType": "t2.xlarge",
                 "id": 2
             }
         ]
@@ -189,6 +189,19 @@
                     "cpu": 512,
                     "image": "grafana\/grafana",
                     "name": "grafana"
+                },
+                {
+                    "essential": true,
+                    "portMappings": [
+                        {
+                            "hostPort": 27017,
+                            "containerPort": 27017
+                        }
+                    ],
+                    "memory": 1024,
+                    "cpu": 1024,
+                    "image": "mongo",
+                    "name": "mongosrv"
                 }
             ],
             "family": "monitor"
@@ -250,7 +263,7 @@
                     ],
                     "memory": 150,
                     "cpu": 128,
-                    "image": "hyperpilot\/tpcc-mysql-benchmark",
+                    "image": "wen777\/bench:tpcc-mysql",
                     "name": "tpcc-bench"
                 }
             ],

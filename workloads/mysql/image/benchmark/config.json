@@ -1,0 +1,5 @@
+{
+    "mongodbHost": "mongosrv",
+    "mongodbPort": "27017",
+    "mongodbName": "mysql"
+}

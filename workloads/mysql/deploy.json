@@ -263,7 +263,7 @@
                     ],
                     "memory": 150,
                     "cpu": 128,
-                    "image": "wen777\/bench:tpcc-mysql",
+                    "image": "hyperpilot\/bench:tpcc-mysql",
                     "name": "tpcc-bench"
                 }
             ],

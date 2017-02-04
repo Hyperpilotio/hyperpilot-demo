@@ -1,4 +1,4 @@
-FROM wen777/bench:base-openjdk-8
+FROM hyperpilot/bench:base-openjdk-8
 
 # Add DataStax sources
 RUN curl -L https://debian.datastax.com/debian/repo_key | apt-key add -

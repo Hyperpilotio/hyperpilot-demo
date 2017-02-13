@@ -1,7 +1,7 @@
 {
     "name": "delivery",
     "region": "us-east-1",
-    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 5557, 5558, 8080],
+    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 5557, 5558, 8080, 3000],
     "files": [{
         "fileId": "delivery_load_test",
         "path": "/home/ec2-user/locust_file/locustfile.py"
@@ -239,11 +239,8 @@
             "containerDefinitions": [{
                 "portMappings": [{
                     "hostPort": 7878,
-                    "containerPort": 7878
+                    "containerPort": 8080
                 }],
-                "command": [
-                    "-http.addr \":7878\""
-                ],
                 "essential": true,
                 "memory": 100,
                 "cpu": 512,
@@ -255,14 +252,17 @@
         {
             "volumes": [],
             "containerDefinitions": [{
+                "environment": [{
+                    "value": "http://pathfinder:7878",
+                    "name": "ROUTINGSERVICE_URL"
+                }],
                 "portMappings": [{
                     "hostPort": 3000,
-                    "containerPort": 3000
+                    "containerPort": 8080
                 }],
                 "command": [
-                    "-http.addr \":3000\"",
-                    "-inmem",
-                    "-service.routing \"http://pathfinder:7878\""
+                    "/goddd",
+                    "-inmem"
                 ],
                 "essential": true,
                 "memory": 100,
@@ -300,7 +300,7 @@
                 ],
                 "command": [
                     "--master",
-                    "--host=http:\/\/delivery:80",
+                    "--host=http:\/\/goddd:3000",
                     "--consumer",
                     "--consumer-influx-endpoint=influxsrv:8086",
                     "--consumer-influx-db=locust_results",

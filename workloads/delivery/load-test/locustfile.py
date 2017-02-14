@@ -1,7 +1,5 @@
 from locust import HttpLocust, TaskSet, task
 
-# curl localhost:8080/booking/v1/cargos
-
 class StaticTasks(TaskSet):
     @task
     def list_cargos(self):

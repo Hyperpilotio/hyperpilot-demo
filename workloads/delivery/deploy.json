@@ -1,7 +1,7 @@
 {
     "name": "delivery",
     "region": "us-east-1",
-    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 5557, 5558, 8080, 3000],
+    "allowedPorts": [8083, 8086, 7777, 7778, 8089, 5557, 5558, 8080, 3000, 7878],
     "files": [{
         "fileId": "delivery_load_test",
         "path": "/home/ec2-user/locust_file/locustfile.py"
@@ -237,6 +237,16 @@
         {
             "volumes": [],
             "containerDefinitions": [{
+                "environment": [{
+                    "value": "http:\/\/influxsrv:8086",
+                    "name": "INFLUXDB_URL"
+                }, {
+                    "value": "root",
+                    "name": "INFLUXDB_USERNAME"
+                }, {
+                    "value": "hyperpilot",
+                    "name": "INFLUXDB_PASSWORD"
+                }],
                 "portMappings": [{
                     "hostPort": 7878,
                     "containerPort": 8080
@@ -253,15 +263,24 @@
             "volumes": [],
             "containerDefinitions": [{
                 "environment": [{
-                    "value": "http://pathfinder:7878",
+                    "value": "http:\/\/pathfinder:8080",
                     "name": "ROUTINGSERVICE_URL"
+                }, {
+                    "value": "http:\/\/influxsrv:8086",
+                    "name": "INFLUXDB_URL"
+                }, {
+                    "value": "root",
+                    "name": "INFLUXDB_USERNAME"
+                }, {
+                    "value": "hyperpilot",
+                    "name": "INFLUXDB_PASSWORD"
                 }],
                 "portMappings": [{
                     "hostPort": 3000,
                     "containerPort": 8080
                 }],
                 "command": [
-                    "/goddd",
+                    "\/goddd",
                     "-inmem"
                 ],
                 "essential": true,
@@ -300,7 +319,7 @@
                 ],
                 "command": [
                     "--master",
-                    "--host=http:\/\/goddd:3000",
+                    "--host=http:\/\/goddd:8080",
                     "--consumer",
                     "--consumer-influx-endpoint=influxsrv:8086",
                     "--consumer-influx-db=locust_results",
@@ -338,7 +357,7 @@
                     "--slave",
                     "--master-host=locust-master",
                     "-H",
-                    "http:\/\/front-end:8079",
+                    "http:\/\/goddd:8080",
                     "-f",
                     "\/locust_file\/locustfile.py"
                 ],

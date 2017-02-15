@@ -38,7 +38,7 @@
                 "id": 1
             },
             {
-                "instanceType": "t2.xlarge",
+                "instanceType": "t2.medium",
                 "id": 2
             }
         ]

@@ -288,7 +288,7 @@
                     ],
                     "memory": 1024,
                     "cpu": 1024,
-                    "image": "wen777\/bench:cassandra",
+                    "image": "hyperpilot\/bench:cassandra",
                     "name": "cassandra-bench"
                 }
             ],

@@ -263,7 +263,7 @@
                     ],
                     "memory": 150,
                     "cpu": 128,
-                    "image": "wen777\/bench:redis",
+                    "image": "hyperpilot\/bench:redis",
                     "name": "redis-bench"
                 }
             ],

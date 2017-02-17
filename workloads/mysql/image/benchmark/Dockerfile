@@ -1,9 +1,7 @@
-FROM    hyperpilot/tpcc-mysql
-RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
-RUN apt-get install -y nodejs
+FROM    hyperpilot/bench:base-mysql-tpcc
 
-ADD mysql-benchmarks-ui /mysql-benchmarks-ui
+ADD     parser.js extension-lib/parser.js
+ADD     config.json config/config.json
 
-WORKDIR /mysql-benchmarks-ui
+CMD     node bin/benchmarks-ui.js
 
-CMD npm install && node bin/benchmarks-ui.js

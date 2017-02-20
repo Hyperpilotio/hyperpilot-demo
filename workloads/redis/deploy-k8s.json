@@ -412,6 +412,7 @@
                 }
               },
               "spec": {
+                "subdomain": "influxsrv",
                 "containers": [
                   {
                     "env": [
@@ -497,6 +498,26 @@
             }
           }
         },
+        "service": {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "metadata": {
+            "name": "influxsrv"
+          },
+          "spec": {
+            "ports": [
+              {
+                "name": "http",
+                "protocol": "TCP",
+                "port": 8086,
+                "targetPort": 8086
+              }
+            ],
+            "selector": {
+              "app": "influxsrv"
+            }
+          }
+        },
         "family": "monitor"
       },
       {
@@ -527,6 +548,7 @@
                 }
               },
               "spec": {
+                "subdomain": "redis-serve",
                 "containers": [
                   {
                     "image": "hyperpilot/benchmark-agent",
@@ -578,6 +600,26 @@
                   }
                 ]
               }
+            }
+          }
+        },
+        "service": {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "metadata": {
+            "name": "redis-serve"
+          },
+          "spec": {
+            "ports": [
+              {
+                "name": "http",
+                "protocol": "TCP",
+                "port": 6379,
+                "targetPort": 6379
+              }
+            ],
+            "selector": {
+              "app": "redis-serve"
             }
           }
         },

@@ -7,3 +7,9 @@
 [submodule "blox"]
 	path = blox
 	url = https://github.com/Hyperpilotio/blox
+[submodule "kubernetes/kube-state-metrics"]
+	path = kubernetes/kube-state-metrics
+	url = git@github.com:swhsiang/kube-state-metrics.git
+[submodule "kubernetes/heapster"]
+	path = kubernetes/heapster
+	url = git@github.com:swhsiang/heapster.git

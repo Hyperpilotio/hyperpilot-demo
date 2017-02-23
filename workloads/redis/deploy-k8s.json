@@ -22,7 +22,7 @@
     },
     {
       "task": "monitor",
-      "id": 2
+      "id": 1
     },
     {
       "task": "snap",
@@ -441,6 +441,49 @@
                         "memory": "300Mi"
                       }
                     }
+                  },
+                  {
+                    "env": [
+                      {
+                        "name": "INFLUXDB_NAME",
+                        "value": "snap"
+                      },
+                      {
+                        "name": "INFLUXDB_HOST",
+                        "value": "localhost"
+                      },
+                      {
+                        "name": "INFLUXDB_PORT",
+                        "value": "8086"
+                      },
+                      {
+                        "name": "INFLUXDB_USER",
+                        "value": "root"
+                      },
+                      {
+                        "name": "INFLUXDB_PASS",
+                        "value": "hyperpilot"
+                      },
+                      {
+                        "name": "GF_INSTALL_PLUGINS",
+                        "value": "grafana-clock-panel,grafana-piechart-panel"
+                      }
+                    ],
+                    "image": "grafana/grafana",
+                    "name": "grafana",
+                    "ports": [
+                      {
+                        "containerPort": 3000,
+                        "hostPort": 3000,
+                        "protocol": "TCP"
+                      }
+                    ],
+                    "resources": {
+                      "limits": {
+                        "cpu": "500.0m",
+                        "memory": "300Mi"
+                      }
+                    }
                   }
                 ]
               }
@@ -460,9 +503,6 @@
           "spec": {
             "type": "ExternalName",
             "externalName": ""
-          },
-          "selector": {
-            "app": "redis-bench"
           }
         },
         "family": "monitor"
@@ -473,8 +513,7 @@
           "kind": "Deployment",
           "metadata": {
             "labels": {
-              "app": "redis-serve",
-              "version": "latest"
+              "app": "redis-serve"
             },
             "name": "redis-serve",
             "namespace": "default"
@@ -483,15 +522,13 @@
             "replicas": 1,
             "selector": {
               "matchLabels": {
-                "app": "redis-serve",
-                "version": "latest"
+                "app": "redis-serve"
               }
             },
             "template": {
               "metadata": {
                 "labels": {
-                  "app": "redis-serve",
-                  "version": "latest"
+                  "app": "redis-serve"
                 }
               },
               "spec": {
@@ -563,9 +600,6 @@
           "spec": {
             "type": "ExternalName",
             "externalName": ""
-          },
-          "selector": {
-            "app": "redis-bench"
           }
         },
         "family": "redis-serve"
@@ -576,25 +610,21 @@
           "kind": "Deployment",
           "metadata": {
             "labels": {
-              "app": "redis-bench",
-              "version": "latest"
+              "app": "redis-bench"
             },
-            "name": "redis-bench",
-            "namespace": "default"
+            "name": "redis-bench"
           },
           "spec": {
             "replicas": 1,
             "selector": {
               "matchLabels": {
-                "app": "redis-bench",
-                "version": "latest"
+                "app": "redis-bench"
               }
             },
             "template": {
               "metadata": {
                 "labels": {
-                  "app": "redis-bench",
-                  "version": "latest"
+                  "app": "redis-bench"
                 }
               },
               "spec": {

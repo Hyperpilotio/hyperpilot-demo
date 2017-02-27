@@ -26,7 +26,7 @@
     },
     {
       "task": "snap",
-      "id": 2
+      "id": 1
     },
     {
       "task": "redis-bench",
@@ -263,6 +263,21 @@
             }
           }
         },
+        "service": {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "metadata": {
+            "labels": {
+              "app": "influxsrv"
+            },
+            "name": "influxsrv",
+            "namespace": "default"
+          },
+          "spec": {
+            "type": "ExternalName",
+            "externalName": ""
+          }
+        },
         "family": "influxsrv"
       },
       {
@@ -345,9 +360,40 @@
             }
           }
         },
+        "service": {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "metadata": {
+            "labels": {
+              "app": "redis-serve"
+            },
+            "name": "redis-serve",
+            "namespace": "default"
+          },
+          "spec": {
+            "type": "ExternalName",
+            "externalName": ""
+          }
+        },
         "family": "redis-serve"
       },
       {
+        "service": {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "metadata": {
+            "labels": {
+              "app": "redis-bench"
+            },
+            "name": "redis-bench",
+            "namespace": "default"
+          },
+          "spec": {
+            "type": "ExternalName",
+            "externalName": ""
+          },
+        "family": "redis-bench"
+        },
         "deployment": {
           "apiVersion": "extensions/v1beta1",
           "kind": "Deployment",

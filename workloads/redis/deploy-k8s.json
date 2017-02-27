@@ -21,7 +21,7 @@
       "id": 2
     },
     {
-      "task": "monitor",
+      "task": "influxsrv",
       "id": 1
     },
     {
@@ -36,239 +36,12 @@
   "clusterDefinition": {
     "nodes": [
       {
-        "instanceType": "t2.medium",
+        "instanceType": "t2.large",
         "id": 1
       },
       {
-        "instanceType": "t2.medium",
+        "instanceType": "t2.large",
         "id": 2
-      }
-    ]
-  },
-  "ecs": {
-    "taskDefinitions": [
-      {
-        "volumes": [
-          {
-            "host": {
-              "sourcePath": "/"
-            },
-            "name": "root"
-          },
-          {
-            "host": {
-              "sourcePath": "/var/run"
-            },
-            "name": "var_run"
-          },
-          {
-            "host": {
-              "sourcePath": "/var/log"
-            },
-            "name": "var_log"
-          },
-          {
-            "host": {
-              "sourcePath": "/sys"
-            },
-            "name": "sys"
-          },
-          {
-            "host": {
-              "sourcePath": "/var/lib/docker/"
-            },
-            "name": "var_lib_docker"
-          },
-          {
-            "host": {
-              "sourcePath": "/cgroup"
-            },
-            "name": "cgroup"
-          }
-        ],
-        "containerDefinitions": [
-          {
-            "mountPoints": [
-              {
-                "readOnly": true,
-                "containerPath": "/rootfs",
-                "sourceVolume": "root"
-              },
-              {
-                "readOnly": false,
-                "containerPath": "/var/run",
-                "sourceVolume": "var_run"
-              },
-              {
-                "readOnly": false,
-                "containerPath": "/var/log",
-                "sourceVolume": "var_log"
-              },
-              {
-                "readOnly": true,
-                "containerPath": "/sys",
-                "sourceVolume": "sys"
-              },
-              {
-                "readOnly": true,
-                "containerPath": "/sys/fs/cgroup",
-                "sourceVolume": "cgroup"
-              },
-              {
-                "readOnly": true,
-                "containerPath": "/var/lib/docker",
-                "sourceVolume": "var_lib_docker"
-              }
-            ],
-            "essential": true,
-            "memory": 200,
-            "cpu": 128,
-            "image": "wen777/snap:alpine",
-            "name": "snap"
-          }
-        ],
-        "family": "snap"
-      },
-      {
-        "containerDefinitions": [
-          {
-            "environment": [
-              {
-                "value": "snap",
-                "name": "PRE_CREATE_DB"
-              },
-              {
-                "value": "root",
-                "name": "ADMIN_USER"
-              },
-              {
-                "value": "hyperpilot",
-                "name": "INFLUXDB_INIT_PWD"
-              }
-            ],
-            "essential": true,
-            "portMappings": [
-              {
-                "hostPort": 8083,
-                "containerPort": 8083
-              },
-              {
-                "hostPort": 8086,
-                "containerPort": 8086
-              }
-            ],
-            "memory": 300,
-            "cpu": 512,
-            "image": "tutum/influxdb",
-            "name": "influxsrv"
-          },
-          {
-            "environment": [
-              {
-                "value": "localhost",
-                "name": "INFLUXDB_HOST"
-              },
-              {
-                "value": "8086",
-                "name": "INFLUXDB_PORT"
-              },
-              {
-                "value": "snap",
-                "name": "INFLUXDB_NAME"
-              },
-              {
-                "value": "grafana-clock-panel,grafana-piechart-panel",
-                "name": "GF_INSTALL_PLUGINS"
-              },
-              {
-                "value": "root",
-                "name": "INFLUXDB_USER"
-              },
-              {
-                "value": "hyperpilot",
-                "name": "INFLUXDB_PASS"
-              }
-            ],
-            "links": [
-              "influxsrv"
-            ],
-            "essential": true,
-            "portMappings": [
-              {
-                "hostPort": 3000,
-                "containerPort": 3000
-              }
-            ],
-            "memory": 300,
-            "cpu": 512,
-            "image": "grafana/grafana",
-            "name": "grafana"
-          }
-        ],
-        "family": "monitor"
-      },
-      {
-        "volumes": [
-          {
-            "host": {
-              "sourcePath": "/var/run/docker.sock"
-            },
-            "name": "docker_sock"
-          }
-        ],
-        "containerDefinitions": [
-          {
-            "portMappings": [
-              {
-                "hostPort": 6379,
-                "containerPort": 6379
-              }
-            ],
-            "essential": true,
-            "memory": 100,
-            "cpu": 512,
-            "image": "redis:3.2.6",
-            "name": "redis-serve"
-          },
-          {
-            "mountPoints": [
-              {
-                "containerPath": "/var/run/docker.sock",
-                "sourceVolume": "docker_sock"
-              }
-            ],
-            "portMappings": [
-              {
-                "hostPort": 7778,
-                "containerPort": 7778
-              }
-            ],
-            "essential": true,
-            "memory": 50,
-            "cpu": 128,
-            "image": "hyperpilot/benchmark-agent",
-            "name": "benchmark-agent"
-          }
-        ],
-        "family": "redis-serve"
-      },
-      {
-        "containerDefinitions": [
-          {
-            "essential": true,
-            "portMappings": [
-              {
-                "hostPort": 6001,
-                "containerPort": 6001
-              }
-            ],
-            "memory": 150,
-            "cpu": 128,
-            "image": "hyperpilot/redis-bench",
-            "name": "redis-bench"
-          }
-        ],
-        "family": "redis-bench"
       }
     ]
   },
@@ -505,7 +278,7 @@
             "externalName": ""
           }
         },
-        "family": "monitor"
+        "family": "influxsrv"
       },
       {
         "deployment": {
@@ -605,6 +378,22 @@
         "family": "redis-serve"
       },
       {
+        "service": {
+          "apiVersion": "v1",
+          "kind": "Service",
+          "metadata": {
+            "labels": {
+              "app": "redis-bench"
+            },
+            "name": "redis-bench",
+            "namespace": "default"
+          },
+          "spec": {
+            "type": "ExternalName",
+            "externalName": ""
+          },
+        "family": "redis-bench"
+        },
         "deployment": {
           "apiVersion": "extensions/v1beta1",
           "kind": "Deployment",

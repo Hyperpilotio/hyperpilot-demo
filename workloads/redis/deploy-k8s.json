@@ -1,401 +1,404 @@
 {
-  "name": "redis",
-  "region": "us-east-1",
-  "allowedPorts": [
-    8080,
-    8083,
-    8086,
-    7777,
-    7778,
-    8089,
-    5000,
-    6379,
-    6001,
-    2379,
-    2380,
-    4001
-  ],
-  "nodeMapping": [
-    {
-      "task": "redis-serve",
-      "id": 2
+    "name": "redis",
+    "region": "us-west-2",
+    "allowedPorts": [
+        8080,
+        8083,
+        8086,
+        7777,
+        7778,
+        8089,
+        5000,
+        6379,
+        6001,
+        2379,
+        2380,
+        4001
+    ],
+    "nodeMapping": [
+        {
+            "task": "redis-serve",
+            "id": 2
+        },
+        {
+            "task": "influxsrv",
+            "id": 1
+        },
+        {
+            "task": "snap",
+            "id": 2
+        },
+        {
+            "task": "redis-bench",
+            "id": 1
+        }
+    ],
+    "clusterDefinition": {
+        "nodes": [
+            {
+                "instanceType": "t2.large",
+                "id": 1
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 2
+            }
+        ]
     },
-    {
-      "task": "influxsrv",
-      "id": 1
-    },
-    {
-      "task": "snap",
-      "id": 2
-    },
-    {
-      "task": "redis-bench",
-      "id": 1
+    "kubernetes": {
+        "taskDefinitions": [
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "snap",
+                            "version": "latest"
+                        },
+                        "name": "snap",
+                        "namespace": "default"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "snap",
+                                "version": "latest"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "snap",
+                                    "version": "latest"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "image": "wen777\/snap:alpine",
+                                        "name": "snap",
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "125.0m",
+                                                "memory": "200Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/rootfs",
+                                                "name": "root"
+                                            },
+                                            {
+                                                "mountPath": "\/var\/run",
+                                                "name": "var-run"
+                                            },
+                                            {
+                                                "mountPath": "\/var\/log",
+                                                "name": "var-log"
+                                            },
+                                            {
+                                                "mountPath": "\/sys",
+                                                "name": "sys"
+                                            },
+                                            {
+                                                "mountPath": "\/sys\/fs\/cgroup",
+                                                "name": "cgroup"
+                                            },
+                                            {
+                                                "mountPath": "\/var\/lib\/docker",
+                                                "name": "var-lib-docker"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/"
+                                        },
+                                        "name": "root"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/cgroup"
+                                        },
+                                        "name": "cgroup"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/sys"
+                                        },
+                                        "name": "sys"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/lib\/docker\/"
+                                        },
+                                        "name": "var-lib-docker"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/log"
+                                        },
+                                        "name": "var-log"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run"
+                                        },
+                                        "name": "var-run"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "snap"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "influxsrv"
+                        },
+                        "name": "influxsrv",
+                        "namespace": "default"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "influxsrv"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "influxsrv",
+                                "containers": [
+                                    {
+                                        "env": [
+                                            {
+                                                "name": "ADMIN_USER",
+                                                "value": "root"
+                                            },
+                                            {
+                                                "name": "PRE_CREATE_DB",
+                                                "value": "snap"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_INIT_PWD",
+                                                "value": "hyperpilot"
+                                            }
+                                        ],
+                                        "image": "tutum\/influxdb",
+                                        "name": "influxsrv",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8083,
+                                                "hostPort": 8083,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8086,
+                                                "hostPort": 8086,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "500m",
+                                                "memory": "300Mi"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "env": [
+                                            {
+                                                "name": "INFLUXDB_NAME",
+                                                "value": "snap"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_HOST",
+                                                "value": "localhost"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_PORT",
+                                                "value": "8086"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_USER",
+                                                "value": "root"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_PASS",
+                                                "value": "hyperpilot"
+                                            },
+                                            {
+                                                "name": "GF_INSTALL_PLUGINS",
+                                                "value": "grafana-clock-panel,grafana-piechart-panel"
+                                            }
+                                        ],
+                                        "image": "grafana\/grafana",
+                                        "name": "grafana",
+                                        "args": [
+                                          "--repo=https://107.178.222.220/api/plugins"
+                                        ],
+                                        "ports": [
+                                            {
+                                                "containerPort": 3000,
+                                                "hostPort": 3000,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "500.0m",
+                                                "memory": "300Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "influxsrv"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "redis-serve"
+                        },
+                        "name": "redis-serve",
+                        "namespace": "default"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "redis-serve"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "redis-serve"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "redis-serve",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/benchmark-agent",
+                                        "name": "benchmark-agent",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7778,
+                                                "hostPort": 7778,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "125.0m",
+                                                "memory": "50Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "image": "redis:3.2.6",
+                                        "name": "redis-serve",
+                                        "ports": [
+                                            {
+                                                "containerPort": 6379,
+                                                "hostPort": 6379,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "500.0m",
+                                                "memory": "100Mi"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "redis-serve"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "redis-bench"
+                        },
+                        "name": "redis-bench"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "redis-bench"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "redis-bench"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/redis-bench",
+                                        "name": "redis-bench",
+                                        "ports": [
+                                            {
+                                                "containerPort": 6001,
+                                                "hostPort": 6001,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "125.0m",
+                                                "memory": "150Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "redis-bench"
+            }
+        ]
     }
-  ],
-  "clusterDefinition": {
-    "nodes": [
-      {
-        "instanceType": "t2.large",
-        "id": 1
-      },
-      {
-        "instanceType": "t2.large",
-        "id": 2
-      }
-    ]
-  },
-  "kubernetes": {
-    "taskDefinitions": [
-      {
-        "deployment": {
-          "apiVersion": "extensions/v1beta1",
-          "kind": "Deployment",
-          "metadata": {
-            "labels": {
-              "app": "snap",
-              "version": "latest"
-            },
-            "name": "snap",
-            "namespace": "default"
-          },
-          "spec": {
-            "replicas": 1,
-            "selector": {
-              "matchLabels": {
-                "app": "snap",
-                "version": "latest"
-              }
-            },
-            "template": {
-              "metadata": {
-                "labels": {
-                  "app": "snap",
-                  "version": "latest"
-                }
-              },
-              "spec": {
-                "containers": [
-                  {
-                    "image": "wen777/snap:alpine",
-                    "name": "snap",
-                    "resources": {
-                      "limits": {
-                        "cpu": "125.0m",
-                        "memory": "200Mi"
-                      }
-                    },
-                    "volumeMounts": [
-                      {
-                        "mountPath": "/rootfs",
-                        "name": "root"
-                      },
-                      {
-                        "mountPath": "/var/run",
-                        "name": "var-run"
-                      },
-                      {
-                        "mountPath": "/var/log",
-                        "name": "var-log"
-                      },
-                      {
-                        "mountPath": "/sys",
-                        "name": "sys"
-                      },
-                      {
-                        "mountPath": "/sys/fs/cgroup",
-                        "name": "cgroup"
-                      },
-                      {
-                        "mountPath": "/var/lib/docker",
-                        "name": "var-lib-docker"
-                      }
-                    ]
-                  }
-                ],
-                "volumes": [
-                  {
-                    "hostPath": {
-                      "path": "/"
-                    },
-                    "name": "root"
-                  },
-                  {
-                    "hostPath": {
-                      "path": "/cgroup"
-                    },
-                    "name": "cgroup"
-                  },
-                  {
-                    "hostPath": {
-                      "path": "/sys"
-                    },
-                    "name": "sys"
-                  },
-                  {
-                    "hostPath": {
-                      "path": "/var/lib/docker/"
-                    },
-                    "name": "var-lib-docker"
-                  },
-                  {
-                    "hostPath": {
-                      "path": "/var/log"
-                    },
-                    "name": "var-log"
-                  },
-                  {
-                    "hostPath": {
-                      "path": "/var/run"
-                    },
-                    "name": "var-run"
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "family": "snap"
-      },
-      {
-        "deployment": {
-          "apiVersion": "extensions/v1beta1",
-          "kind": "Deployment",
-          "metadata": {
-            "labels": {
-              "app": "influxsrv"
-            },
-            "name": "influxsrv",
-            "namespace": "default"
-          },
-          "spec": {
-            "replicas": 1,
-            "template": {
-              "metadata": {
-                "labels": {
-                  "app": "influxsrv"
-                }
-              },
-              "spec": {
-                "hostname": "influxsrv",
-                "containers": [
-                  {
-                    "env": [
-                      {
-                        "name": "ADMIN_USER",
-                        "value": "root"
-                      },
-                      {
-                        "name": "PRE_CREATE_DB",
-                        "value": "snap"
-                      },
-                      {
-                        "name": "INFLUXDB_INIT_PWD",
-                        "value": "hyperpilot"
-                      }
-                    ],
-                    "image": "tutum/influxdb",
-                    "name": "influxsrv",
-                    "ports": [
-                      {
-                        "containerPort": 8083,
-                        "hostPort": 8083,
-                        "protocol": "TCP"
-                      },
-                      {
-                        "containerPort": 8086,
-                        "hostPort": 8086,
-                        "protocol": "TCP"
-                      }
-                    ],
-                    "resources": {
-                      "limits": {
-                        "cpu": "500m",
-                        "memory": "300Mi"
-                      }
-                    }
-                  },
-                  {
-                    "env": [
-                      {
-                        "name": "INFLUXDB_NAME",
-                        "value": "snap"
-                      },
-                      {
-                        "name": "INFLUXDB_HOST",
-                        "value": "localhost"
-                      },
-                      {
-                        "name": "INFLUXDB_PORT",
-                        "value": "8086"
-                      },
-                      {
-                        "name": "INFLUXDB_USER",
-                        "value": "root"
-                      },
-                      {
-                        "name": "INFLUXDB_PASS",
-                        "value": "hyperpilot"
-                      },
-                      {
-                        "name": "GF_INSTALL_PLUGINS",
-                        "value": "grafana-clock-panel,grafana-piechart-panel"
-                      }
-                    ],
-                    "image": "grafana/grafana",
-                    "name": "grafana",
-                    "ports": [
-                      {
-                        "containerPort": 3000,
-                        "hostPort": 3000,
-                        "protocol": "TCP"
-                      }
-                    ],
-                    "resources": {
-                      "limits": {
-                        "cpu": "500.0m",
-                        "memory": "300Mi"
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "family": "influxsrv"
-      },
-      {
-        "deployment": {
-          "apiVersion": "extensions/v1beta1",
-          "kind": "Deployment",
-          "metadata": {
-            "labels": {
-              "app": "redis-serve"
-            },
-            "name": "redis-serve",
-            "namespace": "default"
-          },
-          "spec": {
-            "replicas": 1,
-            "selector": {
-              "matchLabels": {
-                "app": "redis-serve"
-              }
-            },
-            "template": {
-              "metadata": {
-                "labels": {
-                  "app": "redis-serve"
-                }
-              },
-              "spec": {
-                "hostname": "redis-serve",
-                "containers": [
-                  {
-                    "image": "hyperpilot/benchmark-agent",
-                    "name": "benchmark-agent",
-                    "ports": [
-                      {
-                        "containerPort": 7778,
-                        "hostPort": 7778,
-                        "protocol": "TCP"
-                      }
-                    ],
-                    "resources": {
-                      "limits": {
-                        "cpu": "125.0m",
-                        "memory": "50Mi"
-                      }
-                    },
-                    "volumeMounts": [
-                      {
-                        "mountPath": "/var/run/docker.sock",
-                        "name": "docker-sock"
-                      }
-                    ]
-                  },
-                  {
-                    "image": "redis:3.2.6",
-                    "name": "redis-serve",
-                    "ports": [
-                      {
-                        "containerPort": 6379,
-                        "hostPort": 6379,
-                        "protocol": "TCP"
-                      }
-                    ],
-                    "resources": {
-                      "limits": {
-                        "cpu": "500.0m",
-                        "memory": "100Mi"
-                      }
-                    }
-                  }
-                ],
-                "volumes": [
-                  {
-                    "hostPath": {
-                      "path": "/var/run/docker.sock"
-                    },
-                    "name": "docker-sock"
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "family": "redis-serve"
-      },
-      {
-        "deployment": {
-          "apiVersion": "extensions/v1beta1",
-          "kind": "Deployment",
-          "metadata": {
-            "labels": {
-              "app": "redis-bench"
-            },
-            "name": "redis-bench"
-          },
-          "spec": {
-            "replicas": 1,
-            "selector": {
-              "matchLabels": {
-                "app": "redis-bench"
-              }
-            },
-            "template": {
-              "metadata": {
-                "labels": {
-                  "app": "redis-bench"
-                }
-              },
-              "spec": {
-                "containers": [
-                  {
-                    "image": "hyperpilot/redis-bench",
-                    "name": "redis-bench",
-                    "ports": [
-                      {
-                        "containerPort": 6001,
-                        "hostPort": 6001,
-                        "protocol": "TCP"
-                      }
-                    ],
-                    "resources": {
-                      "limits": {
-                        "cpu": "125.0m",
-                        "memory": "150Mi"
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "family": "redis-bench"
-      }
-    ]
-  }
 }

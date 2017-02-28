@@ -1,0 +1,44 @@
+{
+  "name": "k8s",
+  "region": "us-east-1",
+  "allowedPorts": [
+    8080,
+    8083,
+    8086,
+    7777,
+    7778,
+    8089,
+    5000,
+    6379,
+    6001,
+    2379,
+    2380,
+    4001
+  ],
+  "nodeMapping": [
+  ],
+  "clusterDefinition": {
+    "nodes": [
+      {
+        "instanceType": "t2.large",
+        "id": 1
+      },
+      {
+        "instanceType": "t2.large",
+        "id": 2
+      },
+      {
+        "instanceType": "t2.large",
+        "id": 3
+      },
+      { 
+        "instanceType": "t2.large",
+        "id": 4
+      }
+    ]
+  },
+  "kubernetes": {
+    "taskDefinitions": [
+    ]
+  }
+}

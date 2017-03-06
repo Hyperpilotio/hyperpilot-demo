@@ -11,12 +11,13 @@
         5558,
         8080,
         3000,
-        7878
+        7878,
+        6001
     ],
     "files": [
         {
             "fileId": "delivery_load_test",
-            "path": "\/home\/ec2-user\/locust_file\/locustfile.py"
+            "path": "\/home\/ubuntu\/locust_file\/locustfile.py"
         }
     ],
     "nodeMapping": [
@@ -37,7 +38,7 @@
             "id": 2
         },
         {
-            "task": "monitor",
+            "task": "influxsrv",
             "id": 2
         },
         {
@@ -123,6 +124,14 @@
                                                 "name": "docker-sock"
                                             }
                                         ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
                                     }
                                 ]
                             }
@@ -294,7 +303,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "500m",
+                                                "cpu": "512m",
                                                 "memory": "300Mi"
                                             }
                                         }
@@ -340,7 +349,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "500.0m",
+                                                "cpu": "512.0m",
                                                 "memory": "300Mi"
                                             }
                                         }
@@ -442,33 +451,32 @@
                                 }
                             },
                             "spec": {
-                                "hostname": "goddd",
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/goddd",
-                                        "name": "goddd",
-                                        "env": [
-                                                                                {
-                                "value": "http:\/\/pathfinder:8080",
-                                "name": "ROUTINGSERVICE_URL"
-                            },
-                            {
-                                "value": "http:\/\/influxsrv:8086",
-                                "name": "INFLUXDB_URL"
-                            },
-                            {
-                                "value": "root",
-                                "name": "INFLUXDB_USERNAME"
-                            },
-                            {
-                                "value": "hyperpilot",
-                                "name": "INFLUXDB_PASSWORD"
-                            }
-                                        ],
                                         "args": [
                                             "\/goddd",
                                             "-inmem"
-                                        ]
+                                        ],
+                                        "env": [
+                                            {
+                                                "name": "ROUTINGSERVICE_URL",
+                                                "value": "http:\/\/pathfinder:8080"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_URL",
+                                                "value": "http:\/\/influxsrv:8086"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_USERNAME",
+                                                "value": "root"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_PASSWORD",
+                                                "value": "hyperpilot"
+                                            }
+                                        ],
+                                        "image": "hyperpilot\/goddd",
+                                        "name": "goddd",
                                         "ports": [
                                             {
                                                 "containerPort": 8080,
@@ -515,48 +523,19 @@
                                 }
                             },
                             "spec": {
-                                "hostname": "locust-master",
-                                                              "volumes": [
-                                                                                                       {
-                                                "hostPath": {
-                                                  "path": "\/locust_file",
-                                                "name": "locust_file"
-                                            }
-
-                                    {
-                                        "hostPath": {
-                                            "path": "\/"
-                                        },
-                                        "name": "root"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/cgroup"
-                                        },
-                                        "name": "cgroup"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/sys"
-                                        },
-                                        "name": "sys"
-                                    }
-   ],
-                                        "volumeMounts": [
-                                        ],
                                 "containers": [
                                     {
+                                        "args": [
+                                            "--master",
+                                            "--host=http:\/\/goddd:8080",
+                                            "--consumer",
+                                            "--consumer-influx-endpoint=influxsrv:8086",
+                                            "--consumer-influx-db=locust_results",
+                                            "-f",
+                                            "\/locust_file\/locustfile.py"
+                                        ],
                                         "image": "hyperpilot\/locust",
                                         "name": "locust-master",
-                                        "args": [
-                                           "--master",
-                                           "--host=http:\/\/goddd:8080",
-                                          "--consumer",
-                                          "--consumer-influx-endpoint=influxsrv:8086",
-                                          "--consumer-influx-db=locust_results",
-                                          "-f",
-                                          "\/locust_file\/locustfile.py"
-                                        ]
                                         "ports": [
                                             {
                                                 "containerPort": 8089,
@@ -576,10 +555,24 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "128.0m",
+                                                "cpu": "125.0m",
                                                 "memory": "150Mi"
                                             }
-                                        }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/locust_file",
+                                                "name": "home-ubuntu-locust-file"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/locust_file\/"
+                                        },
+                                        "name": "home-ubuntu-locust-file"
                                     }
                                 ]
                             }
@@ -589,94 +582,150 @@
                 "family": "locust-master"
             },
             {
-                "volumes": [
-                    {
-                        "host": {
-                            "sourcePath": "\/home\/ec2-user\/locust_file\/"
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "locust-slave"
                         },
-                        "name": "locust_file"
-                    }
-                ],
-                "containerDefinitions": [
-                    {
-                        "mountPoints": [
-                            {
-                                "containerPath": "\/locust_file",
-                                "sourceVolume": "locust_file"
+                        "name": "locust-slave",
+                        "namespace": "default"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "locust-slave"
                             }
-                        ],
-                        "essential": true,
-                        "portMappings": [
-                            {
-                                "hostPort": 8089,
-                                "containerPort": 8089
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "locust-slave"
+                                }
                             },
-                            {
-                                "hostPort": 5557,
-                                "containerPort": 5557
-                            },
-                            {
-                                "hostPort": 5558,
-                                "containerPort": 5558
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "args": [
+                                            "--slave",
+                                            "--master-host=locust-master",
+                                            "-H",
+                                            "http:\/\/goddd:8080",
+                                            "-f",
+                                            "\/locust_file\/locustfile.py"
+                                        ],
+                                        "image": "hyperpilot\/locust",
+                                        "name": "locust-slave",
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "300Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/locust_file",
+                                                "name": "home-ubuntu-locust-file"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/locust_file\/"
+                                        },
+                                        "name": "home-ubuntu-locust-file"
+                                    }
+                                ]
                             }
-                        ],
-                        "command": [
-                            "--master",
-                            "--host=http:\/\/goddd:8080",
-                            "--consumer",
-                            "--consumer-influx-endpoint=influxsrv:8086",
-                            "--consumer-influx-db=locust_results",
-                            "-f",
-                            "\/locust_file\/locustfile.py"
-                        ],
-                        "memory": 150,
-                        "cpu": 128,
-                        "image": "hyperpilot\/locust",
-                        "name": "locust-master"
+                        }
                     }
-                ],
-                "family": "locust-master"
+                },
+                "family": "locust-slave"
             },
             {
-                "volumes": [
-                    {
-                        "host": {
-                            "sourcePath": "\/home\/ec2-user\/locust_file\/"
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "dddelivery-angularjs"
                         },
-                        "name": "locust_file"
-                    }
-                ],
-                "containerDefinitions": [
-                    {
-                        "mountPoints": [
-                            {
-                                "containerPath": "\/locust_file",
-                                "sourceVolume": "locust_file"
+                        "name": "dddelivery-angularjs",
+                        "namespace": "default"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "dddelivery-angularjs"
                             }
-                        ],
-                        "essential": true,
-                        "ulimits": [
-                            {
-                                "name": "nofile",
-                                "hardLimit": 12000,
-                                "softLimit": 12000
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "dddelivery-angularjs"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/benchmark-agent",
+                                        "name": "benchmark-agent",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7778,
+                                                "hostPort": 7778,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "125.0m",
+                                                "memory": "50Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "image": "hyperpilot\/dddelivery-angularjs",
+                                        "name": "dddelivery-angularjs",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8080,
+                                                "hostPort": 8080,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "100Mi"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    }
+                                ]
                             }
-                        ],
-                        "memory": 300,
-                        "cpu": 500,
-                        "command": [
-                            "--slave",
-                            "--master-host=locust-master",
-                            "-H",
-                            "http:\/\/goddd:8080",
-                            "-f",
-                            "\/locust_file\/locustfile.py"
-                        ],
-                        "image": "hyperpilot\/locust",
-                        "name": "locust-slave"
+                        }
                     }
-                ],
-                "family": "locust-slave"
+                },
+                "family": "dddelivery-angularjs"
             }
         ]
     }

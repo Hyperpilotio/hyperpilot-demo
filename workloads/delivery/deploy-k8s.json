@@ -1,19 +1,6 @@
 {
     "name": "delivery",
     "region": "us-east-1",
-    "allowedPorts": [
-        8083,
-        8086,
-        7777,
-        7778,
-        8089,
-        5557,
-        5558,
-        8080,
-        3000,
-        7878,
-        6001
-    ],
     "files": [
         {
             "fileId": "delivery_load_test",
@@ -408,7 +395,7 @@
                                         "ports": [
                                             {
                                                 "containerPort": 8080,
-                                                "hostPort": 7878,
+                                                "hostPort": 8080,
                                                 "protocol": "TCP"
                                             }
                                         ],
@@ -480,13 +467,13 @@
                                         "ports": [
                                             {
                                                 "containerPort": 8080,
-                                                "hostPort": 3000,
+                                                "hostPort": 8080,
                                                 "protocol": "TCP"
                                             }
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "512.0m",
+                                                "cpu": "256.0m",
                                                 "memory": "100Mi"
                                             }
                                         }
@@ -673,29 +660,6 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/benchmark-agent",
-                                        "name": "benchmark-agent",
-                                        "ports": [
-                                            {
-                                                "containerPort": 7778,
-                                                "hostPort": 7778,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "50Mi"
-                                            }
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/var\/run\/docker.sock",
-                                                "name": "docker-sock"
-                                            }
-                                        ]
-                                    },
-                                    {
                                         "image": "hyperpilot\/dddelivery-angularjs",
                                         "name": "dddelivery-angularjs",
                                         "ports": [
@@ -711,14 +675,6 @@
                                                 "memory": "100Mi"
                                             }
                                         }
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/var\/run\/docker.sock"
-                                        },
-                                        "name": "docker-sock"
                                     }
                                 ]
                             }

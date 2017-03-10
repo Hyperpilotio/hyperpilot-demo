@@ -1,5 +1,5 @@
 {
-    "name": "delivery",
+    "name": "tech-demo",
     "region": "us-east-1",
     "files": [
         {
@@ -46,15 +46,7 @@
         },
         {
             "task": "spark-worker",
-            "id": 4
-        },
-        {
-            "task": "spark-worker",
             "id": 3
-        },
-        {
-            "task": "spark-worker",
-            "id": 2
         }
     ],
     "clusterDefinition": {
@@ -675,7 +667,8 @@
                         }
                     }
                 },
-                "family": "locust-slave"
+                "family": "locust-slave",
+                "private": true
             },
             {
                 "deployment": {
@@ -832,9 +825,9 @@
                         }
                     }
                 },
-                "family": "spark-worker"
-            },
-            "private": true
+                "family": "spark-worker",
+                "private": true
+            }
         ]
     }
 }

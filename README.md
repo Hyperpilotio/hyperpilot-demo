@@ -21,6 +21,7 @@ To get the config file
 
 To deploy a K8S dashboard 
 `kubectl create -f https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml`
+`kubectl proxy`
 
 To teardown: 
 `curl -XDELETE localhost:7777/v1/deployments/<stack-name>`

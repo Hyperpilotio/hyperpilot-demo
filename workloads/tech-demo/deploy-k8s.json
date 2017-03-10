@@ -44,6 +44,10 @@
         {
             "task": "spark-worker",
             "id": 3
+        },
+        {
+            "task": "spark-worker",
+            "id": 2
         }
     ],
     "clusterDefinition": {

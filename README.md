@@ -25,4 +25,9 @@ To deploy a K8S dashboard
 To teardown: 
 `curl -XDELETE localhost:7777/v1/deployments/<stack-name>`
 
+Important port numbers:
+* Locust-master 8089
+* Influx 8086
+* spark-master 7077
+
 

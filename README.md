@@ -1,27 +1,24 @@
 # hyperpilot-demo
 Hyperpilot e2e demo
 
-* Only AWS-ECS is working for now
+* K8S on AWS-ECS
 
 Pre-reqs:
 
-- Need to install aws-cli python package, [envtpl](https://github.com/andreasjansson/envtpl),  and jq library
-- Create AWS IAM policy for daemon-scheduler. Check the [deployment guide](https://github.com/blox/blox/tree/master/deploy)
+- Install the [deployer](https://github.com/Hyperpilotio/deployer) 
+
 
 Setup daemon scheduler
 
-`aws-ecs/setup_scheduler.sh`
+`git clone https://github.com/Hyperpilotio/hyperpilot-demo.git`
+`cd hyperpilot-demo/workloads/tech-demo/`
+`./deploy-k8s.sh'
 
-Setup Infra and workload:
+If needed, edit deploy.json. 
 
-aws-ecs/setup.sh
+To get the config file
+`curl localhost:7777/v1/deployments/<stack-name>/kubeconfig`
 
-Setup load test (Locust):
+To teardown: 
+`curl -XDELETE localhost:7777/v1/deployments/<stack-name>`
 
-# This runs 3 locust agents and uploads the load-test locust python file
-aws-ecs/setup_load_test.sh 3 ../load-test/locustfile.py
-
-Teardown:
-
-aws-ecs/cleanup_load_test.sh
-aws-ecs/cleanup.sh

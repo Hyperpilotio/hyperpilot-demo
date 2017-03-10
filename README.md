@@ -19,6 +19,10 @@ If needed, edit deploy.json.
 To get the config file
 `curl localhost:7777/v1/deployments/<stack-name>/kubeconfig`
 
+To deploy a K8S dashboard 
+`kubectl create -f https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml`
+
 To teardown: 
 `curl -XDELETE localhost:7777/v1/deployments/<stack-name>`
+
 

@@ -1,27 +1,12 @@
 {
     "name": "tech-demo",
     "region": "us-east-1",
-    "files": [
-        {
-            "fileId": "tech_demo_load_test",
-            "path": "\/home\/ubuntu\/locust_file\/locustfile.py"
-        }
-    ],
-    "nodeMapping": [
-        {
-            "task": "goddd",
-            "id": 2
-        },
-        {
-            "task": "pathfinder",
-            "id": 3
-        },
-        {
-            "task": "dddelivery-angularjs",
-            "id": 1
-        },
-        {
-            "task": "benchmark-agent",
+    "files": [{
+        "fileId": "tech_demo_load_test",
+        "path": "\/home\/ubuntu\/locust_file\/locustfile.py"
+    }],
+    "nodeMapping": [{
+            "task": "snap",
             "id": 2
         },
         {
@@ -29,7 +14,19 @@
             "id": 1
         },
         {
-            "task": "snap",
+            "task": "pathfinder",
+            "id": 3
+        },
+        {
+            "task": "goddd",
+            "id": 2
+        },
+        {
+            "task": "dddelivery-angularjs",
+            "id": 1
+        },
+        {
+            "task": "benchmark-agent",
             "id": 2
         },
         {
@@ -50,8 +47,7 @@
         }
     ],
     "clusterDefinition": {
-        "nodes": [
-            {
+        "nodes": [{
                 "instanceType": "t2.large",
                 "id": 1
             },
@@ -70,8 +66,7 @@
         ]
     },
     "kubernetes": {
-        "taskDefinitions": [
-            {
+        "taskDefinitions": [{
                 "deployment": {
                     "apiVersion": "extensions\/v1beta1",
                     "kind": "Deployment",
@@ -95,39 +90,31 @@
                                 }
                             },
                             "spec": {
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/benchmark-agent",
-                                        "name": "benchmark-agent",
-                                        "ports": [
-                                            {
-                                                "containerPort": 6001,
-                                                "hostPort": 6001,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "150Mi"
-                                            }
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/var\/run\/docker.sock",
-                                                "name": "docker-sock"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/var\/run\/docker.sock"
-                                        },
+                                "containers": [{
+                                    "image": "hyperpilot\/benchmark-agent",
+                                    "name": "benchmark-agent",
+                                    "ports": [{
+                                        "containerPort": 6001,
+                                        "hostPort": 6001,
+                                        "protocol": "TCP"
+                                    }],
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "125.0m",
+                                            "memory": "150Mi"
+                                        }
+                                    },
+                                    "volumeMounts": [{
+                                        "mountPath": "\/var\/run\/docker.sock",
                                         "name": "docker-sock"
-                                    }
-                                ]
+                                    }]
+                                }],
+                                "volumes": [{
+                                    "hostPath": {
+                                        "path": "\/var\/run\/docker.sock"
+                                    },
+                                    "name": "docker-sock"
+                                }]
                             }
                         }
                     }
@@ -162,46 +149,42 @@
                                 }
                             },
                             "spec": {
-                                "containers": [
-                                    {
-                                        "image": "wen777\/snap:alpine",
-                                        "name": "snap",
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "200Mi"
-                                            }
+                                "containers": [{
+                                    "image": "wen777\/snap:alpine",
+                                    "name": "snap",
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "125.0m",
+                                            "memory": "200Mi"
+                                        }
+                                    },
+                                    "volumeMounts": [{
+                                            "mountPath": "\/rootfs",
+                                            "name": "root"
                                         },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/rootfs",
-                                                "name": "root"
-                                            },
-                                            {
-                                                "mountPath": "\/var\/run",
-                                                "name": "var-run"
-                                            },
-                                            {
-                                                "mountPath": "\/var\/log",
-                                                "name": "var-log"
-                                            },
-                                            {
-                                                "mountPath": "\/sys",
-                                                "name": "sys"
-                                            },
-                                            {
-                                                "mountPath": "\/sys\/fs\/cgroup",
-                                                "name": "cgroup"
-                                            },
-                                            {
-                                                "mountPath": "\/var\/lib\/docker",
-                                                "name": "var-lib-docker"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
+                                        {
+                                            "mountPath": "\/var\/run",
+                                            "name": "var-run"
+                                        },
+                                        {
+                                            "mountPath": "\/var\/log",
+                                            "name": "var-log"
+                                        },
+                                        {
+                                            "mountPath": "\/sys",
+                                            "name": "sys"
+                                        },
+                                        {
+                                            "mountPath": "\/sys\/fs\/cgroup",
+                                            "name": "cgroup"
+                                        },
+                                        {
+                                            "mountPath": "\/var\/lib\/docker",
+                                            "name": "var-lib-docker"
+                                        }
+                                    ]
+                                }],
+                                "volumes": [{
                                         "hostPath": {
                                             "path": "\/"
                                         },
@@ -265,44 +248,40 @@
                             },
                             "spec": {
                                 "hostname": "influxsrv",
-                                "containers": [
-                                    {
-                                        "env": [
-                                            {
-                                                "name": "ADMIN_USER",
-                                                "value": "root"
-                                            },
-                                            {
-                                                "name": "PRE_CREATE_DB",
-                                                "value": "snap;goddd;pathfinder"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_INIT_PWD",
-                                                "value": "hyperpilot"
-                                            }
-                                        ],
-                                        "image": "tutum\/influxdb",
-                                        "name": "influxsrv",
-                                        "ports": [
-                                            {
-                                                "containerPort": 8083,
-                                                "hostPort": 8083,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 8086,
-                                                "hostPort": 8086,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "512m",
-                                                "memory": "300Mi"
-                                            }
+                                "containers": [{
+                                    "env": [{
+                                            "name": "ADMIN_USER",
+                                            "value": "root"
+                                        },
+                                        {
+                                            "name": "PRE_CREATE_DB",
+                                            "value": "snap;goddd;pathfinder"
+                                        },
+                                        {
+                                            "name": "INFLUXDB_INIT_PWD",
+                                            "value": "hyperpilot"
+                                        }
+                                    ],
+                                    "image": "tutum\/influxdb",
+                                    "name": "influxsrv",
+                                    "ports": [{
+                                            "containerPort": 8083,
+                                            "hostPort": 8083,
+                                            "protocol": "TCP"
+                                        },
+                                        {
+                                            "containerPort": 8086,
+                                            "hostPort": 8086,
+                                            "protocol": "TCP"
+                                        }
+                                    ],
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "512m",
+                                            "memory": "300Mi"
                                         }
                                     }
-                                ]
+                                }]
                             }
                         }
                     }
@@ -330,54 +309,49 @@
                             },
                             "spec": {
                                 "hostname": "grafana",
-                                "containers": [
-                                    {
-                                        "env": [
-                                            {
-                                                "name": "INFLUXDB_NAME",
-                                                "value": "snap"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_HOST",
-                                                "value": "influxsrv"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_PORT",
-                                                "value": "8086"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_USER",
-                                                "value": "root"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_PASS",
-                                                "value": "hyperpilot"
-                                            },
-                                            {
-                                                "name": "GF_INSTALL_PLUGINS",
-                                                "value": "grafana-clock-panel,grafana-piechart-panel"
-                                            }
-                                        ],
-                                        "image": "grafana\/grafana",
-                                        "name": "grafana",
-                                        "args": [
-                                            "--repo=https:\/\/107.178.222.220\/api\/plugins"
-                                        ],
-                                        "ports": [
-                                            {
-                                                "containerPort": 3000,
-                                                "hostPort": 3000,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "512.0m",
-                                                "memory": "300Mi"
-                                            }
+                                "containers": [{
+                                    "env": [{
+                                            "name": "INFLUXDB_NAME",
+                                            "value": "snap"
+                                        },
+                                        {
+                                            "name": "INFLUXDB_HOST",
+                                            "value": "influxsrv"
+                                        },
+                                        {
+                                            "name": "INFLUXDB_PORT",
+                                            "value": "8086"
+                                        },
+                                        {
+                                            "name": "INFLUXDB_USER",
+                                            "value": "root"
+                                        },
+                                        {
+                                            "name": "INFLUXDB_PASS",
+                                            "value": "hyperpilot"
+                                        },
+                                        {
+                                            "name": "GF_INSTALL_PLUGINS",
+                                            "value": "grafana-clock-panel,grafana-piechart-panel"
+                                        }
+                                    ],
+                                    "image": "grafana\/grafana",
+                                    "name": "grafana",
+                                    "args": [
+                                        "--repo=https:\/\/107.178.222.220\/api\/plugins"
+                                    ],
+                                    "ports": [{
+                                        "containerPort": 3000,
+                                        "hostPort": 3000,
+                                        "protocol": "TCP"
+                                    }],
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "512.0m",
+                                            "memory": "300Mi"
                                         }
                                     }
-                                ]
+                                }]
                             }
                         }
                     }
@@ -410,39 +384,34 @@
                             },
                             "spec": {
                                 "hostname": "pathfinder",
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/pathfinder",
-                                        "name": "pathfinder",
-                                        "env": [
-                                            {
-                                                "value": "http:\/\/influxsrv:8086",
-                                                "name": "INFLUXDB_URL"
-                                            },
-                                            {
-                                                "value": "root",
-                                                "name": "INFLUXDB_USERNAME"
-                                            },
-                                            {
-                                                "value": "hyperpilot",
-                                                "name": "INFLUXDB_PASSWORD"
-                                            }
-                                        ],
-                                        "ports": [
-                                            {
-                                                "containerPort": 8080,
-                                                "hostPort": 8080,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "512.0m",
-                                                "memory": "100Mi"
-                                            }
+                                "containers": [{
+                                    "image": "hyperpilot\/pathfinder",
+                                    "name": "pathfinder",
+                                    "env": [{
+                                            "value": "http:\/\/influxsrv:8086",
+                                            "name": "INFLUXDB_URL"
+                                        },
+                                        {
+                                            "value": "root",
+                                            "name": "INFLUXDB_USERNAME"
+                                        },
+                                        {
+                                            "value": "hyperpilot",
+                                            "name": "INFLUXDB_PASSWORD"
+                                        }
+                                    ],
+                                    "ports": [{
+                                        "containerPort": 8080,
+                                        "hostPort": 8080,
+                                        "protocol": "TCP"
+                                    }],
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "512.0m",
+                                            "memory": "100Mi"
                                         }
                                     }
-                                ]
+                                }]
                             }
                         }
                     }
@@ -474,47 +443,42 @@
                                 }
                             },
                             "spec": {
-                                "containers": [
-                                    {
-                                        "args": [
-                                            "\/goddd",
-                                            "-inmem"
-                                        ],
-                                        "env": [
-                                            {
-                                                "name": "ROUTINGSERVICE_URL",
-                                                "value": "http:\/\/pathfinder:8080"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_URL",
-                                                "value": "http:\/\/influxsrv:8086"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_USERNAME",
-                                                "value": "root"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_PASSWORD",
-                                                "value": "hyperpilot"
-                                            }
-                                        ],
-                                        "image": "hyperpilot\/goddd",
-                                        "name": "goddd",
-                                        "ports": [
-                                            {
-                                                "containerPort": 8080,
-                                                "hostPort": 8080,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "256.0m",
-                                                "memory": "100Mi"
-                                            }
+                                "containers": [{
+                                    "args": [
+                                        "\/goddd",
+                                        "-inmem"
+                                    ],
+                                    "env": [{
+                                            "name": "ROUTINGSERVICE_URL",
+                                            "value": "http:\/\/pathfinder:8080"
+                                        },
+                                        {
+                                            "name": "INFLUXDB_URL",
+                                            "value": "http:\/\/influxsrv:8086"
+                                        },
+                                        {
+                                            "name": "INFLUXDB_USERNAME",
+                                            "value": "root"
+                                        },
+                                        {
+                                            "name": "INFLUXDB_PASSWORD",
+                                            "value": "hyperpilot"
+                                        }
+                                    ],
+                                    "image": "hyperpilot\/goddd",
+                                    "name": "goddd",
+                                    "ports": [{
+                                        "containerPort": 8080,
+                                        "hostPort": 8080,
+                                        "protocol": "TCP"
+                                    }],
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "256.0m",
+                                            "memory": "100Mi"
                                         }
                                     }
-                                ]
+                                }]
                             }
                         }
                     }
@@ -546,58 +510,51 @@
                                 }
                             },
                             "spec": {
-                                "containers": [
-                                    {
-                                        "args": [
-                                            "--master",
-                                            "--host=http:\/\/goddd:8080",
-                                            "--consumer",
-                                            "--consumer-influx-endpoint=influxsrv:8086",
-                                            "--consumer-influx-db=locust_results",
-                                            "-f",
-                                            "\/locust_file\/locustfile.py"
-                                        ],
-                                        "image": "hyperpilot\/locust",
-                                        "name": "locust-master",
-                                        "ports": [
-                                            {
-                                                "containerPort": 8089,
-                                                "hostPort": 8089,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 5557,
-                                                "hostPort": 5557,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 5558,
-                                                "hostPort": 5558,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "150Mi"
-                                            }
+                                "containers": [{
+                                    "args": [
+                                        "--master",
+                                        "--host=http:\/\/goddd:8080",
+                                        "--consumer",
+                                        "--consumer-influx-endpoint=influxsrv:8086",
+                                        "--consumer-influx-db=locust_results",
+                                        "-f",
+                                        "\/locust_file\/locustfile.py"
+                                    ],
+                                    "image": "hyperpilot\/locust",
+                                    "name": "locust-master",
+                                    "ports": [{
+                                            "containerPort": 8089,
+                                            "hostPort": 8089,
+                                            "protocol": "TCP"
                                         },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/locust_file",
-                                                "name": "home-ubuntu-locust-file"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/locust_file\/"
+                                        {
+                                            "containerPort": 5557,
+                                            "hostPort": 5557,
+                                            "protocol": "TCP"
                                         },
+                                        {
+                                            "containerPort": 5558,
+                                            "hostPort": 5558,
+                                            "protocol": "TCP"
+                                        }
+                                    ],
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "125.0m",
+                                            "memory": "150Mi"
+                                        }
+                                    },
+                                    "volumeMounts": [{
+                                        "mountPath": "\/locust_file",
                                         "name": "home-ubuntu-locust-file"
-                                    }
-                                ]
+                                    }]
+                                }],
+                                "volumes": [{
+                                    "hostPath": {
+                                        "path": "\/home\/ubuntu\/locust_file\/"
+                                    },
+                                    "name": "home-ubuntu-locust-file"
+                                }]
                             }
                         }
                     }
@@ -629,40 +586,34 @@
                                 }
                             },
                             "spec": {
-                                "containers": [
-                                    {
-                                        "args": [
-                                            "--slave",
-                                            "--master-host=locust-master",
-                                            "-H",
-                                            "http:\/\/goddd:8080",
-                                            "-f",
-                                            "\/locust_file\/locustfile.py"
-                                        ],
-                                        "image": "hyperpilot\/locust",
-                                        "name": "locust-slave",
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "512.0m",
-                                                "memory": "300Mi"
-                                            }
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/locust_file",
-                                                "name": "home-ubuntu-locust-file"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/locust_file\/"
-                                        },
+                                "containers": [{
+                                    "args": [
+                                        "--slave",
+                                        "--master-host=locust-master",
+                                        "-H",
+                                        "http:\/\/goddd:8080",
+                                        "-f",
+                                        "\/locust_file\/locustfile.py"
+                                    ],
+                                    "image": "hyperpilot\/locust",
+                                    "name": "locust-slave",
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "512.0m",
+                                            "memory": "300Mi"
+                                        }
+                                    },
+                                    "volumeMounts": [{
+                                        "mountPath": "\/locust_file",
                                         "name": "home-ubuntu-locust-file"
-                                    }
-                                ]
+                                    }]
+                                }],
+                                "volumes": [{
+                                    "hostPath": {
+                                        "path": "\/home\/ubuntu\/locust_file\/"
+                                    },
+                                    "name": "home-ubuntu-locust-file"
+                                }]
                             }
                         }
                     }
@@ -695,25 +646,21 @@
                                 }
                             },
                             "spec": {
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/dddelivery-angularjs",
-                                        "name": "dddelivery-angularjs",
-                                        "ports": [
-                                            {
-                                                "containerPort": 8080,
-                                                "hostPort": 8080,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "512.0m",
-                                                "memory": "100Mi"
-                                            }
+                                "containers": [{
+                                    "image": "hyperpilot\/dddelivery-angularjs",
+                                    "name": "dddelivery-angularjs",
+                                    "ports": [{
+                                        "containerPort": 8080,
+                                        "hostPort": 8080,
+                                        "protocol": "TCP"
+                                    }],
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "512.0m",
+                                            "memory": "100Mi"
                                         }
                                     }
-                                ]
+                                }]
                             }
                         }
                     }
@@ -744,32 +691,29 @@
                                 }
                             },
                             "spec": {
-                                "containers": [
-                                    {
-                                        "image": "gcr.io\/google_containers\/spark:1.5.2_v1",
-                                        "name": "spark-master",
-                                        "command": [
-                                            "\/start-master"
-                                        ],
-                                        "ports": [
-                                            {
-                                                "containerPort": 7077,
-                                                "hostPort": 7077,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 8088,
-                                                "hostPort": 8088,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "100.0m"
-                                            }
+                                "containers": [{
+                                    "image": "gcr.io\/google_containers\/spark:1.5.2_v1",
+                                    "name": "spark-master",
+                                    "command": [
+                                        "\/start-master"
+                                    ],
+                                    "ports": [{
+                                            "containerPort": 7077,
+                                            "hostPort": 7077,
+                                            "protocol": "TCP"
+                                        },
+                                        {
+                                            "containerPort": 8088,
+                                            "hostPort": 8088,
+                                            "protocol": "TCP"
+                                        }
+                                    ],
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "100.0m"
                                         }
                                     }
-                                ]
+                                }]
                             }
                         }
                     }
@@ -800,28 +744,24 @@
                                 }
                             },
                             "spec": {
-                                "containers": [
-                                    {
-                                        "image": "gcr.io\/google_containers\/spark:1.5.2_v1",
-                                        "name": "spark-worker",
-                                        "command": [
-                                            "\/start-worker"
-                                        ],
-                                        "ports": [
-                                            {
-                                                "containerPort": 8081,
-                                                "hostPort": 8081,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "512.0m",
-                                                "memory": "512Mi"
-                                            }
+                                "containers": [{
+                                    "image": "gcr.io\/google_containers\/spark:1.5.2_v1",
+                                    "name": "spark-worker",
+                                    "command": [
+                                        "\/start-worker"
+                                    ],
+                                    "ports": [{
+                                        "containerPort": 8081,
+                                        "hostPort": 8081,
+                                        "protocol": "TCP"
+                                    }],
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "512.0m",
+                                            "memory": "512Mi"
                                         }
                                     }
-                                ]
+                                }]
                             }
                         }
                     }

@@ -789,7 +789,8 @@
                         }
                     }
                 },
-                "family": "spark-master"
+                "family": "spark-master",
+                "private": true
             },
             {
                 "deployment": {

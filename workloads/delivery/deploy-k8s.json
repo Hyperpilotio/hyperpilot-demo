@@ -161,7 +161,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "wen777\/snap:alpine",
+                                        "image": "hyperpilot\/snap-goddd:latest",
                                         "name": "snap",
                                         "resources": {
                                             "limits": {

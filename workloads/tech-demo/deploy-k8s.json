@@ -867,6 +867,8 @@
                                         "command": [
                                             "bin\/spark-class",
                                             "org.apache.spark.deploy.worker.Worker",
+                                            "--cores", "1",
+                                            "--memory", "3584",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [
@@ -878,8 +880,8 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "512.0m",
-                                                "memory": "512Mi"
+                                                "cpu": "1024.0m",
+                                                "memory": "4224Mi"
                                             }
                                         }
                                     }

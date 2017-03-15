@@ -868,7 +868,7 @@
                                             "bin\/spark-class",
                                             "org.apache.spark.deploy.worker.Worker",
                                             "--cores", "1",
-                                            "--memory", "3584",
+                                            "--memory", "3584M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [

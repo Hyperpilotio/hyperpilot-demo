@@ -5,6 +5,10 @@
         {
             "fileId": "tech_demo_load_test",
             "path": "\/home\/ubuntu\/locust_file\/locustfile.py"
+        },
+        {
+            "fileId": "tech_demo_core_site_xml",
+            "path": "\/home\/ubuntu\/core-site.xml"
         }
     ],
     "nodeMapping": [
@@ -168,7 +172,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "wen777\/snap:alpine",
+                                        "image": "hyperpilot\/snap:alpine",
                                         "name": "snap",
                                         "resources": {
                                             "limits": {
@@ -176,6 +180,12 @@
                                                 "memory": "200Mi"
                                             }
                                         },
+                                        "env": [
+                                            {
+                                                "name": "GODDD_URL",
+                                                "value": "http:\/\/goddd:8080"
+                                            }
+                                        ],
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/rootfs",
@@ -748,6 +758,14 @@
                                 }
                             },
                             "spec": {
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/core-site.xml"
+                                        },
+                                        "name": "core-site"
+                                    }
+                                ],
                                 "containers": [
                                     {
                                         "image": "gettyimages\/spark:2.1.0-hadoop-2.7",
@@ -760,6 +778,12 @@
                                             {
                                                 "name": "SPARK_MASTER_WEBUI_PORT",
                                                 "value": "8088"
+                                            }
+                                        ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
+                                                "name": "core-site"
                                             }
                                         ],
                                         "command": [
@@ -816,8 +840,22 @@
                                 }
                             },
                             "spec": {
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/core-site.xml"
+                                        },
+                                        "name": "core-site"
+                                    }
+                                ],
                                 "containers": [
                                     {
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
+                                                "name": "core-site"
+                                            }
+                                        ],
                                         "image": "gettyimages\/spark:2.1.0-hadoop-2.7",
                                         "name": "spark-worker",
                                         "env": [

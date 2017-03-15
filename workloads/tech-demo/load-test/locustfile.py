@@ -11,5 +11,3 @@ class StaticTasks(TaskSet):
 
 class LoggedInUser(HttpLocust):
     task_set = StaticTasks
-    min_wait = 5000
-    max_wait = 15000

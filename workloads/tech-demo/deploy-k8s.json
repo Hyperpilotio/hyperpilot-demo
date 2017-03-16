@@ -21,6 +21,10 @@
             "id": 1
         },
         {
+            "task": "mongo",
+            "id": 4
+        },
+        {
             "task": "pathfinder",
             "id": 3
         },
@@ -172,12 +176,12 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine",
+                                        "image": "hyperpilot\/snap-goddd:latest",
                                         "name": "snap",
                                         "resources": {
                                             "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "200Mi"
+                                                "cpu": "256.0m",
+                                                "memory": "400Mi"
                                             }
                                         },
                                         "env": [
@@ -461,7 +465,8 @@
                         }
                     }
                 },
-                "family": "pathfinder"
+                "family": "pathfinder",
+                "private": true
             },
             {
                 "deployment": {
@@ -490,26 +495,18 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "args": [
-                                            "\/goddd",
-                                            "-inmem"
-                                        ],
                                         "env": [
                                             {
                                                 "name": "ROUTINGSERVICE_URL",
                                                 "value": "http:\/\/pathfinder:8080"
                                             },
                                             {
-                                                "name": "INFLUXDB_URL",
-                                                "value": "http:\/\/influxsrv:8086"
+                                                "name": "MONGODB_URL",
+                                                "value": "mongo:27017"
                                             },
                                             {
-                                                "name": "INFLUXDB_USERNAME",
-                                                "value": "root"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_PASSWORD",
-                                                "value": "hyperpilot"
+                                                "name": "DB_NAME",
+                                                "value": "goddd"
                                             }
                                         ],
                                         "image": "hyperpilot\/goddd",
@@ -533,7 +530,8 @@
                         }
                     }
                 },
-                "family": "goddd"
+                "family": "goddd",
+                "private": true
             },
             {
                 "deployment": {
@@ -891,6 +889,56 @@
                     }
                 },
                 "family": "spark-worker",
+                "private": true
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "mongo"
+                        },
+                        "name": "mongo"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "mongo"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "mongo"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "image": "mongo",
+                                        "name": "mongo",
+                                        "ports": [
+                                            {
+                                                "containerPort": 27017,
+                                                "hostPort": 27017,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "mongo",
                 "private": true
             }
         ]

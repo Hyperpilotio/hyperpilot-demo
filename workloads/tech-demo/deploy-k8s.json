@@ -321,7 +321,8 @@
                         }
                     }
                 },
-                "family": "influxsrv"
+                "family": "influxsrv",
+                "portTypes": [1, 1] 
             },
             {
                 "deployment": {
@@ -396,7 +397,8 @@
                         }
                     }
                 },
-                "family": "grafana"
+                "family": "grafana",
+                "portTypes": [1]
             },
             {
                 "deployment": {
@@ -533,7 +535,8 @@
                         }
                     }
                 },
-                "family": "goddd"
+                "family": "goddd",
+                "portTypes": [1]
             },
             {
                 "deployment": {
@@ -616,7 +619,8 @@
                         }
                     }
                 },
-                "family": "locust-master"
+                "family": "locust-master",
+                "portTypes": [1]
             },
             {
                 "deployment": {
@@ -681,8 +685,7 @@
                         }
                     }
                 },
-                "family": "locust-slave",
-                "private": true
+                "family": "locust-slave"
             },
             {
                 "deployment": {
@@ -813,8 +816,7 @@
                         }
                     }
                 },
-                "family": "spark-master",
-                "private": true
+                "family": "spark-master"
             },
             {
                 "deployment": {
@@ -890,8 +892,7 @@
                         }
                     }
                 },
-                "family": "spark-worker",
-                "private": true
+                "family": "spark-worker"
             }
         ]
     }

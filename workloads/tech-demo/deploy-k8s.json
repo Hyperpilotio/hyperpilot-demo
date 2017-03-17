@@ -144,7 +144,8 @@
                         }
                     }
                 },
-                "family": "benchmark-agent"
+                "family": "benchmark-agent",
+                "portTypes": [1]
             },
             {
                 "deployment": {
@@ -531,8 +532,7 @@
                         }
                     }
                 },
-                "family": "goddd",
-                "portTypes": [1]
+                "family": "goddd"
             },
             {
                 "deployment": {
@@ -731,7 +731,8 @@
                         }
                     }
                 },
-                "family": "dddelivery-angularjs"
+                "family": "dddelivery-angularjs",
+                "portTypes": [1]
             },
             {
                 "deployment": {

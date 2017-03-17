@@ -1,4 +1,5 @@
 *.pem
+*.pyc
 .tern-port
 ssh-key.sh
 aws_ec2.pem

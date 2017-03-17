@@ -1,0 +1,7 @@
+{
+  "type": "hilo",
+  "low_count": 200,
+  "low_duration_seconds": 300,
+  "high_count": 600,
+  "high_duration_seconds": 300
+}

@@ -1,20 +1,6 @@
 {
     "name": "redis",
     "region": "us-west-2",
-    "allowedPorts": [
-        8080,
-        8083,
-        8086,
-        7777,
-        7778,
-        8089,
-        5000,
-        6379,
-        6001,
-        2379,
-        2380,
-        4001
-    ],
     "nodeMapping": [
         {
             "task": "redis-serve",
@@ -79,12 +65,6 @@
                                     {
                                         "image": "wen777\/snap:alpine",
                                         "name": "snap",
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "200Mi"
-                                            }
-                                        },
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/rootfs",
@@ -307,8 +287,8 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "50Mi"
+                                                "cpu": "1024.0m",
+                                                "memory": "500Mi"
                                             }
                                         },
                                         "volumeMounts": [
@@ -387,8 +367,8 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "150Mi"
+                                                "cpu": "512.0m",
+                                                "memory": "350Mi"
                                             }
                                         }
                                     }

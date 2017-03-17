@@ -467,8 +467,7 @@
                         }
                     }
                 },
-                "family": "pathfinder",
-                "private": true
+                "family": "pathfinder"
             },
             {
                 "deployment": {

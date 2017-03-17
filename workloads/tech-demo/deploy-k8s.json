@@ -144,7 +144,8 @@
                         }
                     }
                 },
-                "family": "benchmark-agent"
+                "family": "benchmark-agent",
+                "portTypes": [1]
             },
             {
                 "deployment": {
@@ -325,7 +326,8 @@
                         }
                     }
                 },
-                "family": "influxsrv"
+                "family": "influxsrv",
+                "portTypes": [1, 1] 
             },
             {
                 "deployment": {
@@ -400,7 +402,8 @@
                         }
                     }
                 },
-                "family": "grafana"
+                "family": "grafana",
+                "portTypes": [1]
             },
             {
                 "deployment": {
@@ -465,8 +468,7 @@
                         }
                     }
                 },
-                "family": "pathfinder",
-                "private": true
+                "family": "pathfinder"
             },
             {
                 "deployment": {
@@ -530,8 +532,7 @@
                         }
                     }
                 },
-                "family": "goddd",
-                "private": true
+                "family": "goddd"
             },
             {
                 "deployment": {
@@ -614,7 +615,8 @@
                         }
                     }
                 },
-                "family": "locust-master"
+                "family": "locust-master",
+                "portTypes": [1]
             },
             {
                 "deployment": {
@@ -679,8 +681,7 @@
                         }
                     }
                 },
-                "family": "locust-slave",
-                "private": true
+                "family": "locust-slave"
             },
             {
                 "deployment": {
@@ -730,7 +731,8 @@
                         }
                     }
                 },
-                "family": "dddelivery-angularjs"
+                "family": "dddelivery-angularjs",
+                "portTypes": [1]
             },
             {
                 "deployment": {
@@ -811,8 +813,7 @@
                         }
                     }
                 },
-                "family": "spark-master",
-                "private": true
+                "family": "spark-master"
             },
             {
                 "deployment": {
@@ -888,8 +889,7 @@
                         }
                     }
                 },
-                "family": "spark-worker",
-                "private": true
+                "family": "spark-worker"
             },
             {
                 "deployment": {
@@ -938,8 +938,7 @@
                         }
                     }
                 },
-                "family": "mongo",
-                "private": true
+                "family": "mongo"
             }
         ]
     }

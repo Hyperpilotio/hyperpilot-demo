@@ -1,5 +1,5 @@
 {
-    "name": "tech-demo",
+    "name": "tech-demo2",
     "region": "us-east-1",
     "files": [
         {
@@ -177,13 +177,17 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap-goddd:latest",
+                                        "image": "hyperpilot\/snap:alpine",
                                         "name": "snap",
                                         "resources": {
                                             "limits": {
                                                 "cpu": "256.0m",
                                                 "memory": "400Mi"
                                             }
+                                        },
+                                        "imagePullPolicy": "Always",
+                                        "securityContext": {
+                                            "privileged": true
                                         },
                                         "env": [
                                             {
@@ -193,10 +197,6 @@
                                         ],
                                         "volumeMounts": [
                                             {
-                                                "mountPath": "\/rootfs",
-                                                "name": "root"
-                                            },
-                                            {
                                                 "mountPath": "\/var\/run",
                                                 "name": "var-run"
                                             },
@@ -205,16 +205,20 @@
                                                 "name": "var-log"
                                             },
                                             {
-                                                "mountPath": "\/sys",
-                                                "name": "sys"
-                                            },
-                                            {
                                                 "mountPath": "\/sys\/fs\/cgroup",
                                                 "name": "cgroup"
                                             },
                                             {
                                                 "mountPath": "\/var\/lib\/docker",
                                                 "name": "var-lib-docker"
+                                            },
+                                            {
+                                                "mountPath": "\/usr\/local\/bin\/docker",
+                                                "name": "usr-bin-docker"
+                                            },
+                                            {
+                                                "mountPath": "\/proc_host",
+                                                "name": "proc"
                                             }
                                         ]
                                     }
@@ -222,21 +226,9 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "\/"
-                                        },
-                                        "name": "root"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/cgroup"
+                                            "path": "\/sys\/fs\/cgroup"
                                         },
                                         "name": "cgroup"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/sys"
-                                        },
-                                        "name": "sys"
                                     },
                                     {
                                         "hostPath": {
@@ -255,6 +247,18 @@
                                             "path": "\/var\/run"
                                         },
                                         "name": "var-run"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/usr\/bin\/docker"
+                                        },
+                                        "name": "usr-bin-docker"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/proc"
+                                        },
+                                        "name": "proc"
                                     }
                                 ]
                             }
@@ -327,7 +331,7 @@
                     }
                 },
                 "family": "influxsrv",
-                "portTypes": [1, 1] 
+                "portTypes": [1, 1]
             },
             {
                 "deployment": {
@@ -378,7 +382,7 @@
                                                 "value": "grafana-clock-panel,grafana-piechart-panel"
                                             }
                                         ],
-                                        "image": "grafana\/grafana",
+                                        "image": "adrianliaw\/grafana:hyperpilot",
                                         "name": "grafana",
                                         "args": [
                                             "--repo=https:\/\/107.178.222.220\/api\/plugins"
@@ -866,8 +870,10 @@
                                         "command": [
                                             "bin\/spark-class",
                                             "org.apache.spark.deploy.worker.Worker",
-                                            "--cores", "1",
-                                            "--memory", "3584M",
+                                            "--cores",
+                                            "1",
+                                            "--memory",
+                                            "3584M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [

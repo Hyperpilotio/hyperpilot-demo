@@ -822,7 +822,8 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "spark-worker"
+                            "app": "spark-worker",
+                            "hyperpilot/wclass": "BE"
                         },
                         "name": "spark-worker"
                     },

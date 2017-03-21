@@ -179,22 +179,19 @@
                                     {
                                         "image": "hyperpilot\/snap:alpine",
                                         "name": "snap",
+                                        "args": [
+                                          "https://hyperpilot-snap-config.s3.amazonaws.com/init.json"
+                                        ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "256.0m",
-                                                "memory": "400Mi"
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
                                             }
                                         },
                                         "imagePullPolicy": "Always",
                                         "securityContext": {
                                             "privileged": true
                                         },
-                                        "env": [
-                                            {
-                                                "name": "GODDD_URL",
-                                                "value": "http:\/\/goddd:8080"
-                                            }
-                                        ],
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/var\/run",

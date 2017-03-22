@@ -179,6 +179,7 @@
                                     {
                                         "image": "hyperpilot\/snap:alpine",
                                         "name": "snap",
+                                        "command": ["/usr/local/bin/run.sh"],
                                         "args": [
                                           "https://hyperpilot-snap-config.s3.amazonaws.com/init.json"
                                         ],

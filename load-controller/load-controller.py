@@ -3,6 +3,7 @@ import sys
 import time
 import uuid
 import requests
+import urllib
 
 from optparse import OptionParser
 
@@ -70,6 +71,12 @@ def parse_load_configuration(master_host, master_port, run_id, dct):
       print("Unsupported load type: " + load_type)
       sys.exit(1)
 
+def download_url(url):
+    local_path = url.split("/")[-1]
+    print("Downloading file " + url + " to " + local_path)
+    urllib.urlretrieve(url, local_path)
+    return local_path
+
 def main():
     # Initialize
     parser = OptionParser(usage="locust_load_controller [options]")
@@ -111,7 +118,8 @@ def main():
 
     run_id = str(uuid.uuid1())
 
-    with open(opts.load_file) as json_data:
+    local_load_file = download_url(opts.load_file)
+    with open(local_load_file) as json_data:
         j = json.load(json_data)
         load_configuration = parse_load_configuration(opts.master_host, opts.master_port, run_id, j)
         load_configuration.run()

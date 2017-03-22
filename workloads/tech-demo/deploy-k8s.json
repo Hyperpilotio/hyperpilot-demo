@@ -21,6 +21,10 @@
             "id": 1
         },
         {
+            "task": "grafana",
+            "id": 1,
+        },
+        {
             "task": "mongo",
             "id": 4
         },

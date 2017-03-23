@@ -68,19 +68,19 @@
     "clusterDefinition": {
         "nodes": [
             {
-                "instanceType": "t2.large",
+                "instanceType": "t2.xlarge",
                 "id": 1
             },
             {
-                "instanceType": "t2.large",
+                "instanceType": "t2.xlarge",
                 "id": 2
             },
             {
-                "instanceType": "t2.large",
+                "instanceType": "t2.xlarge",
                 "id": 3
             },
             {
-                "instanceType": "t2.large",
+                "instanceType": "t2.xlarge",
                 "id": 4
             }
         ]
@@ -399,7 +399,7 @@
                                         "resources": {
                                             "limits": {
                                                 "cpu": "512.0m",
-                                                "memory": "300Mi"
+                                                "memory": "600Mi"
                                             }
                                         }
                                     }

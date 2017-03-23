@@ -17,6 +17,14 @@
             "id": 2
         },
         {
+            "task": "snap",
+            "id": 3
+        },
+        {
+            "task": "snap",
+            "id": 4
+        },
+        {
             "task": "influxsrv",
             "id": 1
         },
@@ -68,19 +76,19 @@
     "clusterDefinition": {
         "nodes": [
             {
-                "instanceType": "t2.xlarge",
+                "instanceType": "m4.xlarge",
                 "id": 1
             },
             {
-                "instanceType": "t2.xlarge",
+                "instanceType": "m4.xlarge",
                 "id": 2
             },
             {
-                "instanceType": "t2.xlarge",
+                "instanceType": "m4.xlarge",
                 "id": 3
             },
             {
-                "instanceType": "t2.xlarge",
+                "instanceType": "m4.xlarge",
                 "id": 4
             }
         ]
@@ -161,7 +169,7 @@
                             "version": "latest"
                         },
                         "name": "snap",
-                        "namespace": "default"
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
@@ -278,7 +286,7 @@
                             "app": "influxsrv"
                         },
                         "name": "influxsrv",
-                        "namespace": "default"
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
@@ -344,7 +352,7 @@
                             "app": "grafana"
                         },
                         "name": "grafana",
-                        "namespace": "default"
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
@@ -549,7 +557,7 @@
                             "app": "locust-master"
                         },
                         "name": "locust-master",
-                        "namespace": "default"
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
@@ -633,7 +641,7 @@
                             "app": "locust-slave"
                         },
                         "name": "locust-slave",
-                        "namespace": "default"
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,

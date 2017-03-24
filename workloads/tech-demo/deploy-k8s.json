@@ -103,7 +103,8 @@
                         "labels": {
                             "app": "benchmark-agent"
                         },
-                        "name": "benchmark-agent"
+                        "name": "benchmark-agent",
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
@@ -157,7 +158,9 @@
                     }
                 },
                 "family": "benchmark-agent",
-                "portTypes": [1]
+                "portTypes": [
+                    1
+                ]
             },
             {
                 "deployment": {
@@ -169,7 +172,7 @@
                             "version": "latest"
                         },
                         "name": "snap",
-                        "namespace": "default"
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
@@ -191,9 +194,11 @@
                                     {
                                         "image": "hyperpilot\/snap:alpine",
                                         "name": "snap",
-                                        "command": ["/usr/local/bin/run.sh"],
+                                        "command": [
+                                            "\/usr\/local\/bin\/run.sh"
+                                        ],
                                         "args": [
-                                          "https://hyperpilot-snap-config.s3.amazonaws.com/init.json"
+                                            "https:\/\/hyperpilot-snap-config.s3.amazonaws.com\/init.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -286,7 +291,7 @@
                             "app": "influxsrv"
                         },
                         "name": "influxsrv",
-                        "namespace": "default"
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
@@ -341,7 +346,10 @@
                     }
                 },
                 "family": "influxsrv",
-                "portTypes": [1, 1]
+                "portTypes": [
+                    1,
+                    1
+                ]
             },
             {
                 "deployment": {
@@ -352,7 +360,7 @@
                             "app": "grafana"
                         },
                         "name": "grafana",
-                        "namespace": "default"
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
@@ -417,7 +425,9 @@
                     }
                 },
                 "family": "grafana",
-                "portTypes": [1]
+                "portTypes": [
+                    1
+                ]
             },
             {
                 "deployment": {
@@ -557,7 +567,7 @@
                             "app": "locust-master"
                         },
                         "name": "locust-master",
-                        "namespace": "default"
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
@@ -630,7 +640,9 @@
                     }
                 },
                 "family": "locust-master",
-                "portTypes": [1]
+                "portTypes": [
+                    1
+                ]
             },
             {
                 "deployment": {
@@ -641,7 +653,7 @@
                             "app": "locust-slave"
                         },
                         "name": "locust-slave",
-                        "namespace": "default"
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
@@ -746,7 +758,9 @@
                     }
                 },
                 "family": "dddelivery-angularjs",
-                "portTypes": [1]
+                "portTypes": [
+                    1
+                ]
             },
             {
                 "deployment": {

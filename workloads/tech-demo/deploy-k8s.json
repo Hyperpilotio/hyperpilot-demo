@@ -192,7 +192,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine",
+                                        "image": "hyperpilot\/snap:alpine-init",
                                         "name": "snap",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"

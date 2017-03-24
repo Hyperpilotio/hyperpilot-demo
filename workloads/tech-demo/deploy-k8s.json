@@ -1,5 +1,5 @@
 {
-    "name": "tech-demo2",
+    "name": "tech-demo",
     "region": "us-east-1",
     "files": [
         {
@@ -169,7 +169,7 @@
                             "version": "latest"
                         },
                         "name": "snap",
-                        "namespace": "hyperpilot"
+                        "namespace": "default"
                     },
                     "spec": {
                         "replicas": 1,
@@ -286,7 +286,7 @@
                             "app": "influxsrv"
                         },
                         "name": "influxsrv",
-                        "namespace": "hyperpilot"
+                        "namespace": "default"
                     },
                     "spec": {
                         "replicas": 1,
@@ -311,7 +311,7 @@
                                             },
                                             {
                                                 "name": "INFLUXDB_INIT_PWD",
-                                                "value": "hyperpilot"
+                                                "value": "default"
                                             }
                                         ],
                                         "image": "tutum\/influxdb",
@@ -352,7 +352,7 @@
                             "app": "grafana"
                         },
                         "name": "grafana",
-                        "namespace": "hyperpilot"
+                        "namespace": "default"
                     },
                     "spec": {
                         "replicas": 1,
@@ -385,7 +385,7 @@
                                             },
                                             {
                                                 "name": "INFLUXDB_PASS",
-                                                "value": "hyperpilot"
+                                                "value": "default"
                                             },
                                             {
                                                 "name": "GF_INSTALL_PLUGINS",
@@ -459,7 +459,7 @@
                                                 "name": "INFLUXDB_USERNAME"
                                             },
                                             {
-                                                "value": "hyperpilot",
+                                                "value": "default",
                                                 "name": "INFLUXDB_PASSWORD"
                                             }
                                         ],
@@ -557,7 +557,7 @@
                             "app": "locust-master"
                         },
                         "name": "locust-master",
-                        "namespace": "hyperpilot"
+                        "namespace": "default"
                     },
                     "spec": {
                         "replicas": 1,
@@ -641,7 +641,7 @@
                             "app": "locust-slave"
                         },
                         "name": "locust-slave",
-                        "namespace": "hyperpilot"
+                        "namespace": "default"
                     },
                     "spec": {
                         "replicas": 1,

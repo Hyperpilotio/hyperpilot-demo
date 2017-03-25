@@ -1,5 +1,5 @@
 {
-    "name": "tech-demo",
+    "name": "tech-demo2",
     "region": "us-east-1",
     "files": [
         {
@@ -707,7 +707,7 @@
                                     {
                                         "args": [
                                             "--master",
-                                            "--host=http:\/\/goddd:8080",
+                                            "--host=http:\/\/goddd.default:8080",
                                             "--consumer",
                                             "--consumer-influx-endpoint=influxsrv:8086",
                                             "--consumer-influx-db=locust_results",
@@ -795,7 +795,7 @@
                                             "--slave",
                                             "--master-host=locust-master",
                                             "-H",
-                                            "http:\/\/goddd:8080",
+                                            "http:\/\/goddd.default:8080",
                                             "-f",
                                             "\/locust_file\/locustfile.py"
                                         ],

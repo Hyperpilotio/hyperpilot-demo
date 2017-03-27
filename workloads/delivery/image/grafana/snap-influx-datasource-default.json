@@ -1,0 +1,11 @@
+{
+    "Name": "snap",
+    "Type": "influxdb",
+    "Url": "http://localhost:8086",
+    "Access": "proxy",
+    "BasicAuth": true,
+    "BasicAuthUser": "root",
+    "BasicAuthPassword": "root",
+    "IsDefault": true,
+    "Database": "snap"
+}

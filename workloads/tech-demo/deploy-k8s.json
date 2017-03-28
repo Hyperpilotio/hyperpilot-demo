@@ -436,7 +436,7 @@
                                             },
                                             {
                                                 "name": "PRE_CREATE_DB",
-                                                "value": "snap;goddd;pathfinder"
+                                                "value": "snap;goddd;pathfinder;spark"
                                             },
                                             {
                                                 "name": "INFLUXDB_INIT_PWD",
@@ -669,9 +669,9 @@
                                             }
                                         ],
                                         "resources": {
-                                            "limits": {
+                                            "requests": {
                                                 "cpu": "256.0m",
-                                                "memory": "100Mi"
+                                                "memory": "500Mi"
                                             }
                                         }
                                     }
@@ -956,7 +956,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "100.0m"
+                                                "cpu": "500.0m"
                                             }
                                         }
                                     }
@@ -965,7 +965,11 @@
                         }
                     }
                 },
-                "family": "spark-master"
+                "family": "spark-master",
+		"portTypes": [
+                    0,
+                    1
+                ]
             },
             {
                 "deployment": {
@@ -1020,9 +1024,9 @@
                                             "bin\/spark-class",
                                             "org.apache.spark.deploy.worker.Worker",
                                             "--cores",
-                                            "1",
+                                            "2",
                                             "--memory",
-                                            "3584M",
+                                            "4196M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [
@@ -1033,10 +1037,6 @@
                                             }
                                         ],
                                         "resources": {
-                                            "limits": {
-                                                "cpu": "1024.0m",
-                                                "memory": "4224Mi"
-                                            }
                                         }
                                     }
                                 ]

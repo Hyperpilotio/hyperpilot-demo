@@ -13,6 +13,10 @@
     ],
     "nodeMapping": [
         {
+            "task": "qos-data-store",
+            "id": 4
+        },
+        {
             "task": "snap-goddd",
             "id": 2
         },
@@ -43,10 +47,6 @@
         {
             "task": "goddd",
             "id": 2
-        },
-        {
-            "task": "dddelivery-angularjs",
-            "id": 1
         },
         {
             "task": "benchmark-agent",
@@ -322,7 +322,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-config.s3.amazonaws.com\/init-goddd.json"
+                                            "https:\/\/hyperpilot-snap-config.s3.amazonaws.com\/init-goddd-new.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -436,7 +436,7 @@
                                             },
                                             {
                                                 "name": "PRE_CREATE_DB",
-                                                "value": "snap;goddd;pathfinder;spark"
+                                                "value": "snap"
                                             },
                                             {
                                                 "name": "INFLUXDB_INIT_PWD",
@@ -624,7 +624,8 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "goddd"
+                            "app": "goddd",
+                            "hyperpilot/qos": "true"
                         },
                         "name": "goddd",
                         "namespace": "default"
@@ -839,59 +840,6 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "dddelivery-angularjs"
-                        },
-                        "name": "dddelivery-angularjs",
-                        "namespace": "default"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "dddelivery-angularjs"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "dddelivery-angularjs"
-                                }
-                            },
-                            "spec": {
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/dddelivery-angularjs",
-                                        "name": "dddelivery-angularjs",
-                                        "ports": [
-                                            {
-                                                "containerPort": 8080,
-                                                "hostPort": 8080,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "512.0m",
-                                                "memory": "100Mi"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "dddelivery-angularjs",
-                "portTypes": [
-                    1
-                ]
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
                             "app": "spark-master"
                         },
                         "name": "spark-master"
@@ -1094,6 +1042,50 @@
                     }
                 },
                 "family": "mongo"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "qos-data-store"
+                        },
+                        "name": "qos-data-store",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "qos-data-store"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "qos-data-store"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/qos-data-store",
+                                        "name": "qos-data-store",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7781,
+                                                "hostPort": 7781,
+                                                "protocol": "TCP"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "qos-data-store"
             }
         ]
     }

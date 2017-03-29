@@ -112,11 +112,25 @@
                     "key": "summary",
                     "operator": "=",
                     "value": "avg"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "total",
+                    "operator": "=",
+                    "value": "TOTAL"
                   }
                 ]
               }
             ],
-            "thresholds": [],
+            "thresholds": [
+                {
+                    "colorMode": "warning",
+                    "fill": true,
+                    "line": true,
+                    "op": "gt",
+                    "value": 0.004
+                }
+            ],
             "timeFrom": null,
             "timeShift": null,
             "title": "GoDDD Latency",
@@ -220,7 +234,13 @@
                     }
                   ]
                 ],
-                "tags": []
+                "tags": [
+                  {
+                    "key": "total",
+                    "operator": "=",
+                    "value": "TOTAL"
+                  }
+                ]
               }
             ],
             "thresholds": [],

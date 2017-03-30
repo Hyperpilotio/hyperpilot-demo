@@ -12,6 +12,5 @@ echo "Grafana is running at http://$GRAFANA_HOST:3000, login with admin:admin"
 # Start the load traffic pod to goddd
 kubectl create -f load-controller-deployment.json
 
-
-# To create BE workload, launch Spark command
-./run_spark_job.sh
+# To create BE workload, launch script to submit Spark jobs
+./submit_spark_jobs.sh

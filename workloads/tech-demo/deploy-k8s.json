@@ -37,6 +37,10 @@
             "id": 1
         },
         {
+            "task": "demo-ui",
+            "id": 1
+        },
+        {
             "task": "mongo",
             "id": 4
         },
@@ -530,6 +534,10 @@
                                             {
                                                 "name": "GF_INSTALL_PLUGINS",
                                                 "value": "grafana-clock-panel,grafana-piechart-panel"
+                                            },
+                                            {
+                                                "name": "GF_SERVER_ROOT_URL",
+                                                "value": "/grafana"
                                             }
                                         ],
                                         "image": "hyperpilot\/grafana-test",
@@ -558,6 +566,60 @@
                     }
                 },
                 "family": "grafana",
+                "portTypes": [
+                    1
+                ]
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "demo-ui"
+                        },
+                        "name": "demo-ui",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "demo-ui"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "demo-ui"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "image": "adrianliaw\/hyperpilot-demo-ui",
+                                        "imagePullPolicy": "Always",
+                                        "name": "demo-ui",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8080,
+                                                "hostPort": 8080,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "125.0m",
+                                                "memory": "150Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "demo-ui",
                 "portTypes": [
                     1
                 ]

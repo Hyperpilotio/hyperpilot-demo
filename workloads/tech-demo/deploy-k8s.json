@@ -1,5 +1,5 @@
 {
-    "name": "tech-demo2",
+    "name": "tech-demo",
     "region": "us-east-1",
     "files": [
         {
@@ -98,7 +98,79 @@
         ]
     },
     "kubernetes": {
+        "secrets": [
+            {
+              "apiVersion": "v1",
+              "kind": "Secret",
+              "metadata": {
+                "name": "myregistrykey",
+                "namespace": "hyperpilot"
+              },
+              "type": "kubernetes.io/dockerconfigjson",
+              "data": {
+                ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmREcG9lWEJsY2pFeU13PT0iCgkJfQoJfQp9"
+              }
+            }
+        ],
         "taskDefinitions": [
+            {
+                "daemonset": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "DaemonSet",
+                    "metadata": {
+                        "name": "controller-daemonset",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "name": "controller-daemonset"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/controller",
+                                        "imagePullPolicy": "Always",
+                                        "name": "controller",
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
+                                            }
+                                        ],
+                                        "env": [
+                                            {
+                                                "name": "MY_NODE_NAME",
+                                                "valueFrom": {
+                                                    "fieldRef": {
+                                                        "fieldPath": "spec.nodeName"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    }
+                                ],
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "terminationGracePeriodSeconds": 10
+                            }
+                        }
+                    }
+                }
+            },
             {
                 "deployment": {
                     "apiVersion": "extensions\/v1beta1",
@@ -914,7 +986,7 @@
                     }
                 },
                 "family": "spark-master",
-		"portTypes": [
+                "portTypes": [
                     0,
                     1
                 ]

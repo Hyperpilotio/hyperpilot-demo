@@ -96,16 +96,16 @@
     "kubernetes": {
         "secrets": [
             {
-              "apiVersion": "v1",
-              "kind": "Secret",
-              "metadata": {
-                "name": "myregistrykey",
-                "namespace": "hyperpilot"
-              },
-              "type": "kubernetes.io/dockerconfigjson",
-              "data": {
-                ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmREcG9lWEJsY2pFeU13PT0iCgkJfQoJfQp9"
-              }
+                "apiVersion": "v1",
+                "kind": "Secret",
+                "metadata": {
+                    "name": "myregistrykey",
+                    "namespace": "hyperpilot"
+                },
+                "type": "kubernetes.io\/dockerconfigjson",
+                "data": {
+                    ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmREcG9lWEJsY2pFeU13PT0iCgkJfQoJfQp9"
+                }
             }
         ],
         "taskDefinitions": [
@@ -714,7 +714,7 @@
                                         "resources": {
                                             "requests": {
                                                 "cpu": "512.0m",
-                                                "memory": "512Mi""
+                                                "memory": "512Mi"
                                             }
                                         },
                                         "args": [
@@ -883,7 +883,7 @@
                                             {
                                                 "name": "INFLUXDB_HOST",
                                                 "value": "influxsrv"
-					    },
+                                            },
                                             {
                                                 "name": "INFLUXDB_PORT",
                                                 "value": "8086"

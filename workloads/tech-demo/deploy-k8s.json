@@ -1066,7 +1066,7 @@
                                             "--cores",
                                             "3",
                                             "--memory",
-                                            "8192M",
+                                            "6144M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [

@@ -1,5 +1,12 @@
 #!/bin/bash
 
+SPARK_MASTER_PORT=7077
+SPARK_MASTER_WEBUI_PORT=8088
+INFLUXDB_HOST=influxsrv
+INFLUXDB_NAMESPACE=hyperpilot
+INFLUXDB_PORT=8086
+INFLUXDB_NAME=spark
+
 # check if spark master service is running
 SPARK_MASTER="$(hostname -i):6066"
 spark_master_no=`ps -ef | grep spark | grep master | wc -l`

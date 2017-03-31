@@ -49,10 +49,6 @@
             "id": 2
         },
         {
-            "task": "benchmark-agent",
-            "id": 2
-        },
-        {
             "task": "locust-master",
             "id": 1
         },
@@ -170,73 +166,6 @@
                         }
                     }
                 }
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "benchmark-agent"
-                        },
-                        "name": "benchmark-agent",
-                        "namespace": "hyperpilot"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "benchmark-agent"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "benchmark-agent"
-                                }
-                            },
-                            "spec": {
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/benchmark-agent",
-                                        "name": "benchmark-agent",
-                                        "ports": [
-                                            {
-                                                "containerPort": 6001,
-                                                "hostPort": 6001,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "150Mi"
-                                            }
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/var\/run\/docker.sock",
-                                                "name": "docker-sock"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/var\/run\/docker.sock"
-                                        },
-                                        "name": "docker-sock"
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "benchmark-agent",
-                "portTypes": [
-                    1
-                ]
             },
             {
                 "deployment": {
@@ -508,7 +437,7 @@
                                             },
                                             {
                                                 "name": "PRE_CREATE_DB",
-                                                "value": "snap"
+                                                "value": "snap;spark"
                                             },
                                             {
                                                 "name": "INFLUXDB_INIT_PWD",
@@ -532,7 +461,7 @@
                                         "resources": {
                                             "limits": {
                                                 "cpu": "512m",
-                                                "memory": "300Mi"
+                                                "memory": "1024Mi"
                                             }
                                         }
                                     }
@@ -782,6 +711,12 @@
                             "spec": {
                                 "containers": [
                                     {
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "512Mi""
+                                            }
+                                        },
                                         "args": [
                                             "--master",
                                             "--host=http:\/\/goddd.default:8080",
@@ -810,12 +745,6 @@
                                                 "protocol": "TCP"
                                             }
                                         ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "125.0m",
-                                                "memory": "150Mi"
-                                            }
-                                        },
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/locust_file",
@@ -881,7 +810,7 @@
                                         "resources": {
                                             "limits": {
                                                 "cpu": "512.0m",
-                                                "memory": "300Mi"
+                                                "memory": "512Mi"
                                             }
                                         },
                                         "volumeMounts": [
@@ -1052,7 +981,7 @@
                                                 "name": "core-site"
                                             }
                                         ],
-                                        "image": "gettyimages\/spark:2.1.0-hadoop-2.7",
+                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
                                         "name": "spark-worker",
                                         "env": [
                                             {

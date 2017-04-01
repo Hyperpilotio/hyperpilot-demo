@@ -894,7 +894,7 @@
                                             },
                                             {
                                                 "name": "INFLUXDB_NAME",
-                                                "value": "snap"
+                                                "value": "spark"
                                             },
                                             {
                                                 "name": "INFLUXDB_USER",

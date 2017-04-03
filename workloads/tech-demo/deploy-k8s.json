@@ -726,6 +726,7 @@
                                             "-f",
                                             "\/locust_file\/locustfile.py"
                                         ],
+                                        "imagePullPolicy": "Always",
                                         "image": "hyperpilot\/locust",
                                         "name": "locust-master",
                                         "ports": [
@@ -805,10 +806,11 @@
                                             "-f",
                                             "\/locust_file\/locustfile.py"
                                         ],
+                                        "imagePullPolicy": "Always",
                                         "image": "hyperpilot\/locust",
                                         "name": "locust-slave",
                                         "resources": {
-                                            "limits": {
+                                            "requests": {
                                                 "cpu": "512.0m",
                                                 "memory": "512Mi"
                                             }

@@ -39,6 +39,7 @@ Important port numbers:
 * Influx 8086
 * spark-master 7077
 
-
+To get the key
+`curl localhost:7777/v1/deployments/<deployment-name>/ssh_key
 
 

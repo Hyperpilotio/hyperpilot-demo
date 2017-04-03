@@ -1,5 +1,5 @@
 {
-    "name": "tech-demo2",
+    "name": "tech-demo",
     "region": "us-east-1",
     "files": [
         {
@@ -49,10 +49,6 @@
             "id": 2
         },
         {
-            "task": "benchmark-agent",
-            "id": 2
-        },
-        {
             "task": "locust-master",
             "id": 1
         },
@@ -98,53 +94,56 @@
         ]
     },
     "kubernetes": {
+        "secrets": [
+            {
+                "apiVersion": "v1",
+                "kind": "Secret",
+                "metadata": {
+                    "name": "myregistrykey",
+                    "namespace": "hyperpilot"
+                },
+                "type": "kubernetes.io\/dockerconfigjson",
+                "data": {
+                    ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmREcG9lWEJsY2pFeU13PT0iCgkJfQoJfQp9"
+                }
+            }
+        ],
         "taskDefinitions": [
             {
-                "deployment": {
+                "daemonset": {
                     "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
+                    "kind": "DaemonSet",
                     "metadata": {
-                        "labels": {
-                            "app": "benchmark-agent"
-                        },
-                        "name": "benchmark-agent",
+                        "name": "controller-daemonset",
                         "namespace": "hyperpilot"
                     },
                     "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "benchmark-agent"
-                            }
-                        },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "benchmark-agent"
+                                    "name": "controller-daemonset"
                                 }
                             },
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/benchmark-agent",
-                                        "name": "benchmark-agent",
-                                        "ports": [
-                                            {
-                                                "containerPort": 6001,
-                                                "hostPort": 6001,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "150Mi"
-                                            }
-                                        },
+                                        "image": "hyperpilot\/controller",
+                                        "imagePullPolicy": "Always",
+                                        "name": "controller",
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/var\/run\/docker.sock",
                                                 "name": "docker-sock"
+                                            }
+                                        ],
+                                        "env": [
+                                            {
+                                                "name": "MY_NODE_NAME",
+                                                "valueFrom": {
+                                                    "fieldRef": {
+                                                        "fieldPath": "spec.nodeName"
+                                                    }
+                                                }
                                             }
                                         ]
                                     }
@@ -156,15 +155,17 @@
                                         },
                                         "name": "docker-sock"
                                     }
-                                ]
+                                ],
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "terminationGracePeriodSeconds": 10
                             }
                         }
                     }
-                },
-                "family": "benchmark-agent",
-                "portTypes": [
-                    1
-                ]
+                }
             },
             {
                 "deployment": {
@@ -322,7 +323,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-config.s3.amazonaws.com\/init-goddd-new.json"
+                                            "https:\/\/s3.amazonaws.com\/hyperpilot-swh\/init-goddd.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -436,7 +437,7 @@
                                             },
                                             {
                                                 "name": "PRE_CREATE_DB",
-                                                "value": "snap"
+                                                "value": "snap;spark"
                                             },
                                             {
                                                 "name": "INFLUXDB_INIT_PWD",
@@ -460,7 +461,7 @@
                                         "resources": {
                                             "limits": {
                                                 "cpu": "512m",
-                                                "memory": "300Mi"
+                                                "memory": "1024Mi"
                                             }
                                         }
                                     }
@@ -585,7 +586,7 @@
                                         "name": "pathfinder",
                                         "env": [
                                             {
-                                                "value": "http:\/\/influxsrv:8086",
+                                                "value": "http:\/\/influxsrv.hyperpilot:8086",
                                                 "name": "INFLUXDB_URL"
                                             },
                                             {
@@ -710,6 +711,12 @@
                             "spec": {
                                 "containers": [
                                     {
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "512Mi"
+                                            }
+                                        },
                                         "args": [
                                             "--master",
                                             "--host=http:\/\/goddd.default:8080",
@@ -738,12 +745,6 @@
                                                 "protocol": "TCP"
                                             }
                                         ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "125.0m",
-                                                "memory": "150Mi"
-                                            }
-                                        },
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/locust_file",
@@ -809,7 +810,7 @@
                                         "resources": {
                                             "limits": {
                                                 "cpu": "512.0m",
-                                                "memory": "300Mi"
+                                                "memory": "512Mi"
                                             }
                                         },
                                         "volumeMounts": [
@@ -868,7 +869,7 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "gettyimages\/spark:2.1.0-hadoop-2.7",
+                                        "image": "hyperpilot\/spark-load-controller",
                                         "name": "spark-master",
                                         "env": [
                                             {
@@ -878,6 +879,30 @@
                                             {
                                                 "name": "SPARK_MASTER_WEBUI_PORT",
                                                 "value": "8088"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_HOST",
+                                                "value": "influxsrv"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_PORT",
+                                                "value": "8086"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_NAMESPACE",
+                                                "value": "hyperpilot"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_NAME",
+                                                "value": "spark"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_USER",
+                                                "value": "root"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_PASS",
+                                                "value": "default"
                                             }
                                         ],
                                         "volumeMounts": [
@@ -885,10 +910,6 @@
                                                 "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
                                                 "name": "core-site"
                                             }
-                                        ],
-                                        "command": [
-                                            "bin\/spark-class",
-                                            "org.apache.spark.deploy.master.Master"
                                         ],
                                         "ports": [
                                             {
@@ -914,7 +935,7 @@
                     }
                 },
                 "family": "spark-master",
-		"portTypes": [
+                "portTypes": [
                     0,
                     1
                 ]
@@ -960,7 +981,7 @@
                                                 "name": "core-site"
                                             }
                                         ],
-                                        "image": "gettyimages\/spark:2.1.0-hadoop-2.7",
+                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
                                         "name": "spark-worker",
                                         "env": [
                                             {
@@ -972,9 +993,9 @@
                                             "bin\/spark-class",
                                             "org.apache.spark.deploy.worker.Worker",
                                             "--cores",
-                                            "2",
+                                            "3",
                                             "--memory",
-                                            "4196M",
+                                            "6144M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [

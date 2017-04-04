@@ -501,8 +501,12 @@
                                     {
                                         "env": [
                                             {
-                                                "name": "INFLUXDB_NAME",
+                                                "name": "INFLUXDB_NAME_SNAP",
                                                 "value": "snap"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_NAME_SPARK",
+                                                "value": "spark"
                                             },
                                             {
                                                 "name": "INFLUXDB_HOST",
@@ -525,11 +529,12 @@
                                                 "value": "grafana-clock-panel,grafana-piechart-panel"
                                             }
                                         ],
-                                        "image": "adrianliaw\/grafana:hyperpilot",
+                                        "image": "hyperpilot\/grafana-test",
                                         "name": "grafana",
                                         "args": [
                                             "--repo=https:\/\/107.178.222.220\/api\/plugins"
                                         ],
+					"imagePullPolicy": "Always",
                                         "ports": [
                                             {
                                                 "containerPort": 3000,
@@ -663,7 +668,8 @@
                                         ],
                                         "image": "hyperpilot\/goddd",
                                         "name": "goddd",
-                                        "ports": [
+                                        "imagePullPolicy": "Always",
+					"ports": [
                                             {
                                                 "containerPort": 8080,
                                                 "hostPort": 8080,

@@ -8,6 +8,14 @@
         "type": "datasource",
         "pluginId": "influxdb",
         "pluginName": "InfluxDB"
+      },
+      {
+        "name": "DS_SPARK",
+        "label": "spark",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "influxdb",
+        "pluginName": "InfluxDB"
       }
     ],
     "__requires": [
@@ -317,7 +325,7 @@
             "renderer": "flot",
             "repeat": null,
             "seriesOverrides": [],
-            "span": 12,
+            "span": 6,
             "stack": false,
             "steppedLine": false,
             "targets": [
@@ -398,7 +406,116 @@
                 "show": false
               }
             ]
-          }
+          },
+          {
+	    "aliasColors": {},
+	    "bars": false,
+	    "datasource": "${DS_SPARK}",
+	    "fill": 1,
+	    "id": 4,
+	    "interval": ">300s",
+	    "legend": {
+	      "avg": false,
+	      "current": false,
+	      "max": false,
+	      "min": false,
+	      "show": false,
+              "total": false,
+	      "values": false
+            },
+            "lines": true,
+	    "linewidth": 1,
+	    "links": [],
+	    "minSpan": 12,
+	    "nullPointMode": "connected",
+	    "percentage": false,
+	    "pointradius": 5,
+            "points": false,
+	    "renderer": "flot",
+	    "seriesOverrides": [],
+	    "span": 6,
+	    "stack": false,
+	    "steppedLine": false,
+	    "targets": [
+	      {
+	        "dsType": "influxdb",
+	        "groupBy": [
+	          {
+	            "params": [
+		      "$interval"
+		    ],
+		    "type": "time"
+		  },
+	  	  {
+		    "params": [
+	              "0"
+                    ],
+		    "type": "fill"
+		  }
+	        ],
+	        "hide": false,
+	        "measurement": "hyperpilot/spark/spark_jobs_finished",
+	        "policy": "autogen",
+	        "refId": "A",
+	        "resultFormat": "time_series",
+	        "select": [
+		  [
+		    {
+		      "params": [
+		        "value"
+		      ],
+		      "type": "field"
+		    },
+		    {
+		      "params": [],
+		      "type": "sum"
+		    }
+	    	  ]
+	        ],
+	        "tags": [
+		  {
+		    "key": "status",
+	  	    "operator": "=",
+		    "value": "FINISHED"
+		  }
+	        ]
+	      }
+	    ],
+	    "thresholds": [],
+	    "timeFrom": null,
+	    "timeShift": null,
+	    "title": "#Spark Jobs Finished (every 5m)",
+  	    "tooltip": {
+	      "shared": true,
+	      "sort": 0,
+	      "value_type": "individual"
+	    },
+	    "type": "graph",
+	    "xaxis": {
+	      "mode": "time",
+	      "name": null,
+	      "show": true,
+	      "values": []
+	    },
+	    "yaxes": [
+	      {
+	        "format": "none",
+	        "label": null,
+	        "logBase": 1,
+	        "max": null,
+	        "min": null,
+	        "show": true
+	      },
+	      {
+	        "format": "short",
+	        "label": null,
+	        "logBase": 1,
+	        "max": null,
+	        "min": null,
+	        "show": false 
+	      }
+	    ]
+	  }
         ],
         "repeat": null,
         "repeatIteration": null,
@@ -445,7 +562,7 @@
     },
     "timezone": "browser",
     "title": "Hyperpilot Demo",
-    "version": 12
+    "version": 13
   },
   "inputs": [
     {
@@ -453,6 +570,12 @@
       "pluginId": "influxdb",
       "type": "datasource",
       "value": "snap"
+    },
+    {
+      "name": "DS_SPARK",
+      "pluginId": "influxdb",
+      "type": "datasource",
+      "value": "spark"
     }
   ]
 }

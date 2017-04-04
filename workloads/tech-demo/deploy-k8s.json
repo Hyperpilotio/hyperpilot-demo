@@ -323,7 +323,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/s3.amazonaws.com\/hyperpilot-swh\/init-goddd.json"
+                                            "https:\/\/hyperpilot-snap-collectors.s3.amazonaws.com\/init-goddd.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -666,7 +666,7 @@
                                                 "value": "goddd"
                                             }
                                         ],
-                                        "image": "hyperpilot\/goddd",
+                                        "image": "hyperpilot\/goddd:window",
                                         "name": "goddd",
                                         "imagePullPolicy": "Always",
 					"ports": [

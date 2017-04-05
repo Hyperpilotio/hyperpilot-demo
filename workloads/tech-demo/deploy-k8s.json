@@ -130,6 +130,9 @@
                                         "image": "hyperpilot\/controller",
                                         "imagePullPolicy": "Always",
                                         "name": "controller",
+                                        "securityContext": {
+                                            "privileged": true
+                                        },
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/var\/run\/docker.sock",

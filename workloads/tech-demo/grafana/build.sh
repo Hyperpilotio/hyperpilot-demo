@@ -3,4 +3,4 @@
 export GOOS=linux
 export GOARCH=amd64
 go build -o config-ds
-docker build -t adrianliaw/grafana:hyperpilot .
+docker build -t hyperpilot/grafana-test .

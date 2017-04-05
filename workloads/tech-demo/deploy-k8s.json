@@ -323,7 +323,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/s3.amazonaws.com\/hyperpilot-swh\/init-goddd.json"
+                                            "https:\/\/hyperpilot-snap-collectors.s3.amazonaws.com\/init-goddd.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -501,8 +501,12 @@
                                     {
                                         "env": [
                                             {
-                                                "name": "INFLUXDB_NAME",
+                                                "name": "INFLUXDB_NAME_SNAP",
                                                 "value": "snap"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_NAME_SPARK",
+                                                "value": "spark"
                                             },
                                             {
                                                 "name": "INFLUXDB_HOST",
@@ -525,11 +529,12 @@
                                                 "value": "grafana-clock-panel,grafana-piechart-panel"
                                             }
                                         ],
-                                        "image": "adrianliaw\/grafana:hyperpilot",
+                                        "image": "hyperpilot\/grafana-test",
                                         "name": "grafana",
                                         "args": [
                                             "--repo=https:\/\/107.178.222.220\/api\/plugins"
                                         ],
+					"imagePullPolicy": "Always",
                                         "ports": [
                                             {
                                                 "containerPort": 3000,
@@ -661,9 +666,10 @@
                                                 "value": "goddd"
                                             }
                                         ],
-                                        "image": "hyperpilot\/goddd",
+                                        "image": "hyperpilot\/goddd:window",
                                         "name": "goddd",
-                                        "ports": [
+                                        "imagePullPolicy": "Always",
+					"ports": [
                                             {
                                                 "containerPort": 8080,
                                                 "hostPort": 8080,
@@ -726,6 +732,7 @@
                                             "-f",
                                             "\/locust_file\/locustfile.py"
                                         ],
+                                        "imagePullPolicy": "Always",
                                         "image": "hyperpilot\/locust",
                                         "name": "locust-master",
                                         "ports": [
@@ -805,10 +812,11 @@
                                             "-f",
                                             "\/locust_file\/locustfile.py"
                                         ],
+                                        "imagePullPolicy": "Always",
                                         "image": "hyperpilot\/locust",
                                         "name": "locust-slave",
                                         "resources": {
-                                            "limits": {
+                                            "requests": {
                                                 "cpu": "512.0m",
                                                 "memory": "512Mi"
                                             }

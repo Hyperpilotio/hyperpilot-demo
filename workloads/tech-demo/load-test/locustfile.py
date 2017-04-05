@@ -45,7 +45,8 @@ class StaticTasks(TaskSet):
     @task
     def create_route_delete_cargo(self):
         tracking_id = self.book_new_cargo()
-        self.route_cargo(tracking_id)
+        if random.randint(0, 2) == 0:
+            self.route_cargo(tracking_id)
         self.delete_cargo(tracking_id)
 
     @task

@@ -1,34 +1,18 @@
 #!/bin/bash
 
-SPARK_MASTER_PORT=7077
-SPARK_MASTER_WEBUI_PORT=8088
+SPARK_MASTER=spark-master:7077
 INFLUXDB_HOST=influxsrv
 INFLUXDB_NAMESPACE=hyperpilot
 INFLUXDB_PORT=8086
 INFLUXDB_NAME=spark
 
-# check if spark master service is running
-SPARK_MASTER="$(hostname -i):6066"
-spark_master_no=`ps -ef | grep spark | grep master | wc -l`
-if [ $spark_master_no -eq 0 ]; then
-        echo Spark master service is NOT RUNNING
-        exit
-else
-        echo Spark master service is RUNNING at ${SPARK_MASTER}.
-fi
-
 INFLUXDB_URL=http://${INFLUXDB_HOST}.${INFLUXDB_NAMESPACE}:${INFLUXDB_PORT}
 
-if [ $# -gt 0 ]; then
-        JOB_LIMIT=$1
-else
-        JOB_LIMIT=10
-fi
 count=1
 jobs_finished=0
 
 # continuously submit jobs to the spark master
-until [ $count -gt $JOB_LIMIT ]; do
+while true; do
         echo Submitting spark job no. $count
         ./bin/spark-submit --master=spark://$SPARK_MASTER --deploy-mode=cluster --executor-memory 1g --driver-memory 2g --class MovieLensALS s3://hyperpilot-jarfiles/movielens-als-assembly-2.11-0.1.jar s3://demo-analysis-datasets/movielens/medium/ s3://demo-analysis-datasets/personalRatings.txt 2>job.out
         job_id=`cat job.out | grep submissionId | cut -d":" -f2 | cut -d "\"" -f2`
@@ -57,7 +41,5 @@ until [ $count -gt $JOB_LIMIT ]; do
                 fi
 
                 echo Number of finished spark jobs = $jobs_finished
-
-                sleep 10
         done
 done

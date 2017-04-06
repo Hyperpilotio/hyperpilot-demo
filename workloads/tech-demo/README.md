@@ -4,10 +4,14 @@
 # a microservice environment (goddd + mongo + pathfinder)
 ./deploy-k8s.sh
 
-# Watch utilization and latency stats with grafana
-GRAFANA_HOST=`kubectl -n hyperpilot describe services grafana-publicport0 | grep elb | cut -d":" -f2 | xargs`
+# See Demo UI & Watch utilization and latency stats with Grafana
+```
+DEMO_UI_HOST=`kubectl -n hyperpilot describe services demo-ui-publicport0 | grep elb | cut -d ":" -f2 | xargs`
 
-echo "Grafana is running at http://$GRAFANA_HOST:3000, login with admin:admin"
+echo "Grafana is running at http://$DEMO_UI_HOST:8080/grafana/, login with admin:admin"
+echo "Demo UI is running at http://$DEMO_UI_HOST:8080/, make sure to login to Grafana before you can see the embedded Grafana"
+```
+
 
 # Start the load traffic pod to goddd
 kubectl create -f load-controller-deployment.json

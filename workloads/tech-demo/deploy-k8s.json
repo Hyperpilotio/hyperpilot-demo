@@ -537,7 +537,7 @@
                                             },
                                             {
                                                 "name": "GF_SERVER_ROOT_URL",
-                                                "value": "/grafana"
+                                                "value": "\/grafana"
                                             }
                                         ],
                                         "image": "hyperpilot\/grafana-test",
@@ -545,7 +545,7 @@
                                         "args": [
                                             "--repo=https:\/\/107.178.222.220\/api\/plugins"
                                         ],
-					"imagePullPolicy": "Always",
+                                        "imagePullPolicy": "Always",
                                         "ports": [
                                             {
                                                 "containerPort": 3000,
@@ -734,7 +734,7 @@
                                         "image": "hyperpilot\/goddd:window",
                                         "name": "goddd",
                                         "imagePullPolicy": "Always",
-					"ports": [
+                                        "ports": [
                                             {
                                                 "containerPort": 8080,
                                                 "hostPort": 8080,
@@ -942,7 +942,7 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/spark-load-controller",
+                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
                                         "name": "spark-master",
                                         "env": [
                                             {

@@ -8,11 +8,4 @@ COPY demo-dashboard-default.json /var/lib/grafana/initial/demo-dashboard-default
 COPY config-ds /var/lib/grafana/initial/config-ds
 COPY run.sh /run.sh
 
-ENV SNAP_DS_NAME snap
-ENV SPARK_DS_NAME spark
-ENV INFLUXDB_HOST localhost
-ENV INFLUXDB_PORT 8086
-ENV INFLUXDB_USER root
-ENV INFLUXDB_PASS root
-ENV INFLUXDB_NAME_SNAP snap
-ENV INFLUXDB_NAME_SPARK spark
+ENV SNAP_DS_NAME=snap SPARK_DS_NAME=spark INFLUXDB_HOST=influxsrv.hyperpilot INFLUXDB_PORT=8086 INFLUXDB_USER=root INFLUXDB_PASS=root INFLUXDB_NAME_SNAP=snap INFLUXDB_NAME_SPARK=spark

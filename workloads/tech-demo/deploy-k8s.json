@@ -540,11 +540,8 @@
                                                 "value": "\/grafana"
                                             }
                                         ],
-                                        "image": "hyperpilot\/grafana-test",
+                                        "image": "hyperpilot\/tech-demo-grafana",
                                         "name": "grafana",
-                                        "args": [
-                                            "--repo=https:\/\/107.178.222.220\/api\/plugins"
-                                        ],
                                         "imagePullPolicy": "Always",
                                         "ports": [
                                             {
@@ -986,13 +983,18 @@
                                         ],
                                         "ports": [
                                             {
-                                                "containerPort": 6066,
-                                                "hostPort": 6066,
+                                                "containerPort": 7077,
+                                                "hostPort": 7077,
                                                 "protocol": "TCP"
                                             },
                                             {
                                                 "containerPort": 8088,
                                                 "hostPort": 8088,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 6066,
+                                                "hostPort": 6066,
                                                 "protocol": "TCP"
                                             }
                                         ],
@@ -1010,7 +1012,8 @@
                 "family": "spark-master",
                 "portTypes": [
                     0,
-                    1
+                    1,
+                    0
                 ]
             },
             {

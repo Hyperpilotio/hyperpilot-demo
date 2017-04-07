@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SPARK_MASTER=spark-master.default:7077
+SPARK_MASTER=spark-master.default:6066
 INFLUXDB_HOST=influxsrv
 INFLUXDB_NAMESPACE=hyperpilot
 INFLUXDB_PORT=8086

@@ -37,6 +37,7 @@ while true; do
                                 fi
                         else
                                 echo Spark submission $job_id is still running
+                                sleep 10
                         fi
                 fi
 

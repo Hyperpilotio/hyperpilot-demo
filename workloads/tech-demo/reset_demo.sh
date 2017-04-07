@@ -2,7 +2,7 @@
 
 DEPLOYMENT_NAME=$1
 
-if [ -n $1 ]; then
+if [ -z "$1" ]; then
     DEPLOYMENT_NAME=`kubectl get nodes --show-labels | grep deployment | tr "," "\n" | grep deployment | head -n 1 | cut -d"=" -f2`
 
     if [ -z "$DEPLOYMENT_NAME" ]; then

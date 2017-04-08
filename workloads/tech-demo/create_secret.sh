@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export DOCKER_REGISTRY_SERVER=https://index.docker.io/v1/
-export DOCKER_USER=hyperpilot
+export DOCKER_USER=hyperpilotuser
 export DOCKER_EMAIL=tim@hyperpilot.io
 export DOCKER_PASSWORD=hyper123
 

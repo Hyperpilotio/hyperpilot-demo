@@ -537,15 +537,12 @@
                                             },
                                             {
                                                 "name": "GF_SERVER_ROOT_URL",
-                                                "value": "/grafana"
+                                                "value": "\/grafana"
                                             }
                                         ],
-                                        "image": "hyperpilot\/grafana-test",
+                                        "image": "hyperpilot\/tech-demo-grafana",
                                         "name": "grafana",
-                                        "args": [
-                                            "--repo=https:\/\/107.178.222.220\/api\/plugins"
-                                        ],
-					"imagePullPolicy": "Always",
+                                        "imagePullPolicy": "Always",
                                         "ports": [
                                             {
                                                 "containerPort": 3000,
@@ -734,7 +731,7 @@
                                         "image": "hyperpilot\/goddd:window",
                                         "name": "goddd",
                                         "imagePullPolicy": "Always",
-					"ports": [
+                                        "ports": [
                                             {
                                                 "containerPort": 8080,
                                                 "hostPort": 8080,
@@ -942,7 +939,7 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/spark-load-controller",
+                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
                                         "name": "spark-master",
                                         "env": [
                                             {
@@ -994,6 +991,11 @@
                                                 "containerPort": 8088,
                                                 "hostPort": 8088,
                                                 "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 6066,
+                                                "hostPort": 6066,
+                                                "protocol": "TCP"
                                             }
                                         ],
                                         "resources": {
@@ -1010,7 +1012,8 @@
                 "family": "spark-master",
                 "portTypes": [
                     0,
-                    1
+                    1,
+                    0
                 ]
             },
             {

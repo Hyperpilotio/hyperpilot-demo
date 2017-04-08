@@ -1,0 +1,41 @@
+{
+    "apiVersion": "extensions\/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "app": "spark-load-controller",
+            "version": "latest"
+        },
+        "name": "spark-load-controller",
+        "namespace": "hyperpilot"
+    },
+    "spec": {
+        "replicas": 1,
+        "selector": {
+            "matchLabels": {
+                "app": "spark-load-controller",
+                "version": "latest"
+            }
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "app": "spark-load-controller",
+                    "version": "latest"
+                }
+            },
+            "spec": {
+                "nodeSelector": {
+                    "hyperpilot/node-id": "1"
+                },
+                "containers": [
+                    {
+                        "image": "hyperpilot\/spark-load-controller",
+                        "name": "sparkload-controller",
+                        "imagePullPolicy": "Always"
+                    }
+                ]
+            }
+        }
+    }
+}

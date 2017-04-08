@@ -210,7 +210,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-config.s3.amazonaws.com\/init.json"
+                                            "https:\/\/hyperpilot-snap-collectors.s3.amazonaws.com\/init.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -1037,7 +1037,8 @@
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "spark-worker"
+                                    "app": "spark-worker",
+                                    "hyperpilot/wclass": "BE"
                                 }
                             },
                             "spec": {

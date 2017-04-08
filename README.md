@@ -20,6 +20,9 @@ If needed, edit deploy.json.
 To get the config file
 `curl localhost:7777/v1/deployments/<stack-name>/kubeconfig`
 
+To get the key
+`curl localhost:7777/v1/deployments/<deployment-name>/ssh_key`
+
 To deploy a K8S dashboard 
 `kubectl create -f https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml`
 
@@ -38,8 +41,5 @@ Important port numbers:
 * Locust-master 8089
 * Influx 8086
 * spark-master 7077
-
-To get the key
-`curl localhost:7777/v1/deployments/<deployment-name>/ssh_key
 
 

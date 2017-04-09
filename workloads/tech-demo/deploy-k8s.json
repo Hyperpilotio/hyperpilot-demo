@@ -141,6 +141,10 @@
                                             {
                                                 "mountPath": "\/var\/run\/docker.sock",
                                                 "name": "docker-sock"
+                                            },
+                                            {
+                                                "mountPath": "\/var\/run\/command.sock",
+                                                "name": "command-sock"
                                             }
                                         ],
                                         "env": [
@@ -161,6 +165,12 @@
                                             "path": "\/var\/run\/docker.sock"
                                         },
                                         "name": "docker-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/command.sock"
+                                        },
+                                        "name": "command-sock"
                                     }
                                 ],
                                 "imagePullSecrets": [

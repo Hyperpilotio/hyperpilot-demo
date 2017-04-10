@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 JQ_CHECK=`which jq`
-if ["$JQ_CHECK" == ""]; then
+if [ "$JQ_CHECK" == "" ]; then
     echo "Please install jq before running deployment (sudo apt-get install jq, or brew install jq)"
     exit 1
 fi

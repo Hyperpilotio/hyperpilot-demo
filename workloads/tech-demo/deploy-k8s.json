@@ -798,9 +798,6 @@
                                         "args": [
                                             "--master",
                                             "--host=http:\/\/goddd.default:8080",
-                                            "--consumer",
-                                            "--consumer-influx-endpoint=influxsrv:8086",
-                                            "--consumer-influx-db=locust_results",
                                             "-f",
                                             "\/locust_file\/locustfile.py"
                                         ],

@@ -20,7 +20,7 @@ kubectl get daemonsets -n hyperpilot | tail -n +2 | cut -d" " -f1 | xargs kubect
 kubectl get deployments | tail -n +2 | cut -d" " -f1 | xargs kubectl delete deployments
 kubectl get deployments -n hyperpilot | tail -n +2 | cut -d" " -f1 | xargs kubectl delete -n hyperpilot deployments
 
-kubectl get services | tail -n +2 | cut -d" " -f1 | xargs kubectl delete services
+kubectl get services | tail -n +2 | grep -v kubernetes | cut -d" " -f1 | xargs kubectl delete services
 kubectl get services -n hyperpilot | tail -n +2 | cut -d" " -f1 | xargs kubectl delete -n hyperpilot services
 
 curl -XPUT localhost:7777/v1/deployments/$DEPLOYMENT_NAME --data-binary @deploy-k8s.json

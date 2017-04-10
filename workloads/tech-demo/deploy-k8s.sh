@@ -11,7 +11,8 @@ RESPONSE=$TEMPDIR/response.json
 
 curl -XPOST localhost:7777/v1/files/tech_demo_load_test -F upload=@load-test/locustfile.py
 curl -XPOST localhost:7777/v1/files/tech_demo_core_site_xml -F upload=@core-site.xml
-curl -s -XPOST localhost:7777/v1/deployments --data-binary @deploy-k8s.json > $RESPONSE
+curl -s -XPOST localhost:7777/v1/deployments \
+    --data-binary @deploy-k8s.json > $RESPONSE
 
 ERROR=`cat $RESPONSE | jq .error`
 if [ "$ERROR" != "false" ]; then

@@ -14,7 +14,7 @@ jobs_finished=0
 # continuously submit jobs to the spark master
 while true; do
         echo Submitting spark job no. $count
-        ./bin/spark-submit --master=spark://$SPARK_MASTER --deploy-mode=cluster --executor-memory 1g --driver-memory 2g --class MovieLensALS s3://hyperpilot-jarfiles/movielens-als-assembly-2.11-0.1.jar s3://demo-analysis-datasets/movielens/medium/ s3://demo-analysis-datasets/personalRatings.txt 2>job.out
+        ./bin/spark-submit --master=spark://$SPARK_MASTER --deploy-mode=cluster --executor-memory 1g --driver-memory 2g --class MovieLensALS s3://hyperpilot-jarfiles/movielens-als-assembly-2.11-0.1.jar s3://demo-analysis-datasets/movielens/large/ s3://demo-analysis-datasets/personalRatings.txt 2>job.out
         job_id=`cat job.out | grep submissionId | cut -d":" -f2 | cut -d "\"" -f2`
         echo Spark submission $job_id is submitted
 

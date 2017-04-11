@@ -703,7 +703,7 @@
                     "metadata": {
                         "labels": {
                             "app": "goddd",
-                            "hyperpilot/qos": "true"
+                            "hyperpilot.io/qos": "true"
                         },
                         "name": "goddd",
                         "namespace": "default"
@@ -718,7 +718,8 @@
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "goddd"
+                                    "app": "goddd",
+                                    "hyperpilot.io/qos": "true"
                                 }
                             },
                             "spec": {
@@ -1030,7 +1031,7 @@
                     "metadata": {
                         "labels": {
                             "app": "spark-worker",
-                            "hyperpilot/wclass": "BE"
+                            "hyperpilot.io/wclass": "BE"
                         },
                         "name": "spark-worker"
                     },
@@ -1045,7 +1046,7 @@
                             "metadata": {
                                 "labels": {
                                     "app": "spark-worker",
-                                    "hyperpilot/wclass": "BE"
+                                    "hyperpilot.io/wclass": "BE"
                                 }
                             },
                             "spec": {

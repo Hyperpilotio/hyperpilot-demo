@@ -1047,6 +1047,9 @@
                                 "labels": {
                                     "app": "spark-worker",
                                     "hyperpilot.io/wclass": "BE"
+                                },
+                                "annotations": {
+                                    "scheduler.alpha.kubernetes.io/affinity": "{\n                                        \"nodeAffinity\": {\n                                            \"requiredDuringSchedulingIgnoredDuringExecution\": {\n                                                \"nodeSelectorTerms\": [\n                                                    {\n                                                        \"matchExpressions\": [\n                                                            {\n                                                                \"key\": \"hyperpilot.io\/be-enabled\",\n                                                                \"operator\": \"In\",\n                                                                \"values\": [\n                                                                    \"true\"\n                                                                ]\n                                                            }\n                                                        ]\n                                                    }\n                                                ]\n                                            }\n                                        }\n                                    }"
                                 }
                             },
                             "spec": {

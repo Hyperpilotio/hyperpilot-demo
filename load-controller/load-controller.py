@@ -47,25 +47,19 @@ class SwarmThread(Thread):
         is_low_count = True
         self.done = False
         while not self.done:
-            start = time.time()
             if is_low_count:
                 print("Setting swarm to low count " + str(self.hlConfig.low_count))
                 self.hlConfig.swarm(self.hlConfig.low_count, self.hlConfig.low_count)
                 print("Sleeping for " + str(self.hlConfig.low_duration_seconds) + " seconds")
-                while not self.done:
-                    time.sleep(0.05)
-                    if (time.time() - start > self.hlConfig.low_duration_seconds):
-                        is_low_count = not is_low_count
-                        break
+                wait(self.hlConfig.sThread, self.hlConfig.low_duration_seconds)
             else: # high_count
                 print("Setting swarm to high count " + str(self.hlConfig.high_count))
                 self.hlConfig.swarm(self.hlConfig.high_count, self.hlConfig.low_count)
                 print("Sleeping for " + str(self.hlConfig.high_duration_seconds) + " seconds")
-                while not self.done:
-                    time.sleep(0.05)
-                    if (time.time() - start > self.hlConfig.high_duration_seconds):
-                        is_low_count = not is_low_count
-                        break
+                wait(self.hlConfig.sThread, self.hlConfig.high_duration_seconds)
+
+            is_low_count = not is_low_count
+
 
 
 
@@ -129,8 +123,12 @@ def download_url(url):
     urllib.urlretrieve(url, local_path)
     return local_path
 
-def sleep(duration):
-    pass
+def wait(sThread, duration):
+    start = time.time()
+    while not sThread.done:
+        time.sleep(0.05)
+        if (time.time() - start > duration):
+            break
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):

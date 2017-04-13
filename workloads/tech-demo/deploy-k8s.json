@@ -542,8 +542,8 @@
                                                 "value": "default"
                                             },
                                             {
-                                                "name": "GF_INSTALL_PLUGINS",
-                                                "value": "grafana-clock-panel,grafana-piechart-panel"
+                                                "name": "GF_AUTH_ANONYMOUS_ENABLED",
+                                                "value": "true"
                                             },
                                             {
                                                 "name": "GF_SERVER_ROOT_URL",

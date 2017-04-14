@@ -56,7 +56,7 @@ func writeDashboardSources(source string, target string) {
 }
 
 func main() {
-	writeDatasource("spark-influx-datasource-default.json", "spark-influx-datasource.json", os.Getenv("INFLUXDB_NAME_SNAP"))
+	writeDatasource("snap-influx-datasource-default.json", "snap-influx-datasource.json", os.Getenv("INFLUXDB_NAME_SNAP"))
 	writeDatasource("spark-influx-datasource-default.json", "spark-influx-datasource.json", os.Getenv("INFLUXDB_NAME_SPARK"))
 	writeDashboardSources("demo-dashboard-default.json", "demo-dashboard.json")
 	writeDashboardSources("internal-dashboard-default.json", "internal-dashboard.json")

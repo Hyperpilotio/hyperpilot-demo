@@ -4,10 +4,22 @@ import time
 import uuid
 import requests
 import urllib
+import signal
+import threading
 
 from optparse import OptionParser
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-from threading import Thread
+
+class Terminator:
+  kill_now = False
+  def __init__(self, httpd):
+    signal.signal(signal.SIGINT, self.exit)
+    signal.signal(signal.SIGTERM, self.exit)
+    self.httpd = httpd
+
+  def exit(self, signum, frame):
+    self.kill_now = True
+    self.httpd.shutdown()
 
 class SwarmController:
     def __init__(self):
@@ -37,9 +49,9 @@ swarmController = SwarmController()
 
         
 
-class SwarmThread(Thread):
+class SwarmThread(threading.Thread):
     def __init__(self, hlConfig):
-        Thread.__init__(self)
+        threading.Thread.__init__(self)
         self.hlConfig = hlConfig
         self.done = False
 
@@ -179,16 +191,16 @@ class S(BaseHTTPRequestHandler):
 
         self._set_headers()
 
-        
-def start_server(server_class=HTTPServer, handler_class=S, port=8001):
-    server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
+
+def start_server(httpd):
     print('Starting httpd...')
     httpd.serve_forever()
 
 def main():
     # Initialize
-    t = Thread(target=start_server)
+    server_address = ('', 8001)
+    httpd = HTTPServer(server_address, S)
+    t = threading.Thread(target=start_server, args = (httpd,))
     t.daemon = True
     t.start()
     parser = OptionParser(usage="locust_load_controller [options]")
@@ -236,10 +248,12 @@ def main():
         load_configuration = parse_load_configuration(opts.master_host, opts.master_port, run_id, j)
         global swarmController
         swarmController.set_config(load_configuration)
-        time.sleep(8) # wait for server to come online
         swarmController.start_swarm()
+    terminator = Terminator(httpd)
     while True:
-        pass
+        if terminator.kill_now:
+            break
+    print("\nProgram exited")
 
 if __name__ == '__main__':
     main()

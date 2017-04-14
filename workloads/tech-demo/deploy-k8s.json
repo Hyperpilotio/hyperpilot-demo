@@ -725,7 +725,11 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "env": [
+                                      "env": [
+                                            {
+                                                "name": "BOOKING_MAXAGE",
+                                                "value": "5"
+                                            },
                                             {
                                                 "name": "ROUTINGSERVICE_URL",
                                                 "value": "http:\/\/pathfinder:8080"
@@ -1103,7 +1107,7 @@
                 },
                 "portTypes": [
                     1
-                ]
+                ],
                 "family": "spark-worker"
             },
             {

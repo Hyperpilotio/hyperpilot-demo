@@ -224,8 +224,8 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "512.0m",
-                                                "memory": "1024Mi"
+                                                "cpu": "1024.0m",
+                                                "memory": "2048Mi"
                                             }
                                         },
                                         "imagePullPolicy": "Always",
@@ -344,8 +344,8 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "512.0m",
-                                                "memory": "1024Mi"
+                                                "cpu": "1024.0m",
+                                                "memory": "2048Mi"
                                             }
                                         },
                                         "imagePullPolicy": "Always",

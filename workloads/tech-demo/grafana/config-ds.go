@@ -19,7 +19,7 @@ func writeDatasource(source string, target string, influxDBName string) {
 	if err != nil {
 		panic(err)
 	}
-	dsJson.Set("Name", os.Getenv("SNAP_DS_NAME"))
+	dsJson.Set("Name", influxDBName)
 	dsJson.Set("Url", fmt.Sprintf("http://%s:%s", os.Getenv("INFLUXDB_HOST"), os.Getenv("INFLUXDB_PORT")))
 	dsJson.Set("BasicAuthUser", os.Getenv("INFLUXDB_USER"))
 	dsJson.Set("BasicAuthPassword", os.Getenv("INFLUXDB_PASS"))

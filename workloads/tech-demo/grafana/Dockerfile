@@ -2,9 +2,7 @@ FROM grafana/grafana
 
 RUN apt-get update && apt-get install -y curl
 
-COPY snap-influx-datasource-default.json /var/lib/grafana/initial/snap-influx-datasource-default.json
-COPY spark-influx-datasource-default.json /var/lib/grafana/initial/spark-influx-datasource-default.json
-COPY demo-dashboard-default.json /var/lib/grafana/initial/demo-dashboard-default.json
+COPY *.json /var/lib/grafana/initial/
 COPY config-ds /var/lib/grafana/initial/config-ds
 COPY run.sh /run.sh
 

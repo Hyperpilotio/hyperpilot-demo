@@ -604,7 +604,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "adrianliaw\/hyperpilot-demo-ui",
+                                        "image": "hyperpilot\/tech-demo-ui",
                                         "imagePullPolicy": "Always",
                                         "name": "demo-ui",
                                         "ports": [
@@ -1101,6 +1101,9 @@
                         }
                     }
                 },
+                "portTypes": [
+                    1
+                ]
                 "family": "spark-worker"
             },
             {

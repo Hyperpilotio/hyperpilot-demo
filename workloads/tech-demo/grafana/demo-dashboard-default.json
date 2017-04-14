@@ -131,7 +131,7 @@
                                 "fill": true,
                                 "line": true,
                                 "op": "gt",
-                                "value": 0.004
+                                "value": 0.3
                             }
                         ],
                         "timeFrom": null,
@@ -355,8 +355,10 @@
                                             "type": "field"
                                         },
                                         {
-                                            "params": [],
-                                            "type": "mean"
+                                            "params": [
+						90
+					    ],
+                                            "type": "percentile"
                                         }
                                     ]
                                 ],

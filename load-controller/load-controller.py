@@ -10,6 +10,7 @@ import threading
 from optparse import OptionParser
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
+
 class Terminator:
   kill_now = False
   def __init__(self, httpd):
@@ -18,8 +19,26 @@ class Terminator:
     self.httpd = httpd
 
   def exit(self, signum, frame):
-    self.kill_now = True
+    # Send Locust Stop request
+    url = 'http://{}:{}/stop'.format(swarmController.hlConfig.master_host, swarmController.hlConfig.master_port)
+    
+    successful = False
+    while not successful:
+        try:
+            r = requests.get(url)
+            if r.status_code == requests.codes.ok or r.status_code == requests.codes.accepted:
+                successful = True
+            else:
+                print("Received unexpected error code " + str(r.status_code))
+        except requests.ConnectionError as e:
+            print "Encountered error when posting to locust master: " + str(e)
+        if not successful:
+            print "Waiting 10 seconds before retry..."
+            time.sleep(10)
+            print "Retrying request..."
     self.httpd.shutdown()
+    self.kill_now = True
+
 
 class SwarmController:
     def __init__(self):

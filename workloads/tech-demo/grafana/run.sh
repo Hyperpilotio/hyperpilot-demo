@@ -54,5 +54,6 @@ sleep 10
 curl -XPOST admin:admin@localhost:3000/api/datasources -H "Content-Type: application/json" -d @/var/lib/grafana/initial/snap-influx-datasource.json
 curl -XPOST admin:admin@localhost:3000/api/datasources -H "Content-Type: application/json" -d @/var/lib/grafana/initial/spark-influx-datasource.json
 curl -XPOST admin:admin@localhost:3000/api/dashboards/import -H "Content-Type: application/json" -d @/var/lib/grafana/initial/demo-dashboard.json
+curl -XPOST admin:admin@localhost:3000/api/dashboards/import -H "Content-Type: application/json" -d @/var/lib/grafana/initial/internal-dashboard.json
 
 wait $(pidof gosu)

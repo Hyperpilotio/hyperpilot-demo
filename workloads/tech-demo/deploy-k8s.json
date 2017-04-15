@@ -747,7 +747,7 @@
                                                 "value": "goddd"
                                             }
                                         ],
-                                        "image": "hyperpilot\/goddd:window",
+                                        "image": "hyperpilot\/goddd",
                                         "name": "goddd",
                                         "imagePullPolicy": "Always",
                                         "ports": [

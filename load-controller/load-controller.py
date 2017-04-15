@@ -10,20 +10,24 @@ import threading
 from optparse import OptionParser
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
-
 class Terminator:
-  kill_now = False
   def __init__(self, httpd):
     signal.signal(signal.SIGINT, self.exit)
     signal.signal(signal.SIGTERM, self.exit)
+    self.kill_now = False
     self.httpd = httpd
 
   def exit(self, signum, frame):
     # Send Locust Stop request
+    swarmController.hlConfig.sThread.done = True
     url = 'http://{}:{}/stop'.format(swarmController.hlConfig.master_host, swarmController.hlConfig.master_port)
     
     successful = False
+    tryCount = 0
     while not successful:
+        if tryCount > 3:
+            break
+        tryCount += 1
         try:
             r = requests.get(url)
             if r.status_code == requests.codes.ok or r.status_code == requests.codes.accepted:
@@ -36,18 +40,18 @@ class Terminator:
             print "Waiting 10 seconds before retry..."
             time.sleep(10)
             print "Retrying request..."
-    self.httpd.shutdown()
     self.kill_now = True
 
+terminator = None
 
 class SwarmController:
     def __init__(self):
         pass
+
     def set_config(self, newConfig):
         self.hlConfig = newConfig
 
     def change_config(self,low_count, high_count, low_duration_seconds, high_duration_seconds):
-        #print("change_config {0} {1} {2} {3}".format(low_count, high_count, low_duration_seconds, high_duration_seconds))
         if low_count > 0:
             self.hlConfig.low_count = low_count
         if high_count > 0:
@@ -64,9 +68,10 @@ class SwarmController:
     def start_swarm(self):
         self.hlConfig.run()
 
-swarmController = SwarmController()
+    def stop_swarm(self):
+        self.hlConfig.sThread.done = True
 
-        
+swarmController = SwarmController()
 
 class SwarmThread(threading.Thread):
     def __init__(self, hlConfig):
@@ -88,7 +93,6 @@ class SwarmThread(threading.Thread):
                 self.hlConfig.swarm(self.hlConfig.high_count, self.hlConfig.low_count)
                 print("Sleeping for " + str(self.hlConfig.high_duration_seconds) + " seconds")
                 wait(self.hlConfig.sThread, self.hlConfig.high_duration_seconds)
-
             is_low_count = not is_low_count
 
 
@@ -162,17 +166,9 @@ def wait(sThread, duration):
             break
 
 class S(BaseHTTPRequestHandler):
-    def _set_headers(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
-
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
 
     def log_message(self, format, *args):
+        # so that terminal doesn't get flooded with server requests
         return
 
     def do_POST(self):
@@ -180,9 +176,8 @@ class S(BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
         if post_data == "exit":
-            self._set_headers()
-            global swarmController
-            swarmController.hlConfig.sThread.done = True
+            self.send_response(200)
+            terminator.exit(None, None)
             return
         data = json.loads(post_data)
         configChanged = False
@@ -204,12 +199,9 @@ class S(BaseHTTPRequestHandler):
             configChanged = True
         if configChanged:
             print("Restarting swarm")
-            global swarmController
             swarmController.change_config(low_count, high_count, 
                 low_duration_seconds, high_duration_seconds)
-
-        self._set_headers()
-
+        self.send_response(200)
 
 def start_server(httpd):
     print('Starting httpd...')
@@ -222,6 +214,8 @@ def main():
     t = threading.Thread(target=start_server, args = (httpd,))
     t.daemon = True
     t.start()
+    global terminator
+    terminator = Terminator(httpd)
     parser = OptionParser(usage="locust_load_controller [options]")
 
     parser.add_option(
@@ -265,12 +259,12 @@ def main():
     with open(local_load_file) as json_data:
         j = json.load(json_data)
         load_configuration = parse_load_configuration(opts.master_host, opts.master_port, run_id, j)
-        global swarmController
         swarmController.set_config(load_configuration)
         swarmController.start_swarm()
-    terminator = Terminator(httpd)
     while True:
+        time.sleep(1)
         if terminator.kill_now:
+            httpd.shutdown()
             break
     print("\nProgram exited")
 

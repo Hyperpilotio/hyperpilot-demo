@@ -24,9 +24,7 @@ class Terminator:
     
     successful = False
     tryCount = 0
-    while not successful:
-        if tryCount > 3:
-            break
+    while not successful and tryCount < 3:
         tryCount += 1
         try:
             r = requests.get(url)
@@ -37,8 +35,8 @@ class Terminator:
         except requests.ConnectionError as e:
             print "Encountered error when posting to locust master: " + str(e)
         if not successful:
-            print "Waiting 10 seconds before retry..."
-            time.sleep(10)
+            print "Waiting 2 seconds before retry..."
+            time.sleep(2)
             print "Retrying request..."
     self.kill_now = True
 
@@ -62,7 +60,6 @@ class SwarmController:
             self.hlConfig.high_duration_seconds = high_duration_seconds
         self.hlConfig.sThread.done = True
         self.hlConfig.sThread.join()
-        time.sleep(0.05)
         self.hlConfig.run()
 
     def start_swarm(self):

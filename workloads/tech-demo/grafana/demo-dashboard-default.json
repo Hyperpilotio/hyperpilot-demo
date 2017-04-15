@@ -413,7 +413,7 @@
                         "datasource": "${DS_SPARK}",
                         "fill": 1,
                         "id": 4,
-                        "interval": ">300s",
+                        "interval": ">20s",
                         "legend": {
                             "avg": false,
                             "current": false,
@@ -454,7 +454,7 @@
                                     }
                                 ],
                                 "hide": false,
-                                "measurement": "hyperpilot\/spark\/spark_jobs_finished",
+                                "measurement": "hyperpilot\/spark\/spark_running_count",
                                 "policy": "autogen",
                                 "refId": "A",
                                 "resultFormat": "time_series",
@@ -468,15 +468,15 @@
                                         },
                                         {
                                             "params": [],
-                                            "type": "sum"
+                                            "type": "last"
                                         }
                                     ]
                                 ],
                                 "tags": [
                                     {
-                                        "key": "status",
+                                        "key": "entity",
                                         "operator": "=",
-                                        "value": "FINISHED"
+                                        "value": "executor"
                                     }
                                 ]
                             }
@@ -484,7 +484,7 @@
                         "thresholds": [],
                         "timeFrom": null,
                         "timeShift": null,
-                        "title": "#Spark Jobs Finished (every 5m)",
+                        "title": "#Spark Executors Running",
                         "tooltip": {
                             "shared": true,
                             "sort": 0,

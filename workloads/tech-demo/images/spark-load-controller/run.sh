@@ -1,6 +1,8 @@
 #!/bin/bash
 
 SPARK_MASTER=spark-master.default:6066
+SPARK_WORKER=spark-worker.default:8081
+SPARK_WORKER_2=spark-worker-2.default:8081
 INFLUXDB_HOST=influxsrv
 INFLUXDB_NAMESPACE=hyperpilot
 INFLUXDB_PORT=8086
@@ -37,10 +39,25 @@ while true; do
                                 fi
                         else
                                 echo Spark submission $job_id is still running
-                                sleep 10
+				sleep 10
                         fi
                 fi
 
                 echo Number of finished spark jobs = $jobs_finished
-        done
+
+                # check number of running drivers (or jobs)
+
+		worker1_drivers=`curl http://$SPARK_WORKER/v1 | grep "Running Drivers" | cut -d"(" -f2 | cut -d")" -f1`
+		worker2_drivers=`curl http://$SPARK_WORKER_2/v1 | grep "Running Drivers" | cut -d"(" -f2 | cut -d")" -f1`
+		((total_drivers=worker1_drivers+worker2_drivers))
+		echo hyperpilot/spark/spark_running_count,entity="driver" value=$total_drivers > keyvalue_count.txt
+
+		# check number of running executors
+		worker1_executors=`curl http://$SPARK_WORKER/v1 | grep "Running Executors" | cut -d"(" -f2 | cut -d")" -f1`
+		worker2_executors=`curl http://$SPARK_WORKER_2/v1 | grep "Running Executors" | cut -d"(" -f2 | cut -d")" -f1`
+		((total_executors=worker1_executors+worker2_executors))
+		echo hyperpilot/spark/spark_running_count,entity="executor" value=$total_executors >> keyvalue_count.txt
+
+		curl -s -XPOST $INFLUXDB_URL/write?db=$INFLUXDB_NAME --data-binary @keyvalue_count.txt > /dev/null
+	done
 done

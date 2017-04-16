@@ -8,8 +8,8 @@
 ```
 DEMO_UI_HOST=`kubectl -n hyperpilot describe services demo-ui-publicport0 | grep elb | cut -d ":" -f2 | xargs`
 
-echo "Grafana is running at http://$DEMO_UI_HOST:8080/grafana/, login with admin:admin"
-echo "Demo UI is running at http://$DEMO_UI_HOST:8080/, make sure to login to Grafana before you can see the embedded Grafana"
+echo "Demo UI is running at http://$DEMO_UI_HOST:8080/"
+echo "Grafana is running at http://$DEMO_UI_HOST:8080/grafana/"
 ```
 
 

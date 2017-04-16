@@ -203,7 +203,7 @@
                                 "groupBy": [
                                     {
                                         "params": [
-                                            "$interval"
+                                            "10s"
                                         ],
                                         "type": "time"
                                     },
@@ -355,10 +355,8 @@
                                             "type": "field"
                                         },
                                         {
-                                            "params": [
-						90
-					    ],
-                                            "type": "percentile"
+                                            "params": [],
+                                            "type": "mean"
                                         }
                                     ]
                                 ],
@@ -454,7 +452,7 @@
                                     }
                                 ],
                                 "hide": false,
-                                "measurement": "hyperpilot\/spark\/spark_running_count",
+                                "measurement": "master",
                                 "policy": "autogen",
                                 "refId": "A",
                                 "resultFormat": "time_series",
@@ -462,7 +460,7 @@
                                     [
                                         {
                                             "params": [
-                                                "value"
+                                                "apps"
                                             ],
                                             "type": "field"
                                         },
@@ -472,19 +470,13 @@
                                         }
                                     ]
                                 ],
-                                "tags": [
-                                    {
-                                        "key": "entity",
-                                        "operator": "=",
-                                        "value": "executor"
-                                    }
-                                ]
+                                "tags": []
                             }
                         ],
                         "thresholds": [],
                         "timeFrom": null,
                         "timeShift": null,
-                        "title": "#Spark Executors Running",
+                        "title": "#Spark Apps Running",
                         "tooltip": {
                             "shared": true,
                             "sort": 0,
@@ -562,7 +554,7 @@
         },
         "timezone": "browser",
         "title": "Hyperpilot Demo",
-        "version": 13
+        "version": 1
     },
     "inputs": [
         {

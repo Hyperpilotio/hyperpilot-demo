@@ -18,10 +18,12 @@ class Terminator:
     self.httpd = httpd
 
   def exit(self, signum, frame):
-    # Send Locust stop request
-    swarm_controller.hl_config.s_thread.done = True
-    url = 'http://{}:{}/stop'.format(swarm_controller.hl_config.master_host, swarm_controller.hl_config.master_port)
+    print "Signal received, exiting"
 
+    # Send Locust stop request
+    swarm_controller.stop()
+
+    url = 'http://{}:{}/stop'.format(swarm_controller.hl_config.master_host, swarm_controller.hl_config.master_port)
     successful = False
     try_count = 0
     while not successful and try_count < 3:
@@ -42,29 +44,22 @@ class Terminator:
 
 class SwarmController:
     def __init__(self):
-        pass
+        self.s_thread = None
 
-    def set_config(self, new_config):
-        self.hl_config = new_config
+    def stop(self):
+        if self.s_thread is not None:
+            self.s_thread.done = True
+            self.s_thread.join()
+            self.s_thread = None
 
-    def change_config(self,low_count, high_count, low_duration_seconds, high_duration_seconds):
-        if low_count > 0:
-            self.hl_config.low_count = low_count
-        if high_count > 0:
-            self.hl_config.high_count = high_count
-        if low_duration_seconds > 0:
-            self.hl_config.low_duration_seconds = low_duration_seconds
-        if high_duration_seconds > 0:
-            self.hl_config.high_duration_seconds = high_duration_seconds
-        self.hl_config.s_thread.done = True
-        self.hl_config.s_thread.join()
-        self.hl_config.run()
+    def change_config(self, new_config):
+        self.stop()
+        self.run(new_config)
 
-    def start_swarm(self):
-        self.hl_config.run()
-
-    def stop_swarm(self):
-        self.hl_config.s_thread.done = True
+    def run(self, new_config):
+        self.s_thread = SwarmThread(new_config)
+        self.s_thread.daemon = True
+        self.s_thread.start()
 
 class SwarmThread(threading.Thread):
     def __init__(self, hl_config):
@@ -77,15 +72,16 @@ class SwarmThread(threading.Thread):
         self.done = False
         while not self.done:
             if is_low_count:
-                print("Setting swarm to low count " + str(self.hl_config.low_count))
-                self.hl_config.swarm(self.hl_config.low_count, self.hl_config.low_count)
-                print("Sleeping for " + str(self.hl_config.low_duration_seconds) + " seconds")
-                wait(self.hl_config.s_thread, self.hl_cnfig.low_duration_seconds)
+                print "Setting swarm to low count %d, hatch rate %d ", (self.hl_config.low_count, self.hl_config.low_hatch_rate)
+                self.hl_config.swarm(self.hl_config.low_count, self.hl_config.low_hatch_rate)
+                print "Sleeping for " + str(self.hl_config.low_duration_seconds) + " seconds"
+                wait(self, self.hl_config.low_duration_seconds)
             else: # high_count
-                print("Setting swarm to high count " + str(self.hl_config.high_count))
-                self.hl_config.swarm(self.hl_config.high_count, self.hl_config.low_count)
-                print("Sleeping for " + str(self.hl_config.high_duration_seconds) + " seconds")
-                wait(self.hl_config.s_thread, self.hl_config.high_duration_seconds)
+                print "Setting swarm to high count %d, hatch rate %d " % (self.hl_config.high_count, self.hl_config.high_hatch_rate)
+                self.hl_config.swarm(self.hl_config.high_count, self.hl_config.high_hatch_rate)
+                print "Sleeping for " + str(self.hl_config.high_duration_seconds) + " seconds"
+                wait(self, self.hl_config.high_duration_seconds)
+
             is_low_count = not is_low_count
 
 # globals
@@ -93,27 +89,37 @@ terminator = None
 swarm_controller = SwarmController()
 
 class HiLoLoadConfiguration(object):
-    def __init__(self, master_host, master_port, run_id, low_count, low_duration_seconds, high_count, high_duration_seconds):
+    def __init__(self, master_host, master_port, run_id, \
+                 low_count, low_hatch_rate, low_duration_seconds, \
+                 high_count, high_hatch_rate, high_duration_seconds):
         self.master_host = master_host
         self.master_port = master_port
         self.run_id = run_id
         self.low_count = low_count
+        self.low_hatch_rate = low_hatch_rate
         self.low_duration_seconds = low_duration_seconds
         self.high_count = high_count
+        self.high_hatch_rate = high_hatch_rate
         self.high_duration_seconds = high_duration_seconds
 
     @staticmethod
     def parse(master_host, master_port, run_id, dct):
         low_count = int(dct['low_count'])
+        low_hatch_rate = low_count
+        if 'low_hatch_rate' in dct:
+          low_hatch_rate = int(dct['low_hatch_rate'])
+
         low_duration_seconds = int(dct['low_duration_seconds'])
         high_count = int(dct['high_count'])
-        high_duration_seconds = int(dct['high_duration_seconds'])
-        return HiLoLoadConfiguration(master_host, master_port, run_id, low_count, low_duration_seconds, high_count, high_duration_seconds)
-    def run(self):
-        self.s_thread = SwarmThread(self)
-        self.s_thread.daemon = True
-        self.s_thread.start()
+        high_hatch_rate = high_count
+        if 'high_hatch_rate' in dct:
+          high_hatch_rate = int(dct['high_hatch_rate'])
 
+        high_duration_seconds = int(dct['high_duration_seconds'])
+
+        return HiLoLoadConfiguration(master_host, master_port, run_id, \
+                                     low_count, low_hatch_rate, low_duration_seconds, \
+                                     high_count, high_hatch_rate, high_duration_seconds)
 
     # Extract this to base class once we have more load configuartions
     def swarm(self, locust_count, hatch_rate):
@@ -155,12 +161,11 @@ def download_url(url):
 def wait(s_thread, duration):
     start = time.time()
     while not s_thread.done:
-        time.sleep(0.05)
+        time.sleep(0.5)
         if (time.time() - start > duration):
             break
 
 class LoadRequestHandler(BaseHTTPRequestHandler):
-
     def log_message(self, format, *args):
         # so that terminal doesn't get flooded with server requests
         return
@@ -169,33 +174,27 @@ class LoadRequestHandler(BaseHTTPRequestHandler):
         # Doesn't do anything with posted data
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
-        if post_data == "exit":
-            self.send_response(200)
-            terminator.exit(None, None)
+
+        # Changing config
+        if swarm_controller.hl_config is None:
+            print "Cannot find config in swarm controller during change"
+            self.send_response(500)
             return
+
         data = json.loads(post_data)
-        config_changed = False
-        low_count = -1
-        high_count = -1
-        low_duration_seconds = -1
-        high_duration_seconds = -1
-        if 'low_count' in data:
-            low_count = int(data['low_count'])
-            config_changed = True
-        if 'low_duration_seconds' in data:
-            low_duration_seconds = int(data['low_duration_seconds'])
-            config_changed = True
-        if 'high_count' in data:
-            high_count = int(data['high_count'])
-            config_changed = True
-        if 'high_duration_seconds' in data:
-            high_duration_seconds = int(data['high_duration_seconds'])
-            config_changed = True
-        if config_changed:
-            print("Restarting swarm")
-            swarm_controller.change_config(low_count, high_count,
-                low_duration_seconds, high_duration_seconds)
-        self.send_response(200)
+        running_config = swarm_controller.hl_config
+        try:
+          new_config = parse_load_configuration(running_config.master_host, \
+                                                running_config.master_port, \
+                                                running_config.run_id, data)
+
+          print("Restarting swarm")
+          swarm_controller.change_config(new_config)
+          self.send_response(200)
+        except Exception as e:
+          print "Unable to parse new config",  e
+          self.send_repsonse(400)
+          return
 
 def start_server(httpd):
     print('Starting httpd...')
@@ -253,8 +252,7 @@ def main():
     with open(local_load_file) as json_data:
         j = json.load(json_data)
         load_configuration = parse_load_configuration(opts.master_host, opts.master_port, run_id, j)
-        swarm_controller.set_config(load_configuration)
-        swarm_controller.start_swarm()
+        swarm_controller.change_config(load_configuration)
     while True:
         time.sleep(1)
         if terminator.kill_now:

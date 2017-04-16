@@ -2,7 +2,9 @@
 
 SPARK_MASTER=spark-master.default:6066
 SPARK_WORKER=spark-worker.default:8081
-SPARK_WORKER_2=spark-worker-2.default:8081
+SPARK_WORKER_2=spark-worker2.default:8081
+SPARK_WORKER_3=spark-worker3.default:8081
+SPARK_WORKER_4=spark-worker4.default:8082
 INFLUXDB_HOST=influxsrv
 INFLUXDB_NAMESPACE=hyperpilot
 INFLUXDB_PORT=8086
@@ -46,17 +48,19 @@ while true; do
                 echo Number of finished spark jobs = $jobs_finished
 
                 # check number of running drivers (or jobs)
-		worker1_drivers=`curl http://$SPARK_WORKER/v1 | grep "Running Drivers" | cut -d"(" -f2 | cut -d")" -f1`
-		worker2_drivers=`curl http://$SPARK_WORKER_2/v1 | grep "Running Drivers" | cut -d"(" -f2 | cut -d")" -f1`
-		((total_drivers=worker1_drivers+worker2_drivers))
-		echo hyperpilot/spark/spark_running_count,entity="driver" value=$total_drivers > keyvalue$1_count.txt
+		#worker1_drivers=`curl http://$SPARK_WORKER/v1 | grep "Running Drivers" | cut -d"(" -f2 | cut -d")" -f1`
+		#worker2_drivers=`curl http://$SPARK_WORKER_2/v1 | grep "Running Drivers" | cut -d"(" -f2 | cut -d")" -f1`
+		#((total_drivers=worker1_drivers+worker2_drivers))
+		#echo hyperpilot/spark/spark_running_count,entity="driver" value=$total_drivers > keyvalue$1_count.txt
 
 		# check number of running executors
-		worker1_executors=`curl http://$SPARK_WORKER/v1 | grep "Running Executors" | cut -d"(" -f2 | cut -d")" -f1`
-		worker2_executors=`curl http://$SPARK_WORKER_2/v1 | grep "Running Executors" | cut -d"(" -f2 | cut -d")" -f1`
-		((total_executors=worker1_executors+worker2_executors))
-		echo hyperpilot/spark/spark_running_count,entity="executor" value=$total_executors >> keyvalue$1_count.txt
+		#worker1_executors=`curl http://$SPARK_WORKER/v1 | grep "Running Executors" | cut -d"(" -f2 | cut -d")" -f1`
+		#worker2_executors=`curl http://$SPARK_WORKER_2/v1 | grep "Running Executors" | cut -d"(" -f2 | cut -d")" -f1`
+		#worker3_executors=`curl http://$SPARK_WORKER_2/v1 | grep "Running Executors" | cut -d"(" -f2 | cut -d")" -f1`
+		#worker4_executors=`curl http://$SPARK_WORKER_2/v1 | grep "Running Executors" | cut -d"(" -f2 | cut -d")" -f1`
+		#((total_executors=worker1_executors+worker2_executors))
+		#echo hyperpilot/spark/spark_running_count,entity="executor" value=$total_executors >> keyvalue$1_count.txt
 
-		curl -s -XPOST $INFLUXDB_URL/write?db=$INFLUXDB_NAME --data-binary @keyvalue$1_count.txt > /dev/null
+		#curl -s -XPOST $INFLUXDB_URL/write?db=$INFLUXDB_NAME --data-binary @keyvalue$1_count.txt > /dev/null
 	done
 done

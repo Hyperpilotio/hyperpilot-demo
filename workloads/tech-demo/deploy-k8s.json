@@ -69,30 +69,34 @@
             "id": 4
         },
         {
-            "task": "spark-worker",
+            "task": "spark-worker2",
             "id": 3
         },
         {
             "task": "spark-worker",
             "id": 2
+        },
+        {
+            "task": "spark-worker3",
+            "id": 4
         }
     ],
     "clusterDefinition": {
         "nodes": [
             {
-                "instanceType": "m4.xlarge",
+                "instanceType": "c4.xlarge",
                 "id": 1
             },
             {
-                "instanceType": "m4.xlarge",
+                "instanceType": "c4.xlarge",
                 "id": 2
             },
             {
-                "instanceType": "m4.xlarge",
+                "instanceType": "c4.xlarge",
                 "id": 3
             },
             {
-                "instanceType": "m4.xlarge",
+                "instanceType": "c4.xlarge",
                 "id": 4
             }
         ]
@@ -683,8 +687,8 @@
                                             }
                                         ],
                                         "resources": {
-                                            "limits": {
-                                                "cpu": "512.0m",
+                                            "requests": {
+                                                "cpu": "1024.0m",
                                                 "memory": "100Mi"
                                             }
                                         }
@@ -728,7 +732,7 @@
                                         "env": [
                                             {
                                                 "name": "BOOKING_MAXAGE",
-                                                "value": "5"
+                                                "value": "10"
                                             },
                                             {
                                                 "name": "ROUTINGSERVICE_URL",
@@ -1099,6 +1103,11 @@
                                                 "containerPort": 8081,
                                                 "hostPort": 8081,
                                                 "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 4040,
+                                                "hostPort": 4040,
+                                                "protocol": "TCP"
                                             }
                                         ],
                                         "resources": {
@@ -1109,10 +1118,175 @@
                         }
                     }
                 },
-                "portTypes": [
-                    1
-                ],
                 "family": "spark-worker"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "spark-worker2",
+                            "hyperpilot.io/wclass": "BE"
+                        },
+                        "name": "spark-worker2"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "spark-worker2"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "spark-worker2",
+                                    "hyperpilot.io/wclass": "BE"
+                                },
+                                "annotations": {
+                                    "scheduler.alpha.kubernetes.io/affinity": "{\n                                        \"nodeAffinity\": {\n                                            \"requiredDuringSchedulingIgnoredDuringExecution\": {\n                                                \"nodeSelectorTerms\": [\n                                                    {\n                                                        \"matchExpressions\": [\n                                                            {\n                                                                \"key\": \"hyperpilot.io\/be-enabled\",\n                                                                \"operator\": \"In\",\n                                                                \"values\": [\n                                                                    \"true\"\n                                                                ]\n                                                            }\n                                                        ]\n                                                    }\n                                                ]\n                                            }\n                                        }\n                                    }"
+                                }
+                            },
+                            "spec": {
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/core-site.xml"
+                                        },
+                                        "name": "core-site"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
+                                                "name": "core-site"
+                                            }
+                                        ],
+                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
+                                        "name": "spark-worker2",
+                                        "env": [
+                                            {
+                                                "name": "SPARK_WORKER_PORT",
+                                                "value": "0"
+                                            }
+                                        ],
+                                        "command": [
+                                            "bin\/spark-class",
+                                            "org.apache.spark.deploy.worker.Worker",
+                                            "--cores",
+                                            "3",
+                                            "--memory",
+                                            "6144M",
+                                            "spark:\/\/spark-master:7077"
+                                        ],
+                                        "ports": [
+                                            {
+                                                "containerPort": 8081,
+                                                "hostPort": 8081,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 4040,
+                                                "hostPort": 4040,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "spark-worker2"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "spark-worker3",
+                            "hyperpilot.io/wclass": "BE"
+                        },
+                        "name": "spark-worker3"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "spark-worker3"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "spark-worker3",
+                                    "hyperpilot.io/wclass": "BE"
+                                },
+                                "annotations": {
+                                    "scheduler.alpha.kubernetes.io/affinity": "{\n                                        \"nodeAffinity\": {\n                                            \"requiredDuringSchedulingIgnoredDuringExecution\": {\n                                                \"nodeSelectorTerms\": [\n                                                    {\n                                                        \"matchExpressions\": [\n                                                            {\n                                                                \"key\": \"hyperpilot.io\/be-enabled\",\n                                                                \"operator\": \"In\",\n                                                                \"values\": [\n                                                                    \"true\"\n                                                                ]\n                                                            }\n                                                        ]\n                                                    }\n                                                ]\n                                            }\n                                        }\n                                    }"
+                                }
+                            },
+                            "spec": {
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/core-site.xml"
+                                        },
+                                        "name": "core-site"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
+                                                "name": "core-site"
+                                            }
+                                        ],
+                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
+                                        "name": "spark-worker3",
+                                        "env": [
+                                            {
+                                                "name": "SPARK_WORKER_PORT",
+                                                "value": "0"
+                                            }
+                                        ],
+                                        "command": [
+                                            "bin\/spark-class",
+                                            "org.apache.spark.deploy.worker.Worker",
+                                            "--cores",
+                                            "3",
+                                            "--memory",
+                                            "6144M",
+                                            "spark:\/\/spark-master:7077"
+                                        ],
+                                        "ports": [
+                                            {
+                                                "containerPort": 8081,
+                                                "hostPort": 8081,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 4040,
+                                                "hostPort": 4040,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "spark-worker3"
             },
             {
                 "deployment": {
@@ -1150,7 +1324,7 @@
                                             }
                                         ],
                                         "resources": {
-                                            "limits": {
+                                            "requests": {
                                                 "cpu": "512.0m",
                                                 "memory": "1024Mi"
                                             }

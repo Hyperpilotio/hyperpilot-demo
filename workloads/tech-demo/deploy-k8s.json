@@ -1081,7 +1081,7 @@
                                                 "name": "core-site"
                                             }
                                         ],
-                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
+                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx-master",
                                         "name": "spark-worker",
                                         "env": [
                                             {

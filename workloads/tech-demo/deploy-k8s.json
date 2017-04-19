@@ -473,7 +473,7 @@
                                                 "value": "default"
                                             }
                                         ],
-                                        "image": "tutum\/influxdb",
+                                        "image": "influxdb:1.2.2",
                                         "name": "influxsrv",
                                         "ports": [
                                             {
@@ -489,7 +489,7 @@
                                         ],
                                         "volumeMounts": [
                                             {
-                                                "mountPath": "\/data",
+                                                "mountPath": "\/var\/lib\/influxdb",
                                                 "name": "influx-data"
                                             }
                                         ],

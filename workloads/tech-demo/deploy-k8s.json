@@ -449,6 +449,14 @@
                             },
                             "spec": {
                                 "hostname": "influxsrv",
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/influx_data"
+                                        },
+                                        "name": "influx-data"
+                                    }
+                                ],
                                 "containers": [
                                     {
                                         "env": [
@@ -479,9 +487,15 @@
                                                 "protocol": "TCP"
                                             }
                                         ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/data",
+                                                "name": "influx-data"
+                                            }
+                                        ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "512m",
+                                                "cpu": "1024m",
                                                 "memory": "1024Mi"
                                             }
                                         }
@@ -959,7 +973,7 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
+                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx-master",
                                         "name": "spark-master",
                                         "env": [
                                             {
@@ -1071,6 +1085,12 @@
                                             "path": "\/home\/ubuntu\/core-site.xml"
                                         },
                                         "name": "core-site"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/spark-local-dir"
+                                        },
+                                        "name": "spark-local-dir"
                                     }
                                 ],
                                 "containers": [
@@ -1079,14 +1099,22 @@
                                             {
                                                 "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
                                                 "name": "core-site"
+                                            },
+                                            {
+                                                "mountPath": "\/tmp\/spark",
+                                                "name": "spark-local-dir"
                                             }
                                         ],
-                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx-master",
+                                        "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
                                         "name": "spark-worker",
                                         "env": [
                                             {
                                                 "name": "SPARK_WORKER_PORT",
                                                 "value": "0"
+                                            },
+                                            {
+                                                "name": "SPARK_LOCAL_DIRS",
+                                                "value": "\/tmp\/spark"
                                             }
                                         ],
                                         "command": [
@@ -1155,6 +1183,12 @@
                                             "path": "\/home\/ubuntu\/core-site.xml"
                                         },
                                         "name": "core-site"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/spark-local-dir"
+                                        },
+                                        "name": "spark-local-dir"
                                     }
                                 ],
                                 "containers": [
@@ -1163,6 +1197,10 @@
                                             {
                                                 "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
                                                 "name": "core-site"
+                                            },
+                                            {
+                                                "mountPath": "\/tmp\/spark",
+                                                "name": "spark-local-dir"
                                             }
                                         ],
                                         "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
@@ -1171,6 +1209,10 @@
                                             {
                                                 "name": "SPARK_WORKER_PORT",
                                                 "value": "0"
+                                            },
+                                            {
+                                                "name": "SPARK_LOCAL_DIRS",
+                                                "value": "\/tmp\/spark"
                                             }
                                         ],
                                         "command": [
@@ -1239,6 +1281,12 @@
                                             "path": "\/home\/ubuntu\/core-site.xml"
                                         },
                                         "name": "core-site"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/spark-local-dir"
+                                        },
+                                        "name": "spark-local-dir"
                                     }
                                 ],
                                 "containers": [
@@ -1247,6 +1295,10 @@
                                             {
                                                 "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
                                                 "name": "core-site"
+                                            },
+                                            {
+                                                "mountPath": "\/tmp\/spark",
+                                                "name": "spark-local-dir"
                                             }
                                         ],
                                         "image": "hyperpilot\/spark:2.1.0-hadoop-2.7-influx",
@@ -1255,6 +1307,10 @@
                                             {
                                                 "name": "SPARK_WORKER_PORT",
                                                 "value": "0"
+                                            },
+                                            {
+                                                "name": "SPARK_LOCAL_DIRS",
+                                                "value": "\/tmp\/spark"
                                             }
                                         ],
                                         "command": [
@@ -1312,8 +1368,22 @@
                                 }
                             },
                             "spec": {
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/mongo_data"
+                                        },
+                                        "name": "mongo-data"
+                                    }
+                                ],
                                 "containers": [
                                     {
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/data\/db",
+                                                "name": "mongo-data"
+                                            }
+                                        ],
                                         "image": "mongo",
                                         "name": "mongo",
                                         "ports": [

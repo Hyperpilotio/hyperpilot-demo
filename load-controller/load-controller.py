@@ -9,6 +9,11 @@ import threading
 
 from optparse import OptionParser
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from os import curdir, sep
+
+#globals
+terminator = None
+swarm_controller = None
 
 class Terminator:
   def __init__(self, httpd):
@@ -43,8 +48,22 @@ class Terminator:
     self.kill_now = True
 
 class SwarmController:
-    def __init__(self):
-        self.s_thread = None
+    def __init__(self, hl_config):
+        self.hl_config = hl_config
+
+    def change_config(self,low_count, high_count, low_duration_seconds, high_duration_seconds):
+        if low_count > 0:
+            self.hl_config.low_count = low_count
+        if high_count > 0:
+            self.hl_config.high_count = high_count
+        if low_duration_seconds > 0:
+            self.hl_config.low_duration_seconds = low_duration_seconds
+        if high_duration_seconds > 0:
+            self.hl_config.high_duration_seconds = high_duration_seconds
+        print("Restarting swarm")
+        self.hl_config.s_thread.done = True
+        self.hl_config.s_thread.join()
+        self.run(hl_config)
 
     def stop(self):
         if self.s_thread is not None:
@@ -65,28 +84,28 @@ class SwarmThread(threading.Thread):
     def __init__(self, hl_config):
         threading.Thread.__init__(self)
         self.hl_config = hl_config
-        self.done = False
-
     def run(self):
         is_low_count = True
         self.done = False
         while not self.done:
             if is_low_count:
-                print "Setting swarm to low count %d, hatch rate %d ", (self.hl_config.low_count, self.hl_config.low_hatch_rate)
+                print "Setting swarm to low count %d, hatch rate %d " % (self.hl_config.low_count, self.hl_config.low_hatch_rate)
                 self.hl_config.swarm(self.hl_config.low_count, self.hl_config.low_hatch_rate)
                 print "Sleeping for " + str(self.hl_config.low_duration_seconds) + " seconds"
-                wait(self, self.hl_config.low_duration_seconds)
+                self.wait(self.hl_config.low_duration_seconds)
             else: # high_count
                 print "Setting swarm to high count %d, hatch rate %d " % (self.hl_config.high_count, self.hl_config.high_hatch_rate)
                 self.hl_config.swarm(self.hl_config.high_count, self.hl_config.high_hatch_rate)
                 print "Sleeping for " + str(self.hl_config.high_duration_seconds) + " seconds"
-                wait(self, self.hl_config.high_duration_seconds)
-
+                self.wait(self.hl_config.high_duration_seconds)
             is_low_count = not is_low_count
 
-# globals
-terminator = None
-swarm_controller = SwarmController()
+    def wait(self, duration):
+        start = time.time()
+        while not self.done:
+            if (time.time() - start > duration):
+                break
+            time.sleep(0.05)
 
 class HiLoLoadConfiguration(object):
     def __init__(self, master_host, master_port, run_id, \
@@ -158,14 +177,24 @@ def download_url(url):
     urllib.urlretrieve(url, local_path)
     return local_path
 
-def wait(s_thread, duration):
-    start = time.time()
-    while not s_thread.done:
-        time.sleep(0.5)
-        if (time.time() - start > duration):
-            break
+def start_server(httpd):
+    print('Starting httpd...')
+    httpd.serve_forever()
 
 class LoadRequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        sendReply = False
+        if self.path == "/":
+            self.path="/loadUI.html"
+            f=open(curdir + sep + self.path)
+            mimetype = 'text/html'
+            self.send_header('Content-type', mimetype)
+            self.end_headers()
+            self.wfile.write(f.read())
+            f.close()
+        self.send_response(200)
+
+            
     def log_message(self, format, *args):
         # so that terminal doesn't get flooded with server requests
         return
@@ -193,12 +222,8 @@ class LoadRequestHandler(BaseHTTPRequestHandler):
           self.send_response(200)
         except Exception as e:
           print "Unable to parse new config",  e
-          self.send_repsonse(400)
+          self.send_response(400)
           return
-
-def start_server(httpd):
-    print('Starting httpd...')
-    httpd.serve_forever()
 
 def main():
     # Initialize
@@ -252,7 +277,9 @@ def main():
     with open(local_load_file) as json_data:
         j = json.load(json_data)
         load_configuration = parse_load_configuration(opts.master_host, opts.master_port, run_id, j)
-        swarm_controller.change_config(load_configuration)
+        global swarm_controller
+        swarm_controller = SwarmController(load_configuration)
+        swarm_controller.run(load_configuration)
     while True:
         time.sleep(1)
         if terminator.kill_now:

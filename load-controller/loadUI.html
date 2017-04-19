@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Load Configuration</title>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>
+  <form id = "configForm" action="http://localhost:8001" method="POST">
+    Low count: <input type="text" name="low_count"> <br>
+    Low duration seconds: <input type="text" name="low_duration_seconds"> <br>
+    High count: <input type="text" name="high_count"> <br>
+    High duration seconds: <input type="text" name="high_duration_seconds"> <br>
+    <input type="hidden" name="type" value="hilo">
+    <input id="input" type="submit" name="submit" value="Restart swarm with configuration">
+  </form>
+  <script>
+	$.fn.formToJSON = function() {
+		var objectGraph = {};
+		function add(objectGraph, name, value) {
+			if(name.length == 1) {
+				//if the array is now one element long, we're done
+				objectGraph[name[0]] = value;
+			} else {
+				//else we've still got more than a single element of depth
+				if (objectGraph[name[0]] == null) {
+					//create the node if it doesn't yet exist
+					objectGraph[name[0]] = {};
+				}
+				//recurse, chopping off the first array element
+				add(objectGraph[name[0]], name.slice(1), value);
+			}
+		};
+		//loop through all of the input/textarea elements of the form
+		$(this).children('input').each(function() {
+			//ignore the submit button
+			if($(this).attr('name') != 'submit') {
+				//split the dot notated names into arrays and pass along with the value
+				add(objectGraph, $(this).attr('name').split('.'), $(this).val());
+			}
+		});
+		return JSON.stringify(objectGraph);
+	};
+	$.ajaxSetup({
+		contentType: "application/json; charset=utf-8",
+		dataType: "json"
+	});
+	$(document).ready(function(){
+		$('#input').click(function() {
+			var send = $("#configForm").formToJSON();
+			$.ajax({
+				url: "http://localhost:8001",
+				type: "POST",
+				data: send,
+				success: function(data) {
+					var items = [];
+					items.push('</table>');  
+					$('#result').html(items.join(''));
+				}
+			});
+			return false; 
+		});
+	});
+  </script>
+</body>
+</html>

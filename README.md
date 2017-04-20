@@ -37,9 +37,19 @@ kubectl get services | cut -d" " -f1 | tail -n 8 | xargs kubectl delete services
 To teardown: 
 `curl -XDELETE localhost:7777/v1/deployments/<stack-name>`
 
+## Load Test
+To start the load test, run
+`locust --master -f load-controller/locustfile_test.py --host "http://localhost:8001"`
+`locust --slave -f load-controller/locustfile_test.py --host "http://localhost:8001"`
+`python load-controller.py --load-file workloads/tech-demo/hi_lo_config.json`
+
+Go to `localhost:8001` to change the configuration to the desired values.
+All values must be set to restart successfully.
+
 Important port numbers:
 * Locust-master 8089
 * Influx 8086
 * spark-master 7077
+* Load-configuration UI 8001
 
 

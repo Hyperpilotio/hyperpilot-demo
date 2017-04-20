@@ -6,7 +6,9 @@ import requests
 import urllib
 import signal
 import threading
+import string
 
+from string import Template
 from optparse import OptionParser
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from os import curdir, sep
@@ -14,6 +16,7 @@ from os import curdir, sep
 #globals
 terminator = None
 swarm_controller = None
+web_host = None
 
 class Terminator:
   def __init__(self, httpd):
@@ -27,7 +30,6 @@ class Terminator:
 
     # Send Locust stop request
     swarm_controller.stop()
-
     url = 'http://{}:{}/stop'.format(swarm_controller.hl_config.master_host, swarm_controller.hl_config.master_port)
     successful = False
     try_count = 0
@@ -179,20 +181,23 @@ def download_url(url):
 
 def start_server(httpd):
     print('Starting httpd...')
-    httpd.serve_forever()
+    while not terminator.kill_now:
+        httpd.handle_request()
 
 class LoadRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        sendReply = False
+        self.send_response(200)
         if self.path == "/":
-            self.path="/loadUI.html"
-            f=open(curdir + sep + self.path)
+            self.path = "load-controller/loadUI.html"
+            f = open(curdir + sep + self.path)
             mimetype = 'text/html'
             self.send_header('Content-type', mimetype)
             self.end_headers()
-            self.wfile.write(f.read())
+            f_read = f.read()
+            #self.wfile.write(f.read())
+            f_read = string.Template(f_read).safe_substitute({'SERVER_URL':web_host})
+            self.wfile.write(f_read)
             f.close()
-        self.send_response(200)
 
             
     def log_message(self, format, *args):
@@ -229,11 +234,12 @@ def main():
     # Initialize
     server_address = ('', 8001)
     httpd = HTTPServer(server_address, LoadRequestHandler)
-    t = threading.Thread(target=start_server, args = (httpd,))
-    t.daemon = True
-    t.start()
+    server_thread = threading.Thread(target=start_server, args = (httpd,))
+    server_thread.daemon = True
     global terminator
     terminator = Terminator(httpd)
+    server_thread.start()
+
     parser = OptionParser(usage="locust_load_controller [options]")
 
     parser.add_option(
@@ -262,6 +268,14 @@ def main():
         help="File to specifies load pattern"
     )
 
+    parser.add_option(
+        '--webui-host',
+        action='store',
+        type='str',
+        dest='web_ui_host',
+        default="localhost",
+        help="Location of web ui for changing load configuration"
+    )
     opts, args = parser.parse_args()
 
     if not opts.load_file:
@@ -271,6 +285,8 @@ def main():
     if not opts.master_host:
         print("Locust master host required")
 
+    global web_host
+    web_host = opts.web_ui_host
     run_id = str(uuid.uuid1())
 
     local_load_file = download_url(opts.load_file)
@@ -283,7 +299,6 @@ def main():
     while True:
         time.sleep(1)
         if terminator.kill_now:
-            httpd.shutdown()
             break
     print("\nProgram exited")
 

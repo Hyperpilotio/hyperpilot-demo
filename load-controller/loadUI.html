@@ -5,7 +5,7 @@
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
-  <form id = "configForm" action="http://localhost:8001" method="POST">
+  <form id = "configForm" action="http://$SERVER_URL:8001" method="POST">
     Low count: <input type="text" name="low_count"> <br>
     Low duration seconds: <input type="text" name="low_duration_seconds"> <br>
     High count: <input type="text" name="high_count"> <br>
@@ -48,7 +48,7 @@
 		$('#input').click(function() {
 			var send = $("#configForm").formToJSON();
 			$.ajax({
-				url: "http://localhost:8001",
+				url: "http://$SERVER_URL:8001",
 				type: "POST",
 				data: send,
 				success: function(data) {

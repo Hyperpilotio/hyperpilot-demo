@@ -11,7 +11,9 @@
         5558,
         8080,
         3000,
-        7878
+        7878,
+        27017,
+        27027
     ],
     "files": [
         {
@@ -22,10 +24,14 @@
     "nodeMapping": [
         {
             "task": "goddd",
-            "id": 2
+            "id": 3
         },
         {
             "task": "pathfinder",
+            "id": 3
+        },
+        {
+            "task": "mongo-goddd",
             "id": 3
         },
         {
@@ -38,7 +44,7 @@
         },
         {
             "task": "snap",
-            "id": 2
+            "id": 3
         },
         {
             "task": "locust-master",
@@ -57,11 +63,11 @@
                 "id": 1
             },
             {
-                "instanceType": "t2.large",
+                "instanceType": "t2.xlarge",
                 "id": 2
             },
             {
-                "instanceType": "t2.large",
+                "instanceType": "t2.xlarge",
                 "id": 3
             },
             {
@@ -145,10 +151,16 @@
                                 "sourceVolume": "var_lib_docker"
                             }
                         ],
+                        "environment": [
+                            {
+                                "value": "http:\/\/goddd:8080",
+                                "name": "GODDD_URL"
+                            }
+                        ],
                         "essential": true,
-                        "memory": 200,
-                        "cpu": 128,
-                        "image": "wen777\/snap:alpine",
+                        "memory": 500,
+                        "cpu": 512,
+                        "image": "hyperpilot\/snap-goddd:latest",
                         "name": "snap"
                     }
                 ],
@@ -307,6 +319,19 @@
                         "cpu": 512,
                         "image": "hyperpilot\/pathfinder",
                         "name": "pathfinder"
+                    },
+                    {
+                        "essential": true,
+                        "portMappings": [
+                            {
+                                "hostPort": 27027,
+                                "containerPort": 27017
+                            }
+                        ],
+                        "memory": 1024,
+                        "cpu": 512,
+                        "image": "mongo",
+                        "name": "mongo-goddd"
                     }
                 ],
                 "family": "pathfinder"
@@ -321,16 +346,11 @@
                                 "name": "ROUTINGSERVICE_URL"
                             },
                             {
-                                "value": "http:\/\/influxsrv:8086",
-                                "name": "INFLUXDB_URL"
-                            },
-                            {
-                                "value": "root",
-                                "name": "INFLUXDB_USERNAME"
-                            },
-                            {
-                                "value": "hyperpilot",
-                                "name": "INFLUXDB_PASSWORD"
+                                "value": "mongo-goddd:27017",
+                                "name": "MONGODB_URL"
+                            }, {
+                                "value": "goddd",
+                                "name": "DB_NAME"
                             }
                         ],
                         "portMappings": [
@@ -338,10 +358,6 @@
                                 "hostPort": 3000,
                                 "containerPort": 8080
                             }
-                        ],
-                        "command": [
-                            "\/goddd",
-                            "-inmem"
                         ],
                         "essential": true,
                         "memory": 100,

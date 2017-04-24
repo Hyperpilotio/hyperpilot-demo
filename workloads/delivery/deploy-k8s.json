@@ -17,6 +17,10 @@
             "id": 3
         },
         {
+            "task": "mongo-goddd",
+            "id": 3
+        },
+        {
             "task": "dddelivery-angularjs",
             "id": 1
         },
@@ -157,7 +161,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "wen777\/snap:alpine",
+                                        "image": "hyperpilot\/snap-goddd:latest",
                                         "name": "snap",
                                         "resources": {
                                             "limits": {
@@ -165,6 +169,12 @@
                                                 "memory": "200Mi"
                                             }
                                         },
+                                        "env": [
+                                            {
+                                                "name": "GODDD_URL",
+                                                "value": "http://goddd:8080"
+                                            }
+                                        ],
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/rootfs",
@@ -354,6 +364,59 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
+                            "app": "mongo-goddd"
+                        },
+                        "name": "mongo-goddd",
+                        "namespace": "default"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "mongo-goddd"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "mongo-goddd"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "mongo-goddd",
+                                "containers": [
+                                    {
+                                        "image": "mongo",
+                                        "name": "mongo-goddd",
+                                        "env": [
+                                        ],
+                                        "ports": [
+                                            {
+                                                "containerPort": 27107,
+                                                "hostPort": 27017,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "mongo-goddd"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
                             "app": "pathfinder"
                         },
                         "name": "pathfinder",
@@ -440,10 +503,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "args": [
-                                            "\/goddd",
-                                            "-inmem"
-                                        ],
+                                        "args": [],
                                         "env": [
                                             {
                                                 "name": "ROUTINGSERVICE_URL",
@@ -460,6 +520,13 @@
                                             {
                                                 "name": "INFLUXDB_PASSWORD",
                                                 "value": "hyperpilot"
+                                            },
+                                            {
+                                                "value": "mongo-goddd:27017",
+                                                "name": "MONGODB_URL"
+                                            }, {
+                                                "value": "goddd",
+                                                "name": "DB_NAME"
                                             }
                                         ],
                                         "image": "hyperpilot\/goddd",

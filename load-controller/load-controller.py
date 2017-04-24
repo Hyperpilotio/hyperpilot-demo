@@ -7,6 +7,7 @@ import urllib
 import signal
 import threading
 import string
+import SocketServer
 
 from string import Template
 from optparse import OptionParser
@@ -17,6 +18,7 @@ from os import curdir, sep
 terminator = None
 swarm_controller = None
 web_host = None
+web_port = None
 
 class Terminator:
   def __init__(self, httpd):
@@ -69,6 +71,7 @@ class SwarmController:
 
     def stop(self):
         if self.s_thread is not None:
+            self.hl_config.successful = True
             self.s_thread.done = True
             self.s_thread.join()
             self.s_thread = None
@@ -147,17 +150,17 @@ class HiLoLoadConfiguration(object):
         data = {'locust_count': locust_count, 'hatch_rate': hatch_rate, 'stage_id': self.run_id}
         # Send Locust Swarm request
         url = 'http://{}:{}/swarm'.format(self.master_host, self.master_port)
-        successful = False
-        while not successful:
+        self.successful = False
+        while not self.successful:
             try:
                 r = requests.post(url, data=data)
                 if r.status_code == requests.codes.ok or r.status_code == requests.codes.accepted:
-                    successful = True
+                    self.successful = True
                 else:
                     print("Received unexpected error code " + str(r.status_code))
             except requests.ConnectionError as e:
                 print "Encountered error when posting to locust master: " + str(e)
-            if not successful:
+            if not self.successful:
                 print "Waiting 10 seconds before retry..."
                 time.sleep(10)
                 print "Retrying request..."
@@ -188,14 +191,14 @@ class LoadRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         if self.path == "/":
-            self.path = "load-controller/loadUI.html"
+            self.path = "loadUI.html"
             f = open(curdir + sep + self.path)
             mimetype = 'text/html'
             self.send_header('Content-type', mimetype)
             self.end_headers()
             f_read = f.read()
             #self.wfile.write(f.read())
-            f_read = string.Template(f_read).safe_substitute({'SERVER_URL':web_host})
+            f_read = string.Template(f_read).safe_substitute({'SERVER_URL':web_host, 'SERVER_PORT':web_port})
             self.wfile.write(f_read)
             f.close()
 
@@ -232,14 +235,7 @@ class LoadRequestHandler(BaseHTTPRequestHandler):
 
 def main():
     # Initialize
-    server_address = ('', 8001)
-    httpd = HTTPServer(server_address, LoadRequestHandler)
-    server_thread = threading.Thread(target=start_server, args = (httpd,))
-    server_thread.daemon = True
-    global terminator
-    terminator = Terminator(httpd)
-    server_thread.start()
-
+    
     parser = OptionParser(usage="locust_load_controller [options]")
 
     parser.add_option(
@@ -274,8 +270,18 @@ def main():
         type='str',
         dest='web_ui_host',
         default="localhost",
-        help="Location of web ui for changing load configuration"
+        help="Host or IP address web UI for changing load configuration"
     )
+
+    parser.add_option(
+        '--webui-port',
+        action='store',
+        type='int',
+        dest='web_ui_port',
+        default=8001,
+        help="The port to connect to that is used by the load configuration UI"
+    )
+
     opts, args = parser.parse_args()
 
     if not opts.load_file:
@@ -287,7 +293,18 @@ def main():
 
     global web_host
     web_host = opts.web_ui_host
+    global web_port
+    web_port = opts.web_ui_port
     run_id = str(uuid.uuid1())
+
+    server_address = ('', web_port)
+    HTTPServer.allow_reuse_address = True
+    httpd = HTTPServer(server_address, LoadRequestHandler)
+    server_thread = threading.Thread(target=start_server, args = (httpd,))
+    server_thread.daemon = True
+    global terminator
+    terminator = Terminator(httpd)
+    server_thread.start()
 
     local_load_file = download_url(opts.load_file)
     with open(local_load_file) as json_data:

@@ -625,6 +625,12 @@
                                         "image": "hyperpilot\/tech-demo-ui",
                                         "imagePullPolicy": "Always",
                                         "name": "demo-ui",
+                                        "env": [
+                                            {
+                                                "name": "KUBE_DEPLOYMENTS",
+                                                "value": "https:\/\/s3-us-west-1.amazonaws.com\/hyperpilot-adrianliaw\/demo-deployments.json"
+                                            }
+                                        ],
                                         "ports": [
                                             {
                                                 "containerPort": 8080,

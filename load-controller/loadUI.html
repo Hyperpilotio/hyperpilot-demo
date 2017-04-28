@@ -9,6 +9,7 @@
     Low count: <input type="text" name="low_count"> <br>
     Low duration seconds: <input type="text" name="low_duration_seconds"> <br>
     High count: <input type="text" name="high_count"> <br>
+    High hatch rate: <input type="text" name="high_hatch_rate"> <br>
     High duration seconds: <input type="text" name="high_duration_seconds"> <br>
     <input type="hidden" name="type" value="hilo">
     <input id="input" type="submit" name="submit" value="Restart swarm with configuration">
@@ -53,11 +54,11 @@
 				data: send,
 				success: function(data) {
 					var items = [];
-					items.push('</table>');  
+					items.push('</table>');
 					$('#result').html(items.join(''));
 				}
 			});
-			return false; 
+			return false;
 		});
 	});
   </script>

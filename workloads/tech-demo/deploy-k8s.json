@@ -473,7 +473,7 @@
                                                 "value": "default"
                                             }
                                         ],
-                                        "image": "influxdb:1.2.2",
+                                        "image": "hyperpilot\/influx:1.2.2",
                                         "name": "influxsrv",
                                         "ports": [
                                             {
@@ -494,7 +494,7 @@
                                             }
                                         ],
                                         "resources": {
-                                            "limits": {
+                                            "requests": {
                                                 "cpu": "1024m",
                                                 "memory": "1024Mi"
                                             }

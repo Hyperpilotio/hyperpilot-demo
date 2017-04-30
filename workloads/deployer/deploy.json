@@ -1,5 +1,4 @@
 {
-    "userId": "alan",
     "name": "deployer",
     "region": "us-east-1",
     "allowedPorts": [
@@ -22,22 +21,8 @@
     "ecs": {
         "taskDefinitions": [
             {
-                "volumes": [
-                    {
-                        "host": {
-                            "sourcePath": "/var/run/docker.sock"
-                        },
-                        "name": "docker_sock"
-                    }
-                ],
                 "containerDefinitions": [
                     {
-                        "mountPoints": [
-                            {
-                                "containerPath": "/var/run/docker.sock",
-                                "sourceVolume": "docker_sock"
-                            }
-                        ],
                         "environment": [
                             {
                                 "value": "",

@@ -8,10 +8,13 @@ fi
 
 TEMPDIR=`mktemp -d`
 RESPONSE=$TEMPDIR/response.json
+DEPLOYER_URL="localhost"
+#DEPLOYER_URL="internal-deployer-605796188.us-east-1.elb.amazonaws.com"
 
-curl -XPOST localhost:7777/v1/files/tech_demo_load_test -F upload=@load-test/locustfile.py
-curl -XPOST localhost:7777/v1/files/tech_demo_core_site_xml -F upload=@core-site.xml
-curl -s -XPOST localhost:7777/v1/deployments \
+
+curl -XPOST $DEPLOYER_URL:7777/v1/files/tech_demo_load_test -F upload=@load-test/locustfile.py
+curl -XPOST $DEPLOYER_URL:7777/v1/files/tech_demo_core_site_xml -F upload=@core-site.xml
+curl -s -XPOST $DEPLOYER_URL:7777/v1/deployments \
     --data-binary @deploy-k8s.json > $RESPONSE
 
 ERROR=`cat $RESPONSE | jq .error`
@@ -28,13 +31,13 @@ BASTION_HOST=`cat $RESPONSE | jq .data.bastionIp | cut -d"\"" -f2`
 MASTER_HOST=`cat $RESPONSE | jq .data.masterIp | cut -d"\"" -f2`
 echo "Kubernetes Master is running at $MASTER_HOST"
 mkdir $DEPLOYMENT_DIR
-curl -s localhost:7777/v1/deployments/$DEPLOYMENT_NAME/ssh_key > $DEPLOYMENT_DIR/key.pem
+curl -s $DEPLOYER_URL:7777/v1/deployments/$DEPLOYMENT_NAME/ssh_key > $DEPLOYMENT_DIR/key.pem
 chmod 400 $DEPLOYMENT_DIR/key.pem
 echo "SSH key downloaded at $DEPLOYMENT_DIR/key.pem"
-scp -q -i $DEPLOYMENT_DIR/key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $DEPLOYMENT_DIR/key.pem ubuntu@$BASTION_HOST:~/key.pem
+scp -q -p -i $DEPLOYMENT_DIR/key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $DEPLOYMENT_DIR/key.pem ubuntu@$BASTION_HOST:~/key.pem
 echo "Key is also uploaded /home/ubuntu/key.pem to Bastion Host $BASTION_HOST"
 echo
-curl -s localhost:7777/v1/deployments/$DEPLOYMENT_NAME/kubeconfig > $DEPLOYMENT_DIR/kubeconfig
+curl -s $DEPLOYER_URL:7777/v1/deployments/$DEPLOYMENT_NAME/kubeconfig > $DEPLOYMENT_DIR/kubeconfig
 echo "Run the following command to configure kubectl:"
 echo "export KUBECONFIG=$DEPLOYMENT_DIR/kubeconfig"
 echo

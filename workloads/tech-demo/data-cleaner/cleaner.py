@@ -3,7 +3,7 @@ from influxdb import InfluxDBClient
 
 # Clean mongo
 def clean_mongo():
-    c = MongoClient(host=['mongodb:27017'])
+    c = MongoClient(host=['mongo.default:27017'])
     db = c.goddd
     collections = db.collection_names(include_system_collections=False)
     for collection in collections:

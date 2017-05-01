@@ -25,6 +25,10 @@ kubectl get services -n hyperpilot | tail -n +2 | cut -d" " -f1 | xargs kubectl 
 
 curl -XPUT localhost:7777/v1/deployments/$DEPLOYMENT_NAME --data-binary @deploy-k8s.json
 
+kubectl create -f data-cleaner/pod.yaml
+kubectl attach demo-data-cleaner
+kubectl delete -f data-cleaner/pod.yaml
+
 DEMO_UI_HOST=`kubectl -n hyperpilot describe services demo-ui-publicport0 | grep elb | cut -d ":" -f2 | xargs`
 
 echo "Grafana is running at http://$DEMO_UI_HOST:8080/grafana/, login with admin:admin"

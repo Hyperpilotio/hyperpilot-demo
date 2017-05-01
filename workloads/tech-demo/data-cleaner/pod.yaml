@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-data-cleaner
+spec:
+  containers:
+  - name: demo-data-cleaner
+    image: hyperpilot/demo-data-cleaner
+    imagePullPolicy: Always
+  restartPolicy: Never

@@ -29,8 +29,11 @@ To deploy a K8S dashboard
 `kubectl proxy`
 
 To enable the controller
+
 `QOS_DATA_STORE=$(kubectl get -n hyperpilot pods | grep qos-data-store | cut -d" " -f1)`
+
 `kubectl port-forward $QOS_DATA_STORE 7781:7781 -n hyperpilot`
+
 `curl -XPOST localhost:7781/v1/switch/on`
 
 To delete all K8S deployments and services

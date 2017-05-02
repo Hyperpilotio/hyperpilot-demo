@@ -31,6 +31,14 @@
                             {
                                 "value": "",
                                 "name": "AWS_SECRET_ACCESS_KEY"
+                            },
+                            {
+                                "value": "Deployment",
+                                "name": "DEPLOYMENT_DOMAIN"
+                            },
+                            {
+                                "value": "AWSProfile",
+                                "name": "AWSPROFILE_DOMAIN"
                             }
                         ],
                         "portMappings": [

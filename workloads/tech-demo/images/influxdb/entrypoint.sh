@@ -41,6 +41,7 @@ if [ -n "${PRE_CREATE_DB}" ]; then
               echo "=> Creating database: ${x}"
               influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -username=${ADMIN_USER} -password="${PASS}" -execute="create database ${x}"
               influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -username=${ADMIN_USER} -password="${PASS}" -execute="grant all PRIVILEGES on ${x} to ${ADMIN_USER}"
+              influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -username=${ADMIN_USER} -password="${PASS}" -execute="create retention policy rp_${x} ON ${x} DURATION ${DB_RETENTION_HOURS} REPLICATION 1"
           done
           echo ""
         else
@@ -48,6 +49,7 @@ if [ -n "${PRE_CREATE_DB}" ]; then
           do
               echo "=> Creating database: ${x}"
               influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -execute="create database \"${x}\""
+              influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -execute="create retention policy rp_${x} ON ${x} DURATION ${DB_RETENTION_HOURS} REPLICATION 1"
           done
         fi
 

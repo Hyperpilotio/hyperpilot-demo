@@ -135,7 +135,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/controller",
+                                        "image": "hyperpilot\/controller:influx",
                                         "imagePullPolicy": "Always",
                                         "name": "controller",
                                         "securityContext": {
@@ -900,7 +900,9 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "args": [
+                                      "args": [
+                                            "--loglevel",
+                                            "DEBUG",
                                             "--slave",
                                             "--master-host=locust-master",
                                             "-H",

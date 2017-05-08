@@ -12,6 +12,9 @@ if [ -z "$1" ]; then
 
 fi
 
+#DEPLOYER_URL="localhost"
+DEPLOYER_URL="internal-deployer-605796188.us-east-1.elb.amazonaws.com"
+
 echo "Resetting demo with deployment $DEPLOYMENT_NAME"
 
 kubectl get daemonsets | tail -n +2 | cut -d" " -f1 | xargs kubectl delete daemonsets
@@ -23,7 +26,7 @@ kubectl get deployments -n hyperpilot | tail -n +2 | cut -d" " -f1 | xargs kubec
 kubectl get services | tail -n +2 | grep -v kubernetes | cut -d" " -f1 | xargs kubectl delete services
 kubectl get services -n hyperpilot | tail -n +2 | cut -d" " -f1 | xargs kubectl delete -n hyperpilot services
 
-curl -XPUT localhost:7777/v1/deployments/$DEPLOYMENT_NAME --data-binary @deploy-k8s.json
+curl -XPUT $DEPLOYER_URL:7777/v1/deployments/$DEPLOYMENT_NAME --data-binary @deploy-k8s.json
 
 kubectl create -f data-cleaner/pod.yaml
 kubectl attach demo-data-cleaner

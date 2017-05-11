@@ -261,6 +261,16 @@
                                                 "mountPath": "\/proc_host",
                                                 "name": "proc"
                                             }
+                                        ],
+                                        "env": [
+                                            {
+                                                "name": "NODE_NAME",
+                                                "valueFrom": {
+                                                    "fieldRef": {
+                                                        "fieldPath": "spec.nodeName"
+                                                    }
+                                                }
+                                            }
                                         ]
                                     }
                                 ],
@@ -380,6 +390,16 @@
                                             {
                                                 "mountPath": "\/proc_host",
                                                 "name": "proc"
+                                            }
+                                        ],
+                                        "env": [
+                                            {
+                                                "name": "NODE_NAME",
+                                                "valueFrom": {
+                                                    "fieldRef": {
+                                                        "fieldPath": "spec.nodeName"
+                                                    }
+                                                }
                                             }
                                         ]
                                     }

@@ -1,5 +1,5 @@
 #!/bin/sh
 
-docker build -t hyperpilot/bench:redis .
+docker build -t hyperpilot/benchmark-controller:redis .
 
-docker push hyperpilot/bench:redis
+docker push hyperpilot/benchmark-controller:redis

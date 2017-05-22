@@ -13,7 +13,7 @@ SPARK_MASTER_URL=`kubectl describe services spark-master-publicport1 | grep elb 
 DEMO_UI_HOST=`kubectl -n hyperpilot describe services demo-ui-publicport0 | grep elb | cut -d ":" -f2 | xargs`:8080
 echo "Grafana is running at http://$DEMO_UI_HOST/grafana/, login with admin:admin"
 echo "Demo UI is running at http://$DEMO_UI_HOST/"
-echo "InfluxDB is running at http://$INFLUXDB_SERVER
+echo "InfluxDB is running at http://$INFLUXDB_SERVER"
 
 open -a "Google Chrome" http://$DEMO_UI_HOST
 open -a "Google Chrome" http://$DEMO_UI_HOST/grafana/

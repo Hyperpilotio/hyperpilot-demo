@@ -15,18 +15,93 @@
             "loadTest": {
                 "loadController": {
                     "serviceName": "redis-bench",
-                    "loadTest": {
-                        "path": "\/usr\/bin\/redis-benchmark",
-                        "args": [
-                            "-h",
-                            "redis-serve",
-                            "-p",
-                            "6379",
-                            "--csv",
-                            "-n",
-                            "10000"
-                        ]
-                    }
+                    "loadTests": [
+                        {
+                            "command": {
+                                "path": "\/usr\/bin\/redis-benchmark",
+                                "args": [
+                                    "-h",
+                                    "redis-serve",
+                                    "-p",
+                                    "6379",
+                                    "--csv",
+                                    "-n",
+                                    "10000",
+                                    "-c",
+                                    "50"
+                                ]
+                            },
+                            "intensity": 10
+                        },
+                        {
+                            "command": {
+                                "path": "\/usr\/bin\/redis-benchmark",
+                                "args": [
+                                    "-h",
+                                    "redis-serve",
+                                    "-p",
+                                    "6379",
+                                    "--csv",
+                                    "-n",
+                                    "10000",
+                                    "-c",
+                                    "65"
+                                ]
+                            },
+                            "intensity": 30
+                        },
+                        {
+                            "command": {
+                                "path": "\/usr\/bin\/redis-benchmark",
+                                "args": [
+                                    "-h",
+                                    "redis-serve",
+                                    "-p",
+                                    "6379",
+                                    "--csv",
+                                    "-n",
+                                    "10000",
+                                    "-c",
+                                    "80"
+                                ]
+                            },
+                            "intensity": 50
+                        },
+                        {
+                            "command": {
+                                "path": "\/usr\/bin\/redis-benchmark",
+                                "args": [
+                                    "-h",
+                                    "redis-serve",
+                                    "-p",
+                                    "6379",
+                                    "--csv",
+                                    "-n",
+                                    "10000",
+                                    "-c",
+                                    "95"
+                                ]
+                            },
+                            "intensity": 70
+                        },
+                        {
+                            "command": {
+                                "path": "\/usr\/bin\/redis-benchmark",
+                                "args": [
+                                    "-h",
+                                    "redis-serve",
+                                    "-p",
+                                    "6379",
+                                    "--csv",
+                                    "-n",
+                                    "10000",
+                                    "-c",
+                                    "110"
+                                ]
+                            },
+                            "intensity": 90
+                        }
+                    ]
                 }
             }
         }

@@ -30,11 +30,11 @@
         },
         {
             "task": "influxsrv",
-            "id": 1
+            "id": 5
         },
         {
             "task": "grafana",
-            "id": 1
+            "id": 5
         },
         {
             "task": "demo-ui",
@@ -98,6 +98,10 @@
             {
                 "instanceType": "c4.xlarge",
                 "id": 4
+            },
+            {
+                "instanceType": "c4.xlarge",
+                "id": 5
             }
         ]
     },
@@ -525,8 +529,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1024m",
-                                                "memory": "1024Mi"
+                                                "cpu": "2048m",
+                                                "memory": "4096Mi"
                                             }
                                         }
                                     }

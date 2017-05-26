@@ -2,7 +2,7 @@
     "deployment": "nginx",
     "stages": [
         {
-            "containerBenchmarks": [
+            "benchmarks": [
                 {
                     "name": "busycpu",
                     "count": 2,
@@ -12,57 +12,13 @@
                     "image": "hyperpilot\/busycpu"
                 }
             ],
-            "workloadBenchmark": {
-                "requests": [
-                    {
-                        "method": "POST",
-                        "component": "locust-master",
-                        "path": "\/swarm",
-                        "body": {
-                            "locust_count": "100",
-                            "hatch_rate": "10"
-                        },
-                        "duration": "5m",
-                        "startBenchmark": true
-                    },
-                    {
-                        "method": "GET",
-                        "component": "locust-master",
-                        "path": "\/stop"
-                    }
-                ]
-            }
-        },
-        {
-            "containerBenchmarks": [
-                {
-                    "name": "busycpu",
-                    "count": 2,
-                    "resources": {
-                        "cpushares": 512
-                    },
-                    "image": "hyperpilot\/busycpu"
+            "loadTest": {
+                "locustController": {
+                    "startCount": 100,
+                    "endCount": 400,
+                    "stepCount": 100,
+                    "stepDuration": "5m"
                 }
-            ],
-            "workloadBenchmark": {
-                "requests": [
-                    {
-                        "method": "POST",
-                        "component": "locust-master",
-                        "path": "\/swarm",
-                        "body": {
-                            "locust_count": "100",
-                            "hatch_rate": "10"
-                        },
-                        "duration": "5m",
-                        "startBenchmark": true
-                    },
-                    {
-                        "method": "GET",
-                        "component": "locust-master",
-                        "path": "\/stop"
-                    }
-                ]
             }
         }
     ]

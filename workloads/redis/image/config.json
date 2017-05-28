@@ -1,5 +1,8 @@
 {
-    "mongodbHost": "mongosrv",
-    "mongodbPort": "27017",
-    "mongodbName": "redis"
+    "store": {
+        "type": "mongo",
+        "host": "mongo",
+        "port": "27017",
+        "dbName": "redis"
+    }
 }

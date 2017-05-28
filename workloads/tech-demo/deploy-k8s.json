@@ -30,11 +30,11 @@
         },
         {
             "task": "influxsrv",
-            "id": 1
+            "id": 5
         },
         {
             "task": "grafana",
-            "id": 1
+            "id": 5
         },
         {
             "task": "demo-ui",
@@ -98,6 +98,10 @@
             {
                 "instanceType": "c4.xlarge",
                 "id": 4
+            },
+            {
+                "instanceType": "c4.xlarge",
+                "id": 5
             }
         ]
     },
@@ -135,7 +139,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/controller:influx",
+                                        "image": "hyperpilot\/controller",
                                         "imagePullPolicy": "Always",
                                         "name": "controller",
                                         "securityContext": {
@@ -149,6 +153,10 @@
                                             {
                                                 "mountPath": "\/var\/run\/command.sock",
                                                 "name": "command-sock"
+                                            },
+					    {
+                                                "mountPath": "\/sys\/fs\/cgroup",
+                                                "name": "cgroup"
                                             }
                                         ],
                                         "env": [
@@ -175,6 +183,12 @@
                                             "path": "\/var\/run\/command.sock"
                                         },
                                         "name": "command-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/sys\/fs\/cgroup"
+                                        },
+                                        "name": "cgroup"
                                     }
                                 ],
                                 "imagePullSecrets": [
@@ -260,6 +274,16 @@
                                             {
                                                 "mountPath": "\/proc_host",
                                                 "name": "proc"
+                                            }
+                                        ],
+                                        "env": [
+                                            {
+                                                "name": "NODE_NAME",
+                                                "valueFrom": {
+                                                    "fieldRef": {
+                                                        "fieldPath": "spec.nodeName"
+                                                    }
+                                                }
                                             }
                                         ]
                                     }
@@ -381,6 +405,16 @@
                                                 "mountPath": "\/proc_host",
                                                 "name": "proc"
                                             }
+                                        ],
+                                        "env": [
+                                            {
+                                                "name": "NODE_NAME",
+                                                "valueFrom": {
+                                                    "fieldRef": {
+                                                        "fieldPath": "spec.nodeName"
+                                                    }
+                                                }
+                                            }
                                         ]
                                     }
                                 ],
@@ -495,8 +529,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1024m",
-                                                "memory": "1024Mi"
+                                                "cpu": "2048m",
+                                                "memory": "4096Mi"
                                             }
                                         }
                                     }
@@ -746,7 +780,7 @@
                                         "env": [
                                             {
                                                 "name": "BOOKING_MAXAGE",
-                                                "value": "10"
+                                                "value": "5"
                                             },
                                             {
                                                 "name": "ROUTINGSERVICE_URL",
@@ -777,8 +811,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "256.0m",
-                                                "memory": "500Mi"
+                                                "cpu": "256m",
+                                                "memory": "256Mi"
                                             }
                                         }
                                     }
@@ -1125,7 +1159,7 @@
                                             "--cores",
                                             "3",
                                             "--memory",
-                                            "6144M",
+                                            "5120M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [
@@ -1223,7 +1257,7 @@
                                             "--cores",
                                             "3",
                                             "--memory",
-                                            "6144M",
+                                            "5120M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [
@@ -1321,7 +1355,7 @@
                                             "--cores",
                                             "3",
                                             "--memory",
-                                            "6144M",
+                                            "5120M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [
@@ -1397,8 +1431,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "1024Mi"
+                                                "cpu": "512m",
+                                                "memory": "512Mi"
                                             }
                                         }
                                     }

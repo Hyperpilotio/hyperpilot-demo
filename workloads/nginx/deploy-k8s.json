@@ -1,5 +1,5 @@
 {
-    "name": "redis",
+    "name": "nginx",
     "region": "us-east-1",
     "nodeMapping": [
         {
@@ -7,7 +7,7 @@
             "id": 2
         },
         {
-            "task": "redis-serve",
+            "task": "nginx",
             "id": 2
         },
         {
@@ -23,7 +23,11 @@
             "id": 2
         },
         {
-            "task": "redis-bench",
+            "task": "locust-master",
+            "id": 1
+        },
+        {
+            "task": "locust-slave",
             "id": 1
         }
     ],
@@ -391,33 +395,33 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "redis-serve"
+                            "app": "nginx"
                         },
-                        "name": "redis-serve"
+                        "name": "nginx"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "redis-serve"
+                                "app": "nginx"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "redis-serve"
+                                    "app": "nginx"
                                 }
                             },
                             "spec": {
-                                "hostname": "redis-serve",
+                                "hostname": "nginx",
                                 "containers": [
                                     {
-                                        "image": "redis:3.2.6",
-                                        "name": "redis-serve",
+                                        "image": "hyperpilot\/nginx-test",
+                                        "name": "nginx",
                                         "ports": [
                                             {
-                                                "containerPort": 6379,
-                                                "hostPort": 6379,
+                                                "containerPort": 80,
+                                                "hostPort": 80,
                                                 "protocol": "TCP"
                                             }
                                         ],
@@ -436,7 +440,7 @@
                 "portTypes": [
                     1
                 ],
-                "family": "redis-serve"
+                "family": "nginx"
             },
             {
                 "deployment": {
@@ -444,57 +448,152 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "redis-bench"
+                            "app": "locust-master"
                         },
-                        "name": "redis-bench"
+                        "name": "locust-master"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "redis-bench"
+                                "app": "locust-master"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "redis-bench"
+                                    "app": "locust-master"
                                 }
                             },
                             "spec": {
-                                "imagePullSecrets": [
-                                    {
-                                        "name": "myregistrykey"
-                                    }
-                                ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/benchmark-controller:redis",
-                                        "name": "redis-bench",
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "128.0m",
+                                                "memory": "512Mi"
+                                            }
+                                        },
+                                        "args": [
+                                            "--master",
+                                            "--consumer",
+                                            "--consumer-db=mongo",
+                                            "--consumer-mongo-endpoint=mongo:27017",
+                                            "--host=http:\/\/nginx.default:8080",
+                                            "-f",
+                                            "http:\/\/hyperpilot-locustfiles.s3.amazonaws.com\/nginx\/locustfile.py"
+                                        ],
                                         "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/locust:mongo",
+                                        "name": "locust-master",
                                         "ports": [
                                             {
-                                                "containerPort": 6001,
-                                                "hostPort": 6001,
+                                                "containerPort": 8089,
+                                                "hostPort": 8089,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 5557,
+                                                "hostPort": 5557,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 5558,
+                                                "hostPort": 5558,
                                                 "protocol": "TCP"
                                             }
                                         ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "350Mi"
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/locust_file",
+                                                "name": "home-ubuntu-locust-file"
                                             }
-                                        }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/locust_file\/"
+                                        },
+                                        "name": "home-ubuntu-locust-file"
                                     }
                                 ]
                             }
                         }
                     }
                 },
+                "family": "locust-master",
                 "portTypes": [
                     1
-                ],
-                "family": "redis-bench"
+                ]
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "locust-slave"
+                        },
+                        "name": "locust-slave"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "locust-slave"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "locust-slave"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "args": [
+                                            "--loglevel",
+                                            "DEBUG",
+                                            "--slave",
+                                            "--master-host=locust-master",
+                                            "-H",
+                                            "http:\/\/nginx.default:80",
+                                            "-f",
+                                            "http:\/\/hyperpilot-locustfiles.s3.amazonaws.com\/nginx\/locustfile.py"
+                                        ],
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/locust:mongo",
+                                        "name": "locust-slave",
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "512Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/locust_file",
+                                                "name": "home-ubuntu-locust-file"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/locust_file\/"
+                                        },
+                                        "name": "home-ubuntu-locust-file"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "locust-slave"
             }
         ]
     }

@@ -12,8 +12,8 @@ if [ -z "$1" ]; then
 
 fi
 
-#DEPLOYER_URL="localhost"
-DEPLOYER_URL="internal-deployer-605796188.us-east-1.elb.amazonaws.com"
+DEPLOYER_URL="localhost"
+#DEPLOYER_URL="internal-deployer-605796188.us-east-1.elb.amazonaws.com"
 
 echo "Resetting demo with deployment $DEPLOYMENT_NAME"
 

@@ -1,4 +1,5 @@
 {
+    "userId": "tim",
     "name": "nginx",
     "region": "us-east-1",
     "nodeMapping": [
@@ -477,9 +478,9 @@
                                         "args": [
                                             "--master",
                                             "--consumer",
-                                            "--consumer-db=mongo",
+                                            "--consumer-database=mongo",
                                             "--consumer-mongo-endpoint=mongo:27017",
-                                            "--host=http:\/\/nginx.default:8080",
+                                            "--host=http:\/\/nginx.default:80",
                                             "-f",
                                             "http:\/\/hyperpilot-locustfiles.s3.amazonaws.com\/nginx\/locustfile.py"
                                         ],

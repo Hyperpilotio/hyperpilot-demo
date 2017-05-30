@@ -17,7 +17,7 @@
                     "startCount": 100,
                     "endCount": 400,
                     "stepCount": 100,
-                    "stepDuration": "5m"
+                    "stepDuration": "30s"
                 }
             }
         }

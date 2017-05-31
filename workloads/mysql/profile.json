@@ -1,57 +1,138 @@
 {
 	"deployment": "mysql",
-	"stages": [
-		{
-			"containerBenchmarks": [
-				{
-					"name": "busycpu",
-					"count": 2,
-					"resources": {
-						"cpushares": 256
+	"stages": [{
+		"benchmarks": [{
+			"name": "busycpu",
+			"count": 2,
+			"resources": {
+				"cpushares": 256
+			},
+			"image": "hyperpilot\/busycpu"
+		}],
+		"loadTest": {
+			"loadController": {
+				"serviceName": "mysql-benchmark",
+				"initialize": {
+					"command": {
+						"path": "/opt/tpcc-mysql/tpcc_load",
+						"args": [
+							"mysql-server",
+							"tpcc", "root",
+							"",
+							"20"
+						]
 					},
-					"image": "hyperpilot\/busycpu"
-				}
-			],
-			"workloadBenchmark": {
-				"requests": [
-					{
-						"method": "POST",
-						"component": "tpcc-bench",
-						"path": "\/api\/mysql-loaddata",
-						"body": {
-							"mysql_host": "mysql-server",
-							"mysql_port": "3306",
-							"tpcc_warehouses": "20"
-						}
-					}
-				]
-			}
-		},
-		{
-			"containerBenchmarks": [
-				{
-					"name": "busycpu",
-					"count": 2,
-					"resources": {
-						"cpushares": 512
+					"intensity": 10
+				},
+				"loadTests": [{
+						"command": {
+							"path": "/opt/tpcc-mysql/tpcc_start",
+							"args": [
+								"-d",
+								"tpcc",
+								"-h",
+								"mysql-server",
+								"-u",
+								"root",
+								"-w",
+								"20",
+								"-c",
+								"50",
+								"-r",
+								"20",
+								"-l",
+								"100"
+							]
+						},
+						"intensity": 10
+					}, {
+						"command": {
+							"path": "/opt/tpcc-mysql/tpcc_start",
+							"args": [
+								"-d",
+								"tpcc",
+								"-h",
+								"mysql-server",
+								"-u",
+								"root",
+								"-w",
+								"20",
+								"-c",
+								"65",
+								"-r",
+								"20",
+								"-l",
+								"100"
+							]
+						},
+						"intensity": 30
+					}, {
+						"command": {
+							"path": "/opt/tpcc-mysql/tpcc_start",
+							"args": [
+								"-d",
+								"tpcc",
+								"-h",
+								"mysql-server",
+								"-u",
+								"root",
+								"-w",
+								"20",
+								"-c",
+								"80",
+								"-r",
+								"20",
+								"-l",
+								"100"
+							]
+						},
+						"intensity": 50
+					}, {
+						"command": {
+							"path": "/opt/tpcc-mysql/tpcc_start",
+							"args": [
+								"-d",
+								"tpcc",
+								"-h",
+								"mysql-server",
+								"-u",
+								"root",
+								"-w",
+								"20",
+								"-c",
+								"95",
+								"-r",
+								"20",
+								"-l",
+								"100"
+							]
+						},
+						"intensity": 70
 					},
-					"image": "hyperpilot\/busycpu"
-				}
-			],
-			"workloadBenchmark": {
-				"requests": [
 					{
-						"method": "POST",
-						"component": "tpcc-bench",
-						"path": "\/api\/mysql-loaddata",
-						"body": {
-							"mysql_host": "mysql-server",
-							"mysql_port": "3306",
-							"tpcc_warehouses": "40"
-						}
+						"command": {
+							"path": "/opt/tpcc-mysql/tpcc_start",
+							"args": [
+								"-d",
+								"tpcc",
+								"-h",
+								"mysql-server",
+								"-u",
+								"root",
+								"-w",
+								"20",
+								"-c",
+								"95",
+								"-r",
+								"20",
+								"-l",
+								"100"
+							]
+						},
+						"intensity": 90
 					}
 				]
 			}
 		}
-	]
+	}]
 }

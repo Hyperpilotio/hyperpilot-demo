@@ -1,0 +1,30 @@
+{
+    "name": "redis-app",
+    "type": "long-running",
+    "numServices": 1,
+    "serviceNames": ["redis"],
+    "loadTester": {
+        "name": "redis-bench",
+        "benchmarkController": {
+            "initiailize": {
+            },
+            "command": {
+                "path": "redis-bench",
+                "intensityArgs": [
+                    {
+                        "name": "numConns",
+                        "arg": "-c",
+                        "startingValue": 100,
+                        "endingValue": 1000
+                    }
+                ],
+                "args": [
+                    "-d", "100"
+                ]
+            }
+        }
+    },
+    "sloMetric": "GET",
+    "sloValue": 10000.0,
+    "sloUnit": "rps"
+}

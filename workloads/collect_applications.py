@@ -23,6 +23,10 @@ if __name__ == "__main__":
 
                 with open(application_json_path) as f:
                     application_json = json.load(f)
+                    print("Updating {name} with {path}".format(
+                        name=application_json["name"],
+                        path=application_json_path
+                    ))
                     configdb.applications.replace_one(
                         filter={"name": application_json["name"]},
                         replacement=application_json,

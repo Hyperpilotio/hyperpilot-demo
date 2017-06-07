@@ -1,30 +1,37 @@
 {
-    "name": "redis-app",
-    "type": "long-running",
-    "numServices": 1,
+    "name": "redis",
     "serviceNames": ["redis"],
     "loadTester": {
         "name": "redis-bench",
         "benchmarkController": {
-            "initiailize": {
-            },
             "command": {
-                "path": "redis-bench",
+                "path": "\/usr\/bin\/redis-benchmark",
+                "args": [
+                    "-h",
+                    "redis-serve",
+                    "-p",
+                    "6379",
+                    "--csv",
+                    "-n",
+                    "500000",
+                    "-t",
+                    "GET"
+                ],
                 "intensityArgs": [
                     {
-                        "name": "numConns",
+                        "name": "Number of connections",
                         "arg": "-c",
-                        "startingValue": 100,
-                        "endingValue": 1000
+                        "startingValue": 5,
+                        "step": 3
                     }
-                ],
-                "args": [
-                    "-d", "100"
                 ]
             }
         }
     },
-    "sloMetric": "GET",
-    "sloValue": 10000.0,
-    "sloUnit": "rps"
+    "type": "long-running",
+    "slo": {
+        "metric": "GET",
+        "value": 35000,
+        "type": "throughput"
+    }
 }

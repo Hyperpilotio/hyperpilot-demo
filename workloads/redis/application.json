@@ -4,6 +4,16 @@
     "loadTester": {
         "name": "redis-bench",
         "benchmarkController": {
+            "initialize": {
+                "path": "\/usr\/bin\/redis-cli",
+                "args": [
+                    "-h",
+                    "redis-serve",
+                    "-p",
+                    "6379",
+                    "flushall"
+                ]
+            },
             "command": {
                 "path": "\/usr\/bin\/redis-benchmark",
                 "args": [

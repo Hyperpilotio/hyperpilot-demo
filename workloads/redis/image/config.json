@@ -1,8 +1,5 @@
 {
     "store": {
-        "type": "mongo",
-        "host": "mongo",
-        "port": "27017",
-        "dbName": "redis"
+        "type": "none"
     }
 }

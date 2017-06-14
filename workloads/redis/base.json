@@ -1,0 +1,57 @@
+{
+    "name": "analysis-base",
+    "region": "us-east-1",
+    "nodeMapping": [
+        {
+            "task": "benchmark-agent",
+            "id": 2
+        },
+        {
+            "task": "redis-serve",
+            "id": 2
+        },
+        {
+            "task": "influxsrv",
+            "id": 1
+        },
+        {
+            "task": "mongo",
+            "id": 1
+        },
+        {
+            "task": "snap",
+            "id": 2
+        },
+        {
+            "task": "redis-bench",
+            "id": 1
+        }
+    ],
+    "clusterDefinition": {
+        "nodes": [
+            {
+                "instanceType": "t2.large",
+                "id": 1
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 2
+            }
+        ]
+    },
+    "kubernetes": {
+        "secrets": [
+            {
+                "apiVersion": "v1",
+                "kind": "Secret",
+                "metadata": {
+                    "name": "myregistrykey"
+                },
+                "type": "kubernetes.io\/dockerconfigjson",
+                "data": {
+                    ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmRIVnpaWEk2YUhsd1pYSXhNak09IgoJCX0KCX0KfQ=="
+                }
+            }
+        ]
+    }
+}

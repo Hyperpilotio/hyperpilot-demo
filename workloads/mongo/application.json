@@ -9,7 +9,7 @@
                 "args": [
                     "/app/mongo-perf/benchrun.py",
                     "-f",
-                    "/app/mongo-perf/testcases/simple_insert.js", //TODO: find a testcase
+                    "/app/mongo-perf/testcases/simple_insert.js",
                     "--host",
                     "mongo-serve",
                     "--port",
@@ -28,8 +28,8 @@
     },
     "type": "long-running",
     "slo": {
-        "metric": "Insert.Empty", //TODO: find a testcase
-        "value": 5000, //TODO: find a value.
+        "metric": "Insert.Empty",
+        "value": 5000,
         "type": "throughput"
     }
 }

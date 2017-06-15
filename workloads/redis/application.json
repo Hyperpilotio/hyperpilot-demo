@@ -44,10 +44,26 @@
         "value": 35000,
         "type": "throughput"
     },
-    "base": "analysis-base",
-    "taskDefinitions": {
-        "loadTests": [
+    "deploymentTemplate": "redis-base",
+    "clusterDefinition": {
+        "nodes": [
             {
+                "instanceType": "t2.large",
+                "id": 1
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 2
+            }
+        ]
+    },
+    "taskDefinitions": [
+        {
+            "nodeMapping": {
+                "task": "benchmark-agent",
+                "id": 2
+            },
+            "taskDefinition": {
                 "deployment": {
                     "apiVersion": "extensions/v1beta1",
                     "kind": "Deployment",
@@ -74,6 +90,7 @@
                                 "hostname": "benchmark-agent",
                                 "containers": [
                                     {
+                                        "imagePullPolicy": "Always",
                                         "image": "hyperpilot/benchmark-agent",
                                         "name": "benchmark-agent",
                                         "ports": [
@@ -113,8 +130,14 @@
                     1
                 ],
                 "family": "benchmark-agent"
+            }
+        },
+        {
+            "nodeMapping": {
+                "task": "redis-serve",
+                "id": 2
             },
-            {
+            "taskDefinition": {
                 "deployment": {
                     "apiVersion": "extensions/v1beta1",
                     "kind": "Deployment",
@@ -141,6 +164,7 @@
                                 "hostname": "redis-serve",
                                 "containers": [
                                     {
+                                        "imagePullPolicy": "Always",
                                         "image": "redis:3.2.6",
                                         "name": "redis-serve",
                                         "ports": [
@@ -166,8 +190,14 @@
                     1
                 ],
                 "family": "redis-serve"
+            }
+        },
+        {
+            "nodeMapping": {
+                "task": "redis-bench",
+                "id": 1
             },
-            {
+            "taskDefinition": {
                 "deployment": {
                     "apiVersion": "extensions/v1beta1",
                     "kind": "Deployment",
@@ -225,272 +255,6 @@
                 ],
                 "family": "redis-bench"
             }
-        ],
-        "applications": [
-            {
-                "deployment": {
-                    "apiVersion": "extensions/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "mongo"
-                        },
-                        "name": "mongo"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "mongo"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "mongo"
-                                }
-                            },
-                            "spec": {
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "/home/ubuntu/mongo_data"
-                                        },
-                                        "name": "mongo-data"
-                                    }
-                                ],
-                                "containers": [
-                                    {
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "/data/db",
-                                                "name": "mongo-data"
-                                            }
-                                        ],
-                                        "image": "mongo",
-                                        "name": "mongo",
-                                        "ports": [
-                                            {
-                                                "containerPort": 27017,
-                                                "hostPort": 27017,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "256m",
-                                                "memory": "512Mi"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "mongo"
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "snap",
-                            "version": "latest"
-                        },
-                        "name": "snap"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "snap",
-                                "version": "latest"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "snap",
-                                    "version": "latest"
-                                }
-                            },
-                            "spec": {
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot/snap:alpine-init",
-                                        "name": "snap",
-                                        "command": [
-                                            "/usr/local/bin/run.sh"
-                                        ],
-                                        "args": [
-                                            "https://hyperpilot-snap-collectors.s3.amazonaws.com/init.json"
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "256.0m",
-                                                "memory": "2048Mi"
-                                            }
-                                        },
-                                        "imagePullPolicy": "Always",
-                                        "securityContext": {
-                                            "privileged": true
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "/var/run",
-                                                "name": "var-run"
-                                            },
-                                            {
-                                                "mountPath": "/var/log",
-                                                "name": "var-log"
-                                            },
-                                            {
-                                                "mountPath": "/sys/fs/cgroup",
-                                                "name": "cgroup"
-                                            },
-                                            {
-                                                "mountPath": "/var/lib/docker",
-                                                "name": "var-lib-docker"
-                                            },
-                                            {
-                                                "mountPath": "/usr/local/bin/docker",
-                                                "name": "usr-bin-docker"
-                                            },
-                                            {
-                                                "mountPath": "/proc_host",
-                                                "name": "proc"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "/sys/fs/cgroup"
-                                        },
-                                        "name": "cgroup"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "/var/lib/docker/"
-                                        },
-                                        "name": "var-lib-docker"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "/var/log"
-                                        },
-                                        "name": "var-log"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "/var/run"
-                                        },
-                                        "name": "var-run"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "/usr/bin/docker"
-                                        },
-                                        "name": "usr-bin-docker"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "/proc"
-                                        },
-                                        "name": "proc"
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "snap"
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "influxsrv"
-                        },
-                        "name": "influxsrv"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "influxsrv"
-                                }
-                            },
-                            "spec": {
-                                "hostname": "influxsrv",
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "/home/ubuntu/influx_data"
-                                        },
-                                        "name": "influx-data"
-                                    }
-                                ],
-                                "containers": [
-                                    {
-                                        "env": [
-                                            {
-                                                "name": "ADMIN_USER",
-                                                "value": "root"
-                                            },
-                                            {
-                                                "name": "PRE_CREATE_DB",
-                                                "value": "snap;spark"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_INIT_PWD",
-                                                "value": "default"
-                                            }
-                                        ],
-                                        "image": "hyperpilot/influx:1.2.2",
-                                        "name": "influxsrv",
-                                        "ports": [
-                                            {
-                                                "containerPort": 8083,
-                                                "hostPort": 8083,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 8086,
-                                                "hostPort": 8086,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "/var/lib/influxdb",
-                                                "name": "influx-data"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "1024m",
-                                                "memory": "1024Mi"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "influxsrv",
-                "portTypes": [
-                    1,
-                    1
-                ]
-            }
-        ]
-    }
+        }
+    ]
 }

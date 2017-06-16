@@ -65,7 +65,7 @@
             },
             "taskDefinition": {
                 "deployment": {
-                    "apiVersion": "extensions/v1beta1",
+                    "apiVersion": "extensions\/v1beta1",
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
@@ -91,7 +91,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot/benchmark-agent",
+                                        "image": "hyperpilot\/benchmark-agent",
                                         "name": "benchmark-agent",
                                         "ports": [
                                             {
@@ -108,7 +108,7 @@
                                         },
                                         "volumeMounts": [
                                             {
-                                                "mountPath": "/var/run/docker.sock",
+                                                "mountPath": "\/var\/run\/docker.sock",
                                                 "name": "docker-sock"
                                             }
                                         ]
@@ -117,7 +117,7 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "/var/run/docker.sock"
+                                            "path": "\/var\/run\/docker.sock"
                                         },
                                         "name": "docker-sock"
                                     }
@@ -139,7 +139,7 @@
             },
             "taskDefinition": {
                 "deployment": {
-                    "apiVersion": "extensions/v1beta1",
+                    "apiVersion": "extensions\/v1beta1",
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
@@ -199,7 +199,7 @@
             },
             "taskDefinition": {
                 "deployment": {
-                    "apiVersion": "extensions/v1beta1",
+                    "apiVersion": "extensions\/v1beta1",
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
@@ -228,7 +228,7 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot/benchmark-controller:redis",
+                                        "image": "hyperpilot\/benchmark-controller:redis",
                                         "name": "redis-bench",
                                         "imagePullPolicy": "Always",
                                         "ports": [

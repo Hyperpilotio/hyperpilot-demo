@@ -1,5 +1,5 @@
 #!/bin/sh
 
-docker build -t hyperpilot/bench:tpcc-mysql .
+docker build -t hyperpilot\/benchmark-controller:tpcc-mysql .
 
-docker push hyperpilot/bench:tpcc-mysql
+docker push hyperpilot\/benchmark-controller:tpcc-mysql

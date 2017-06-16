@@ -1,0 +1,60 @@
+{
+    "name": "mysql",
+    "serviceNames": [
+        "mysql"
+    ],
+    "loadTester": {
+        "name": "mysql-benchmark",
+        "benchmarkController": {
+            "initialize": {
+                "path": "\/opt\/tpcc-mysql\/tpcc_load",
+                "args": [
+                    "mysql-server",
+                    "tpcc",
+                    "root",
+                    "",
+                    "20"
+                ]
+            },
+            "runsPerIntensity": {
+                "path": "\/opt\/tpcc-mysql\/drop_table.sh",
+                "args": [
+                    "root",
+                    "",
+                    "tpcc"
+                ]
+            },
+            "command": {
+                "path": "\/opt\/tpcc-mysql\/tpcc_start",
+                "args": [
+                    "-d",
+                    "tpcc",
+                    "-h",
+                    "mysql-server",
+                    "-u",
+                    "root",
+                    "-w",
+                    "20",
+                    "-r",
+                    "20",
+                    "-l",
+                    "100"
+                ],
+                "intensityArgs": [
+                    {
+                        "name": "Number of connections",
+                        "arg": "-c",
+                        "startingValue": 5,
+                        "step": 3
+                    }
+                ]
+            }
+        }
+    },
+    "type": "long-running",
+    "slo": {
+        "metric": "GET",
+        "value": 35000,
+        "type": "throughput"
+    }
+}

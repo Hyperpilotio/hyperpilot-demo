@@ -22,7 +22,12 @@ if __name__ == "__main__":
             if os.path.isfile(application_json_path):
 
                 with open(application_json_path) as f:
-                    application_json = json.load(f)
+                    try:
+                        application_json = json.load(f)
+                    except ValueError as e:
+                        print("ERROR: Unable to decode {path}".format(path=application_json_path))
+                        print("       JSON Decode Error: {error}".format(error=e))
+                        continue
                     print("Updating {name} with {path}".format(
                         name=application_json["name"],
                         path=application_json_path

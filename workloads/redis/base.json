@@ -3,7 +3,16 @@
     "region": "us-east-1",
     "nodeMapping": [],
     "clusterDefinition": {
-        "nodes": []
+        "nodes": [
+            {
+                "instanceType": "t2.large",
+                "id": 1
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 2
+            }
+        ]
     },
     "kubernetes": {
         "secrets": [

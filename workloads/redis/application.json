@@ -45,18 +45,6 @@
         "type": "throughput"
     },
     "deploymentTemplate": "redis-base",
-    "clusterDefinition": {
-        "nodes": [
-            {
-                "instanceType": "t2.large",
-                "id": 1
-            },
-            {
-                "instanceType": "t2.large",
-                "id": 2
-            }
-        ]
-    },
     "taskDefinitions": [
         {
             "nodeMapping": {

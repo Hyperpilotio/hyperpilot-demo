@@ -13,7 +13,7 @@
                     "--host",
                     "mongo-serve",
                     "--port",
-                    "27017",
+                    "27017"
                 ],
                 "intensityArgs": [
                     {

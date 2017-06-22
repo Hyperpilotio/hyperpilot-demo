@@ -44,7 +44,7 @@
         "value": 35000,
         "type": "throughput"
     },
-    "deploymentTemplate": "redis-base",
+    "deploymentTemplate": "analysis-base",
     "taskDefinitions": [
         {
             "nodeMapping": {

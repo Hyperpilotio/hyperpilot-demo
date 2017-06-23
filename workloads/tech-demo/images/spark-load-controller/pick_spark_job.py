@@ -2,7 +2,7 @@
 
 import random
 
-SPARK_PI="./bin/spark-submit --master=spark://spark-master.default:6066 --deploy-mode=cluster --driver-cores %d --executor-cores %d --total-executor-cores %d --executor-memory %s --driver-memory %s --class org.apache.spark.examples.SparkPi file:///usr/spark-2.1.0/examples/jars/spark-examples_2.11-2.1.0.jar"
+SPARK_PI="./bin/spark-submit --master=spark://spark-master.default:6066 --deploy-mode=cluster --driver-cores %d --executor-cores %d --total-executor-cores %d --executor-memory %s --driver-memory %s --class org.apache.spark.examples.SparkPi file:///usr/spark-2.1.0/examples/jars/spark-examples_2.11-2.1.0.jar 100000"
 
 TERASORT="./bin/spark-submit --master=spark://spark-master.default:6066 --deploy-mode=cluster --driver-cores %d --executor-cores %d --total-executor-cores %d --executor-memory %s --driver-memory %s --class com.github.ehiggs.spark.terasort.TeraSort s3://hyperpilot-jarfiles/spark-terasort-1.1-SNAPSHOT-jar-with-dependencies.jar s3://demo-analysis-datasets/terasort_in_1g/ /tmp/terasort_out"
 

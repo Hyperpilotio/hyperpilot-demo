@@ -29,7 +29,7 @@ ENV KAFKA_HOME /opt/kafka
 ENV PATH ${PATH}:${KAFKA_HOME}/bin
 
 # Add kafka-topic wrapper
-ADD bin/kakfa-delete-and-create-topic.sh ${KAFKA_HOME}/bin/kakfa-delete-and-create-topic.sh
+ADD bin/kafka-delete-and-create-topic.sh ${KAFKA_HOME}/bin/kafka-delete-and-create-topic.sh
 
 # Overwrite Kafka config
 COPY config/consumer.properties ${KAFKA_HOME}/config/consumer.properties

@@ -1,4 +1,4 @@
-ARGS=$@
+#!/bin/sh
 while [ "$1" != "" ]; do
 	case $1 in
 	  "--zookeeper")
@@ -26,7 +26,7 @@ while [ "$1" != "" ]; do
 done
 
 
-if [[ ! $ZK ]] || [[ ! $PARTITIONS ]] || [[ ! $REPLICATION_FACTOR ]] || [[ ! $TOPIC ]]; then
+if [ ! $ZK ] || [ ! $PARTITIONS ] || [ ! $REPLICATION_FACTOR ] || [ ! $TOPIC ]; then
 	echo "ERROR: missing parameter"
 	exit 1
 fi

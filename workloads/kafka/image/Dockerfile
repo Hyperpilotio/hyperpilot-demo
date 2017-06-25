@@ -1,4 +1,4 @@
-FROM hyperpilot/benchmark-controller:dev
+FROM hyperpilot/benchmark-controller
 
 # Install Java
 RUN echo deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main >> /etc/apt/sources.list.d/java-8-debian.list
@@ -16,10 +16,8 @@ RUN apt-get install oracle-java8-set-default
 ARG kafka_version=0.10.2.1
 ARG scala_version=2.12
 
-MAINTAINER wurstmeister
-
 RUN apt-get update -y 
-RUN apt-get install -y unzip wget curl docker jq coreutils vim vim-rt
+RUN apt-get install -y unzip wget curl docker jq coreutils
 
 ENV KAFKA_VERSION=$kafka_version SCALA_VERSION=$scala_version
 ADD download-kafka.sh /tmp/download-kafka.sh
@@ -29,6 +27,9 @@ VOLUME ["/kafka"]
 
 ENV KAFKA_HOME /opt/kafka
 ENV PATH ${PATH}:${KAFKA_HOME}/bin
+
+# Add kafka-topic wrapper
+ADD bin/kakfa-delete-and-create-topic.sh ${KAFKA_HOME}/bin/kakfa-delete-and-create-topic.sh
 
 # Overwrite Kafka config
 COPY config/consumer.properties ${KAFKA_HOME}/config/consumer.properties

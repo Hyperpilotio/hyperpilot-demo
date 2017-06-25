@@ -11,7 +11,7 @@
                     "--topic",
                     "producer_perf_test",
                     "--num-records",
-                    "500000",
+                    "50000",
                     "--producer.config",
                     "/opt/kafka/config/producer.properties",
                     "--record-size",
@@ -20,16 +20,20 @@
                 "intensityArgs": [{
                     "name": "Throughput throttle",
                     "arg": "--throughput",
-                    "startingValue": 500000,
-                    "step": 100000
+                    "startingValue": 100000,
+                    "step": 200000
                 }]
+            },
+            "initialize": {
+                "path": "kafka-delete-and-create-topic.sh",
+                "args": ["--partitions", "2", "--replication-factor", "1", "--zookeeper", "kafka-serve:2181", "--topic", "tests"]
             }
         }
     },
     "type": "long-running",
     "slo": {
         "metric": "99thLatency",
-        "value": 800,
+        "value": 2000,
         "type": "latency"
     }
 }

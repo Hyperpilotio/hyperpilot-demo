@@ -31,5 +31,5 @@ if [ ! $ZK ] || [ ! $PARTITIONS ] || [ ! $REPLICATION_FACTOR ] || [ ! $TOPIC ]; 
 	exit 1
 fi
 
-"kafka-topics.sh" "--delete" "--if-exists" "--zookeeper" "$ZK" "--topic" "$TOPIC"
-"kafka-topics.sh" "--create" "--zookeeper" "$ZK" "--topic" "$TOPIC" "--partitions" "$PARTITIONS" "--replication-factor" "$REPLICATION_FACTOR"
+zookeeper-shell.sh $ZK rmr /brokers/topics
+kafka-topics.sh --create --zookeeper $ZK --topic $TOPIC --partitions $PARTITIONS --replication-factor $REPLICATION_FACTOR

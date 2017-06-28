@@ -1,7 +1,6 @@
-FROM    hyperpilot/bench:base-mysql-tpcc
+FROM    hyperpilot/benchmark-controller:test
 
 ADD     parser.js extension-lib/parser.js
 ADD     config.json config/config.json
 
-CMD     node bin/benchmarks-ui.js
-
+CMD     node /app/bin/index.js

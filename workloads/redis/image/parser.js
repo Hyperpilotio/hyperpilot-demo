@@ -15,7 +15,7 @@ class Parser {
 
       // Set the first column to a key and the second column to the value in an object.
       let columns = noquotes.split(',');
-      benchmarkObj[columns[0]] = columns[1];
+      benchmarkObj[columns[0]] = parseFloat(columns[1]);
     }
 
     return benchmarkObj;

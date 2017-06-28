@@ -18,7 +18,9 @@ jobs_finished=0
 # continuously submit jobs to the spark master
 while true; do
         echo Submitting spark job no. $count
-        ./bin/spark-submit --master=spark://$SPARK_MASTER --deploy-mode=cluster --executor-cores 1 --total-executor-cores 2 --executor-memory 1g --driver-memory 2g --class com.github.ehiggs.spark.terasort.TeraSort s3://hyperpilot-jarfiles/spark-terasort-1.1-SNAPSHOT-jar-with-dependencies.jar s3://demo-analysis-datasets/terasort_in_1g/ /tmp/terasort_out 2>job$1.out
+        job_command=`./pick_spark_job.py`
+        echo $job_command
+        eval "$job_command 2>job$1.out"
         job_id=`cat job$1.out | grep submissionId | cut -d":" -f2 | cut -d "\"" -f2`
         echo Spark submission $job_id is submitted
 

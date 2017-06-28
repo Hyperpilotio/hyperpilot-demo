@@ -1,0 +1,15 @@
+{
+  "name": "mysql-parser",
+  "version": "1.0.0",
+  "description": "***NOTE: Strongly recommend you to visit the latest API document of [hyperpilotio/benchmark-controller](https://github.com/Hyperpilotio/benchmark-controller) ***",
+  "main": "parser.js",
+  "scripts": {
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha -R spec test/",
+    "clean": "rm -rf node_modules"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^3.4.2"
+  }
+}

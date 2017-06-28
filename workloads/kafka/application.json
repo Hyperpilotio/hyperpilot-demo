@@ -1,0 +1,39 @@
+{
+    "name": "kafka",
+    "serviceNames": ["kafka"],
+    "loadTester": {
+        "name": "kafka-bench",
+        "benchmarkController": {
+            "command": {
+                "path": "kafka-run-class.sh",
+                "args": [
+                    "org.apache.kafka.tools.ProducerPerformance",
+                    "--topic",
+                    "tests",
+                    "--num-records",
+                    "50000",
+                    "--producer.config",
+                    "/opt/kafka/config/producer.properties",
+                    "--record-size",
+                    "16384"
+                ],
+                "intensityArgs": [{
+                    "name": "Throughput throttle",
+                    "arg": "--throughput",
+                    "startingValue": 1024,
+                    "step": 1024
+                }]
+            },
+            "initialize": {
+                "path": "kafka-delete-and-create-topic.sh",
+                "args": ["--partitions", "2", "--replication-factor", "1", "--zookeeper", "kafka-serve:2181", "--topic", "tests"]
+            }
+        }
+    },
+    "type": "long-running",
+    "slo": {
+        "metric": "throughput",
+        "value": 50,
+        "type": "throughput"
+    }
+}

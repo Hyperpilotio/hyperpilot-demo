@@ -1,0 +1,35 @@
+{
+    "name": "mongo",
+    "serviceNames": ["mongo"],
+    "loadTester": {
+        "name": "mongo-bench",
+        "benchmarkController": {
+            "command": {
+                "path": "python",
+                "args": [
+                    "/app/mongo-perf/benchrun.py",
+                    "-f",
+                    "/app/mongo-perf/testcases/simple_insert.js",
+                    "--host",
+                    "mongo-serve",
+                    "--port",
+                    "27017"
+                ],
+                "intensityArgs": [
+                    {
+                        "name": "Number of connections",
+                        "arg": "-t",
+                        "startingValue": 1,
+                        "step": 2
+                    }
+                ]
+            }
+        }
+    },
+    "type": "long-running",
+    "slo": {
+        "metric": "Insert.Empty",
+        "value": 5000,
+        "type": "throughput"
+    }
+}

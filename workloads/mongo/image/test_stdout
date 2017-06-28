@@ -1,0 +1,251 @@
+MongoDB shell version v3.4.4
+connecting to: mongodb://localhost:27017/
+MongoDB server version: 3.4.4
+db version: 3.4.4
+888390515874a9debd1b6c5d36559ca86b44babd
+
+load('util/utils.js')
+
+load('testcases/simple_insert.js')
+
+mongoPerfRunTests([4], 1, 1, 1, 1, "%", [], 0, {"writeCmdMode": "true", "safeGLE": "false", "readCmdMode": "false", "writeConcern": {"j": "false"}}, false, false);
+
+Insert.Empty
+4	21667.834562982374
+Insert.EmptyCapped
+4	12295.500439656087
+Insert.EmptyCapped.SeqIntID
+4	8090.602050267043
+Insert.JustID
+4	23013.009892268787
+Insert.IntVector
+4	2652.290707371368
+Insert.SeqIntID.Indexed
+4	16444.262182764556
+Insert.IntIDUpsert
+4	14316.650856162743
+Insert.JustNum
+4	17829.799126912585
+Insert.JustNumIndexed
+4	11517.385237978988
+InsertIndexedStringsSimpleCollation
+4	16896.858757998052
+InsertIndexedStringsNonSimpleCollation
+4	17939.01013269452
+Insert.LargeDocVector
+4	2016.1848796026986
+Finished Testing.
+{
+    "start": "2017-06-13T22:17:51.464Z",
+    "basicFields": {
+        "crudOptions": {
+            "writeCmdMode": "true",
+            "safeGLE": "false",
+            "readCmdMode": "false",
+            "writeConcern": {
+                "j": false
+            }
+        },
+        "commit": "888390515874a9debd1b6c5d36559ca86b44babd",
+        "version": "3.4.4",
+        "platform": "deprecated"
+    },
+    "errors": [
+        0
+    ],
+    "end": "2017-06-13T22:18:05.162Z",
+    "results": [
+        {
+            "name": "Insert.Empty",
+            "results": {
+                "start": "2017-06-13T22:17:51.464Z",
+                "end": "2017-06-13T22:17:52.529Z",
+                "4": {
+                    "ops_per_sec": 21667.834562982374,
+                    "ops_per_sec_values": [
+                        21667.834562982374
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Insert.EmptyCapped",
+            "results": {
+                "start": "2017-06-13T22:17:52.529Z",
+                "end": "2017-06-13T22:17:53.784Z",
+                "4": {
+                    "ops_per_sec": 12295.500439656087,
+                    "ops_per_sec_values": [
+                        12295.500439656087
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Insert.EmptyCapped.SeqIntID",
+            "results": {
+                "start": "2017-06-13T22:17:53.784Z",
+                "end": "2017-06-13T22:17:54.842Z",
+                "4": {
+                    "ops_per_sec": 8090.602050267043,
+                    "ops_per_sec_values": [
+                        8090.602050267043
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Insert.JustID",
+            "results": {
+                "start": "2017-06-13T22:17:54.842Z",
+                "end": "2017-06-13T22:17:55.908Z",
+                "4": {
+                    "ops_per_sec": 23013.009892268787,
+                    "ops_per_sec_values": [
+                        23013.009892268787
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Insert.IntVector",
+            "results": {
+                "start": "2017-06-13T22:17:55.908Z",
+                "end": "2017-06-13T22:17:57.003Z",
+                "4": {
+                    "ops_per_sec": 2652.290707371368,
+                    "ops_per_sec_values": [
+                        2652.290707371368
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Insert.SeqIntID.Indexed",
+            "results": {
+                "start": "2017-06-13T22:17:57.003Z",
+                "end": "2017-06-13T22:17:58.197Z",
+                "4": {
+                    "ops_per_sec": 16444.262182764556,
+                    "ops_per_sec_values": [
+                        16444.262182764556
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Insert.IntIDUpsert",
+            "results": {
+                "start": "2017-06-13T22:17:58.197Z",
+                "end": "2017-06-13T22:17:59.270Z",
+                "4": {
+                    "ops_per_sec": 14316.650856162743,
+                    "ops_per_sec_values": [
+                        14316.650856162743
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Insert.JustNum",
+            "results": {
+                "start": "2017-06-13T22:17:59.270Z",
+                "end": "2017-06-13T22:18:00.507Z",
+                "4": {
+                    "ops_per_sec": 17829.799126912585,
+                    "ops_per_sec_values": [
+                        17829.799126912585
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Insert.JustNumIndexed",
+            "results": {
+                "start": "2017-06-13T22:18:00.507Z",
+                "end": "2017-06-13T22:18:01.587Z",
+                "4": {
+                    "ops_per_sec": 11517.385237978988,
+                    "ops_per_sec_values": [
+                        11517.385237978988
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "InsertIndexedStringsSimpleCollation",
+            "results": {
+                "start": "2017-06-13T22:18:01.587Z",
+                "end": "2017-06-13T22:18:02.725Z",
+                "4": {
+                    "ops_per_sec": 16896.858757998052,
+                    "ops_per_sec_values": [
+                        16896.858757998052
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "InsertIndexedStringsNonSimpleCollation",
+            "results": {
+                "start": "2017-06-13T22:18:02.725Z",
+                "end": "2017-06-13T22:18:04.120Z",
+                "4": {
+                    "ops_per_sec": 17939.01013269452,
+                    "ops_per_sec_values": [
+                        17939.01013269452
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Insert.LargeDocVector",
+            "results": {
+                "start": "2017-06-13T22:18:04.120Z",
+                "end": "2017-06-13T22:18:05.162Z",
+                "4": {
+                    "ops_per_sec": 2016.1848796026986,
+                    "ops_per_sec_values": [
+                        2016.1848796026986
+                    ],
+                    "error_values": [
+                        0
+                    ]
+                }
+            }
+        }
+    ]
+}

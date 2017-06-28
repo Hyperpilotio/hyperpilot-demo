@@ -821,11 +821,7 @@
                             "app": "slow-cooker"
                         },
                         "name": "slow-cooker",
-<<<<<<< HEAD
                         "namespace": "default"
-=======
-                        "namespace": "hyperpilot"
->>>>>>> slow_cooker
                     },
                     "spec": {
                         "replicas": 1,
@@ -856,36 +852,22 @@
                                             "8081"
                                         ],
                                         "imagePullPolicy": "Always",
-<<<<<<< HEAD
                                         "image": "hyperpilot\/slow_cooker:tech_demo",
                                         "name": "slow-cooker",
-=======
-                                        "image": "hyperpilot\/slow_cooker",
-                                        "name": "slow_cooker",
->>>>>>> slow_cooker
                                         "ports": [
                                             {
                                                 "containerPort": 8081,
                                                 "hostPort": 8089,
                                                 "protocol": "TCP"
-<<<<<<< HEAD
                                             }
                                         ]
-=======
-                                            },
-                                        ],
->>>>>>> slow_cooker
                                     }
                                 ]
                             }
                         }
                     }
                 },
-<<<<<<< HEAD
                 "family": "slow-cooker",
-=======
-                "family": "slow_cooker",
->>>>>>> slow_cooker
                 "portTypes": [
                     1
                 ]

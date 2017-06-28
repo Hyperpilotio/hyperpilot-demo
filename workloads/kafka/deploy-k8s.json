@@ -90,10 +90,7 @@
                                             }
                                         ],
                                         "resources": {
-                                            "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "2048Mi"
-                                            }
+
                                         }
                                     }
                                 ]
@@ -102,7 +99,7 @@
                     }
                 },
                 "portTypes": [
-                    1,1
+                    0,0
                 ],
                 "family": "kafka-serve"
             },
@@ -216,10 +213,7 @@
                                             }
                                         ],
                                         "resources": {
-                                            "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "1024Mi"
-                                            }
+
                                         }
                                     }
                                 ]

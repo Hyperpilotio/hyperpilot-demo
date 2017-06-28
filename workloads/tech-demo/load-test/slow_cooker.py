@@ -7,20 +7,19 @@ import time
 import sys
 from urlparse import urljoin
 from multiprocessing import Pool
-from functools import partial
 import json
 import argparse
 import os
-import signal
 
 LOCATIONS = ["SESTO", "AUMEL", "CNHKG", "JNTKO", "NLRTM", "DEHAM"]
 QPS = 20
 CONCURRENCY = 1
 INTERVAL = "1s"
 HISTOGRAM_WINDOW_SIZE = "1s"
-TOTAL_REQUESTS = 20
+TOTAL_REQUESTS = 200
 TARGET_HOST = "http://goddd.default:8080"
-SLOW_COOKER_HOST = "http://slow-cooker.hyperpilot:8089"
+# Please replace slow_cooker with real host
+SLOW_COOKER_HOST = "http://aef2018a95c0811e7a4d102472bbd1c4-577574532.us-east-1.elb.amazonaws.com:8089"
 STATUS_COMPLETE = "finished"
 
 
@@ -108,7 +107,7 @@ def run_benchmark(*args):
             json={
                 "runId": id.__str__(),
                 "qps": qps,
-                "concurrency": 1,
+                "concurrency": CONCURRENCY,
                 "totalRequests": qps * duration * one_second,
                 "interval": one_second,
                 "loadTime": "1s",

@@ -31,5 +31,16 @@ if [ ! $ZK ] || [ ! $PARTITIONS ] || [ ! $REPLICATION_FACTOR ] || [ ! $TOPIC ]; 
 	exit 1
 fi
 
-zookeeper-shell.sh $ZK rmr /brokers/topics
-kafka-topics.sh --create --zookeeper $ZK --topic $TOPIC --partitions $PARTITIONS --replication-factor $REPLICATION_FACTOR
+
+echo "deleting topic: $TOPIC";
+kafka-topics.sh --delete --zookeeper kafka-serve:2181 --topic tests --if-exist
+
+while [ $(kafka-topics.sh --list --zookeeper $ZK | wc -l) -ne "0" ]
+do
+	echo "remaining topics: ";
+	kafka-topics.sh --list --zookeeper $ZK;
+	sleep 2;
+done
+
+kafka-topics.sh --create --zookeeper $ZK --topic $TOPIC --partitions $PARTITIONS --replication-factor $REPLICATION_FACTOR --if-not-exists
+kafka-configs.sh --alter --zookeeper $ZK --entity-type=topics --entity-name tests --add-config retention.bytes=1

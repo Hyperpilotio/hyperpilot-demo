@@ -2,9 +2,10 @@
     "name": "kafka",
     "serviceNames": ["kafka"],
     "loadTester": {
-        "name": "kafka-bench",
+        "name": "kafka-controller",
         "benchmarkController": {
             "command": {
+                "image": "hyperpilot/kafka-bench",
                 "path": "kafka-run-class.sh",
                 "args": [
                     "org.apache.kafka.tools.ProducerPerformance",
@@ -25,6 +26,7 @@
                 }]
             },
             "initialize": {
+                "image": "hyperpilot/kafka-bench",
                 "path": "kafka-delete-and-create-topic.sh",
                 "args": ["--partitions", "2", "--replication-factor", "1", "--zookeeper", "kafka-serve:2181", "--topic", "tests"]
             }

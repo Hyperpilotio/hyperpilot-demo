@@ -17,9 +17,6 @@ CONCURRENCY = 1
 INTERVAL = "1s"
 HISTOGRAM_WINDOW_SIZE = "1s"
 TOTAL_REQUESTS = 200
-TARGET_HOST = "http://goddd.default:8080"
-# Please replace slow_cooker with real host
-SLOW_COOKER_HOST = "http://aef2018a95c0811e7a4d102472bbd1c4-577574532.us-east-1.elb.amazonaws.com:8089"
 STATUS_COMPLETE = "finished"
 
 
@@ -142,11 +139,18 @@ def run_benchmark(*args):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", type=str,
-                        required=False, default="config.json",
+                        required=False, default="hi_lo_config.json",
                         help="hi-lo config")
+    parser.add_argument("--slow-cooker-host", type=str,
+                        required=False, dest="slowcooker",
+                        default="http://localhost:8081",
+                        help="slow-cooker server host url")
+    parser.add_argument("--host", type=str,
+                        required=False, dest="host",
+                        default="http://localhost:8080",
+                        help="load test target host")
     args = parser.parse_args()
     if os.path.isfile(args.config):
-        print args.config
         with open(args.config, 'r') as json_data_file:
             try:
                 params = json.load(json_data_file)
@@ -156,14 +160,15 @@ def parse_args():
     else:
         print "Main:ERROR: Cannot read configuration file ", args.config
         sys.exit(-1)
-
+    params["slowcooker"] = args.slowcooker
+    params["host"] = args.host
     return params
 
 
 def main():
     """Main function."""
     params = parse_args()
-    tasks = StaticTasks(TARGET_HOST)
+    tasks = StaticTasks(params["host"])
 
     pool = Pool()
 
@@ -172,11 +177,12 @@ def main():
     lo_duration = params["low_duration_seconds"]
     hi = params["high_count"]
     hi_duration = params["high_duration_seconds"]
+    slowcooker = params["slowcooker"]
 
     args = [
-       (SLOW_COOKER_HOST, tasks.create_route_delete_cargo(), {lo: lo_duration, hi: hi_duration}),
-       (SLOW_COOKER_HOST, tasks.list_cargos(), {lo: lo_duration, hi: hi_duration}),
-       (SLOW_COOKER_HOST, tasks.list_locations(), {lo: lo_duration, hi: hi_duration})]
+       (slowcooker, tasks.create_route_delete_cargo(), {lo: lo_duration, hi: hi_duration}),
+       (slowcooker, tasks.list_cargos(), {lo: lo_duration, hi: hi_duration}),
+       (slowcooker, tasks.list_locations(), {lo: lo_duration, hi: hi_duration})]
     while True:
         try:
             pool.map_async(run_benchmark, args).get(0xffff)

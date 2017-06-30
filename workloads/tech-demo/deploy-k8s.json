@@ -1157,9 +1157,9 @@
                                             "bin\/spark-class",
                                             "org.apache.spark.deploy.worker.Worker",
                                             "--cores",
-                                            "3",
+                                            "9",
                                             "--memory",
-                                            "5120M",
+                                            "15360M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [
@@ -1255,9 +1255,9 @@
                                             "bin\/spark-class",
                                             "org.apache.spark.deploy.worker.Worker",
                                             "--cores",
-                                            "3",
+                                            "9",
                                             "--memory",
-                                            "5120M",
+                                            "15360M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [
@@ -1353,9 +1353,9 @@
                                             "bin\/spark-class",
                                             "org.apache.spark.deploy.worker.Worker",
                                             "--cores",
-                                            "3",
+                                            "9",
                                             "--memory",
-                                            "5120M",
+                                            "15360M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [

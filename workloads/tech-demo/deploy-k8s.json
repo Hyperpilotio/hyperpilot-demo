@@ -645,7 +645,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/tech-demo-ui",
+                                        "image": "hyperpilot\/tech-demo-ui:slow-cooker",
                                         "imagePullPolicy": "Always",
                                         "name": "demo-ui",
                                         "ports": [

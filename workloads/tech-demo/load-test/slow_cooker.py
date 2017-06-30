@@ -90,9 +90,9 @@ class StaticTasks(object):
 
 def run_benchmark(*args):
     """Run benchmark.
-    arg[0][0]: slow cooker host
-    arg[0][1]: scenario
-    arg[0][2]: load {qps: duration_in_second}
+    args[0][0]: slow cooker host
+    args[0][1]: scenario
+    args[0][2]: load {qps: duration_in_second}
     load is a list which contains dict qps:duration
     """
     one_second = 1000000000
@@ -178,7 +178,6 @@ def main():
     hi = params["high_count"]
     hi_duration = params["high_duration_seconds"]
     slowcooker = params["slowcooker"]
-
     args = [
        (slowcooker, tasks.create_route_delete_cargo(), {lo: lo_duration, hi: hi_duration}),
        (slowcooker, tasks.list_cargos(), {lo: lo_duration, hi: hi_duration}),

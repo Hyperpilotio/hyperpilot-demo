@@ -1,6 +1,6 @@
 {
     "name": "redis",
-    "serviceNames": ["redis"],
+    "serviceNames": ["redis-serve"],
     "loadTester": {
         "name": "redis-bench",
         "benchmarkController": {

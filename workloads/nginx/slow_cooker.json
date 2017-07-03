@@ -1,0 +1,53 @@
+{
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "slow-cooker"
+                        },
+                        "name": "slow-cooker"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "slow-cooker"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "slow-cooker"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "slow-cooker",
+                                "nodeSelector": {
+                                    "hyperpilot/node-id": "1"
+                                },
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/slow_cooker",
+                                        "name": "slow-cooker",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8081,
+                                                "hostPort": 8081,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "args": [
+                                            "-mode", "server", "-v", "1", "-logtostderr"
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "500.0m",
+                                                "memory": "100Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }

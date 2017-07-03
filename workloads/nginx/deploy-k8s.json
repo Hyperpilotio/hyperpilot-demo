@@ -4,31 +4,19 @@
     "nodeMapping": [
         {
             "task": "benchmark-agent",
-            "id": 2
+            "id": 1
         },
         {
             "task": "nginx",
             "id": 2
         },
         {
-            "task": "influxsrv",
+            "task": "slow-cooker",
             "id": 1
         },
         {
-            "task": "mongo",
-            "id": 1
-        },
-        {
-            "task": "snap",
+            "task": "benchmark-agent",
             "id": 2
-        },
-        {
-            "task": "locust-master",
-            "id": 1
-        },
-        {
-            "task": "locust-slave",
-            "id": 1
         }
     ],
     "clusterDefinition": {
@@ -64,134 +52,47 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "mongo"
+                            "app": "benchmark-agent"
                         },
-                        "name": "mongo"
+                        "name": "benchmark-agent"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "mongo"
+                                "app": "benchmark-agent"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "mongo"
+                                    "app": "benchmark-agent"
                                 }
                             },
                             "spec": {
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/mongo_data"
-                                        },
-                                        "name": "mongo-data"
-                                    }
-                                ],
+                                "hostname": "benchmark-agent",
                                 "containers": [
                                     {
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/data\/db",
-                                                "name": "mongo-data"
-                                            }
-                                        ],
-                                        "image": "mongo",
-                                        "name": "mongo",
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/benchmark-agent",
+                                        "name": "benchmark-agent",
                                         "ports": [
                                             {
-                                                "containerPort": 27017,
-                                                "hostPort": 27017,
+                                                "containerPort": 7778,
+                                                "hostPort": 7778,
                                                 "protocol": "TCP"
                                             }
                                         ],
                                         "resources": {
-                                            "requests": {
-                                                "cpu": "256m",
-                                                "memory": "512Mi"
+                                            "limits": {
+                                                "cpu": "1024.0m",
+                                                "memory": "500Mi"
                                             }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "mongo"
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "snap",
-                            "version": "latest"
-                        },
-                        "name": "snap"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "snap",
-                                "version": "latest"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "snap",
-                                    "version": "latest"
-                                }
-                            },
-                            "spec": {
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/snap:alpine-init",
-                                        "name": "snap",
-                                        "command": [
-                                            "\/usr\/local\/bin\/run.sh"
-                                        ],
-                                        "args": [
-                                            "https:\/\/hyperpilot-snap-collectors.s3.amazonaws.com\/init.json"
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "256.0m",
-                                                "memory": "2048Mi"
-                                            }
-                                        },
-                                        "imagePullPolicy": "Always",
-                                        "securityContext": {
-                                            "privileged": true
                                         },
                                         "volumeMounts": [
                                             {
-                                                "mountPath": "\/var\/run",
-                                                "name": "var-run"
-                                            },
-                                            {
-                                                "mountPath": "\/var\/log",
-                                                "name": "var-log"
-                                            },
-                                            {
-                                                "mountPath": "\/sys\/fs\/cgroup",
-                                                "name": "cgroup"
-                                            },
-                                            {
-                                                "mountPath": "\/var\/lib\/docker",
-                                                "name": "var-lib-docker"
-                                            },
-                                            {
-                                                "mountPath": "\/usr\/local\/bin\/docker",
-                                                "name": "usr-bin-docker"
-                                            },
-                                            {
-                                                "mountPath": "\/proc_host",
-                                                "name": "proc"
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
                                             }
                                         ]
                                     }
@@ -199,128 +100,15 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "\/sys\/fs\/cgroup"
+                                            "path": "\/var\/run\/docker.sock"
                                         },
-                                        "name": "cgroup"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/var\/lib\/docker\/"
-                                        },
-                                        "name": "var-lib-docker"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/var\/log"
-                                        },
-                                        "name": "var-log"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/var\/run"
-                                        },
-                                        "name": "var-run"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/usr\/bin\/docker"
-                                        },
-                                        "name": "usr-bin-docker"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/proc"
-                                        },
-                                        "name": "proc"
+                                        "name": "docker-sock"
                                     }
                                 ]
                             }
                         }
                     }
-                },
-                "family": "snap"
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "influxsrv"
-                        },
-                        "name": "influxsrv"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "influxsrv"
-                                }
-                            },
-                            "spec": {
-                                "hostname": "influxsrv",
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/influx_data"
-                                        },
-                                        "name": "influx-data"
-                                    }
-                                ],
-                                "containers": [
-                                    {
-                                        "env": [
-                                            {
-                                                "name": "ADMIN_USER",
-                                                "value": "root"
-                                            },
-                                            {
-                                                "name": "PRE_CREATE_DB",
-                                                "value": "snap;spark"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_INIT_PWD",
-                                                "value": "default"
-                                            }
-                                        ],
-                                        "image": "hyperpilot\/influx:1.2.2",
-                                        "name": "influxsrv",
-                                        "ports": [
-                                            {
-                                                "containerPort": 8083,
-                                                "hostPort": 8083,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 8086,
-                                                "hostPort": 8086,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/var\/lib\/influxdb",
-                                                "name": "influx-data"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "1024m",
-                                                "memory": "1024Mi"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "influxsrv",
-                "portTypes": [
-                    1,
-                    1
-                ]
+                }
             },
             {
                 "deployment": {
@@ -448,152 +236,56 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "locust-master"
+                            "app": "slow-cooker"
                         },
-                        "name": "locust-master"
+                        "name": "slow-cooker"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "locust-master"
+                                "app": "slow-cooker"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "locust-master"
+                                    "app": "slow-cooker"
                                 }
                             },
                             "spec": {
+                                "hostname": "slow-cooker",
                                 "containers": [
                                     {
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "128.0m",
-                                                "memory": "512Mi"
-                                            }
-                                        },
-                                        "args": [
-                                            "--master",
-                                            "--consumer",
-                                            "--consumer-database=mongo",
-                                            "--consumer-mongo-endpoint=mongo:27017",
-                                            "--host=http:\/\/nginx.default:80",
-                                            "-f",
-                                            "http:\/\/hyperpilot-locustfiles.s3.amazonaws.com\/nginx\/locustfile.py"
-                                        ],
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/locust:mongo",
-                                        "name": "locust-master",
+                                        "image": "hyperpilot\/slow_cooker",
+                                        "name": "slow-cooker",
                                         "ports": [
                                             {
-                                                "containerPort": 8089,
-                                                "hostPort": 8089,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 5557,
-                                                "hostPort": 5557,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 5558,
-                                                "hostPort": 5558,
+                                                "containerPort": 8081,
+                                                "hostPort": 8081,
                                                 "protocol": "TCP"
                                             }
                                         ],
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/locust_file",
-                                                "name": "home-ubuntu-locust-file"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/locust_file\/"
-                                        },
-                                        "name": "home-ubuntu-locust-file"
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "locust-master",
-                "portTypes": [
-                    1
-                ]
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "locust-slave"
-                        },
-                        "name": "locust-slave"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "locust-slave"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "locust-slave"
-                                }
-                            },
-                            "spec": {
-                                "containers": [
-                                    {
                                         "args": [
-                                            "--loglevel",
-                                            "DEBUG",
-                                            "--slave",
-                                            "--master-host=locust-master",
-                                            "-H",
-                                            "http:\/\/nginx.default:80",
-                                            "-f",
-                                            "http:\/\/hyperpilot-locustfiles.s3.amazonaws.com\/nginx\/locustfile.py"
+                                            "-mode", "server", "-v", "1", "-logtostderr"
                                         ],
-                                        "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/locust:mongo",
-                                        "name": "locust-slave",
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "512Mi"
+                                                "cpu": "500.0m",
+                                                "memory": "100Mi"
                                             }
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/locust_file",
-                                                "name": "home-ubuntu-locust-file"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/locust_file\/"
-                                        },
-                                        "name": "home-ubuntu-locust-file"
+                                        }
                                     }
                                 ]
                             }
                         }
                     }
                 },
-                "family": "locust-slave"
+                "portTypes": [
+                    1
+                ],
+                "family": "slow-cooker"
             }
         ]
     }

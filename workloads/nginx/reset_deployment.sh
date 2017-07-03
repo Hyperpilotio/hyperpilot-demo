@@ -17,4 +17,4 @@ DEPLOYER_URL="localhost"
 
 echo "Resetting demo with deployment $DEPLOYMENT_NAME"
 
-curl -XPUT $DEPLOYER_URL:7777/v1/deployments/$DEPLOYMENT_NAME --data-binary @deploy-k8s.json
+curl -XPUT $DEPLOYER_URL:7777/v1/users/tim/deployments/$DEPLOYMENT_NAME --data-binary @deploy-k8s.json

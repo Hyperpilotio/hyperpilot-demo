@@ -1,0 +1,27 @@
+{
+    "name": "nginx",
+    "serviceNames": ["nginx"],
+    "loadTester": {
+        "name": "slow-cooker",
+        "slowCookerController": {
+            "appLoad": {
+                "qps": 5,
+                "url": "http://nginx.default/index.html",
+                "method": "GET",
+                "totalRequests": 10000000
+            },
+            "calibrate": {
+                "initialConcurrency": 50,
+                "step": 50,
+                "runsPerIntensity": 3
+            },
+            "loadTime": "30s"
+        }
+    },
+    "type": "long-running",
+    "slo": {
+        "metric": "95",
+        "value": 20,
+        "type": "throughput"
+    }
+}

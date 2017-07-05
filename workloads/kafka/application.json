@@ -1,6 +1,6 @@
 {
     "name": "kafka",
-    "serviceNames": ["kafka"],
+    "serviceNames": ["kafka-serve"],
     "loadTester": {
         "name": "kafka-bench",
         "benchmarkController": {
@@ -20,8 +20,8 @@
                 "intensityArgs": [{
                     "name": "Throughput throttle",
                     "arg": "--throughput",
-                    "startingValue": 1024,
-                    "step": 1024
+                    "startingValue": 3096,
+                    "step": 512
                 }]
             },
             "initialize": {
@@ -32,8 +32,8 @@
     },
     "type": "long-running",
     "slo": {
-        "metric": "throughput",
-        "value": 50,
-        "type": "throughput"
+        "metric": "99thLatency",
+        "value": 200,
+        "type": "latency"
     }
 }

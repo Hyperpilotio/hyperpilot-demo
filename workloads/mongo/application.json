@@ -1,6 +1,6 @@
 {
     "name": "mongo",
-    "serviceNames": ["mongo"],
+    "serviceNames": ["mongo-serve"],
     "loadTester": {
         "name": "mongo-bench",
         "benchmarkController": {

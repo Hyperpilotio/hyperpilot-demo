@@ -1,11 +1,8 @@
 {
+    "userId": "william",
     "name": "tech-demo",
     "region": "us-east-1",
     "files": [
-        {
-            "fileId": "tech_demo_load_test",
-            "path": "\/home\/ubuntu\/locust_file\/locustfile.py"
-        },
         {
             "fileId": "tech_demo_core_site_xml",
             "path": "\/home\/ubuntu\/core-site.xml"
@@ -53,15 +50,7 @@
             "id": 2
         },
         {
-            "task": "locust-master",
-            "id": 1
-        },
-        {
-            "task": "locust-slave",
-            "id": 1
-        },
-        {
-            "task": "locust-slave",
+            "task": "slow-cooker",
             "id": 1
         },
         {
@@ -154,7 +143,7 @@
                                                 "mountPath": "\/var\/run\/command.sock",
                                                 "name": "command-sock"
                                             },
-					    {
+					                        {
                                                 "mountPath": "\/sys\/fs\/cgroup",
                                                 "name": "cgroup"
                                             }
@@ -656,7 +645,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/tech-demo-ui",
+                                        "image": "hyperpilot\/tech-demo-ui:slow-cooker",
                                         "imagePullPolicy": "Always",
                                         "name": "demo-ui",
                                         "ports": [
@@ -829,22 +818,22 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "locust-master"
+                            "app": "slow-cooker"
                         },
-                        "name": "locust-master",
-                        "namespace": "hyperpilot"
+                        "name": "slow-cooker",
+                        "namespace": "default"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "locust-master"
+                                "app": "slow-cooker"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "locust-master"
+                                    "app": "slow-cooker"
                                 }
                             },
                             "spec": {
@@ -857,123 +846,31 @@
                                             }
                                         },
                                         "args": [
-                                            "--master",
-                                            "--host=http:\/\/goddd.default:8080",
-                                            "-f",
-                                            "\/locust_file\/locustfile.py"
+                                            "-mode",
+                                            "server",
+                                            "-server-port",
+                                            "8081"
                                         ],
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/locust",
-                                        "name": "locust-master",
+                                        "image": "hyperpilot\/slow_cooker:tech_demo",
+                                        "name": "slow-cooker",
                                         "ports": [
                                             {
-                                                "containerPort": 8089,
+                                                "containerPort": 8081,
                                                 "hostPort": 8089,
                                                 "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 5557,
-                                                "hostPort": 5557,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 5558,
-                                                "hostPort": 5558,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/locust_file",
-                                                "name": "home-ubuntu-locust-file"
                                             }
                                         ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/locust_file\/"
-                                        },
-                                        "name": "home-ubuntu-locust-file"
                                     }
                                 ]
                             }
                         }
                     }
                 },
-                "family": "locust-master",
+                "family": "slow-cooker",
                 "portTypes": [
                     1
                 ]
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "locust-slave"
-                        },
-                        "name": "locust-slave",
-                        "namespace": "hyperpilot"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "locust-slave"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "locust-slave"
-                                }
-                            },
-                            "spec": {
-                                "containers": [
-                                    {
-                                      "args": [
-                                            "--loglevel",
-                                            "DEBUG",
-                                            "--slave",
-                                            "--master-host=locust-master",
-                                            "-H",
-                                            "http:\/\/goddd.default:8080",
-                                            "-f",
-                                            "\/locust_file\/locustfile.py"
-                                        ],
-                                        "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/locust",
-                                        "name": "locust-slave",
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "512Mi"
-                                            }
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/locust_file",
-                                                "name": "home-ubuntu-locust-file"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/locust_file\/"
-                                        },
-                                        "name": "home-ubuntu-locust-file"
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "locust-slave"
             },
             {
                 "deployment": {

@@ -1,5 +1,4 @@
 {
-    "userId": <YOUR_USERID>,
     "name": "mongo",
     "region": "us-east-1",
     "nodeMapping": [

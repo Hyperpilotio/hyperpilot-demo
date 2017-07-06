@@ -969,7 +969,7 @@
                                         "name": "locust-slave",
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
+                                                "cpu": "256.0m",
                                                 "memory": "512Mi"
                                             }
                                         },

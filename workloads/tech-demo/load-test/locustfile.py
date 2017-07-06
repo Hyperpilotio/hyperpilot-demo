@@ -42,7 +42,7 @@ class StaticTasks(TaskSet):
         picked_route = json.dumps(routes['routes'][route])
         self.client.post("/booking/v1/cargos/" + tracking_id + "/assign_to_route", data=picked_route)
 
-    @task(10)
+    @task(100)
     def create_route_delete_cargo(self):
         tracking_id = self.book_new_cargo()
         self.route_cargo(tracking_id)

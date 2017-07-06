@@ -54,6 +54,22 @@
         },
         {
             "task": "locust-master",
+            "id": 6
+        },
+        {
+            "task": "locust-slave",
+            "id": 6
+        },
+	{
+            "task": "locust-slave",
+            "id": 6
+        },
+        {
+            "task": "locust-slave",
+            "id": 6
+        },
+        {
+            "task": "locust-slave",
             "id": 1
         },
         {
@@ -102,6 +118,10 @@
             {
                 "instanceType": "c4.xlarge",
                 "id": 5
+            },
+            {
+                "instanceType": "c4.xlarge",
+                "id": 6
             }
         ]
     },

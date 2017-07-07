@@ -51,11 +51,11 @@ class StaticTasks(TaskSet):
         self.client.post("/booking/v1/cargos/" + tracking_id + "/assign_to_route", data=picked_route)
 
 
-    @task(5)
+    @task(10)
     def create_route_cargo(self):
       global start
       if start:
-        n = 5
+        n = 3
         start = False
       else:
         n = 1
@@ -64,28 +64,27 @@ class StaticTasks(TaskSet):
         self.route_cargo(tracking_id)
         cargos.append(tracking_id)
 
-    @task(5)
+    @task(10)
     def delete_cargo(self):
       if len(cargos):
         n = random.randint(0, len(cargos)-1)
         tracking_id = cargos.pop(n)
         self.deleting_cargo(tracking_id)
 
-    @task(10)
+    @task(5)
     def track_cargo(self):
       if len(cargos):
         n = random.randint(0, len(cargos)-1)
         tracking_id = cargos[n]
         self.tracking_cargo(tracking_id)
 
-    @task(10)
+    @task(5)
     def list_cargo(self):
       if len(cargos):
         n = random.randint(0, len(cargos)-1)
         tracking_id = cargos[n]
         self.listing_cargo(tracking_id)
 
-        
 #    @task(1)
 #    def list_cargos(self):
 #        self.client.get("/booking/v1/cargos")

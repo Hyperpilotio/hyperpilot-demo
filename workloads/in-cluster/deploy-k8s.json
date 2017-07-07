@@ -5,6 +5,10 @@
         {
             "task": "deployer",
             "id": 1
+        },
+        {
+            "task": "workload-profiler",
+            "id": 1
         }
     ],
     "clusterDefinition": {
@@ -98,6 +102,75 @@
                     1
                 ],
                 "family": "deployer"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "workload-profiler"
+                        },
+                        "name": "workload-profiler"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "workload-profiler"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "workload-profiler"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "hostname": "deployer",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/workload-profiler",
+                                        "name": "deployer",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7779,
+                                                "hostPort": 7779,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        },
+                                        "env": [
+                                            {
+                                                "name": "AWS_ACCESS_KEY_ID",
+                                                "value": ""
+                                            },
+                                            {
+                                                "name": "AWS_SECRET_ACCESS_KEY",
+                                                "value": ""
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "workload-profiler"
             }
         ]
     }

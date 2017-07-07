@@ -4,9 +4,7 @@ import random
 
 from locust import HttpLocust, TaskSet, task
 
-LOCATIONS = ["SESTO", "AUMEL", "CNHKG", "JNTKO", "NLRTM", "DEHAM"]
-cargos = []
-start = True
+LOCATIONS = ["SESTO", "AUMEL", "CNHKG", "JNTKO", "NLRTM", "DEHAM" ]
 
 class StaticTasks(TaskSet):
     def pick_random_location(self):
@@ -23,14 +21,8 @@ class StaticTasks(TaskSet):
         response = self.client.post("/booking/v1/cargos", data=json.dumps(data))
         return json.loads(response.content)["tracking_id"]
 
-    def deleting_cargo(self, tracking_id):
+    def delete_cargo(self, tracking_id):
         self.client.delete("/booking/v1/cargos/" + tracking_id)
-
-    def tracking_cargo(self, tracking_id):
-        self.client.get("/tracking/v1/cargos/" + tracking_id)
-
-    def listing_cargo(self, tracking_id):
-        self.client.get("/booking/v1/cargos/" + tracking_id)
 
     def route_cargo(self, tracking_id):
         response = self.client.get("/booking/v1/cargos/" + tracking_id + "/request_routes")
@@ -50,52 +42,19 @@ class StaticTasks(TaskSet):
         picked_route = json.dumps(routes['routes'][route])
         self.client.post("/booking/v1/cargos/" + tracking_id + "/assign_to_route", data=picked_route)
 
-
-    @task(5)
-    def create_route_cargo(self):
-      global start
-      if start:
-        n = 5
-        start = False
-      else:
-        n = 1
-      for _ in range(n):
+    @task(100)
+    def create_route_delete_cargo(self):
         tracking_id = self.book_new_cargo()
         self.route_cargo(tracking_id)
-        cargos.append(tracking_id)
+        self.delete_cargo(tracking_id)
 
-    @task(5)
-    def delete_cargo(self):
-      if len(cargos):
-        n = random.randint(0, len(cargos)-1)
-        tracking_id = cargos.pop(n)
-        self.deleting_cargo(tracking_id)
+    @task(1)
+    def list_cargos(self):
+        self.client.get("/booking/v1/cargos")
 
-    @task(10)
-    def track_cargo(self):
-      if len(cargos):
-        n = random.randint(0, len(cargos)-1)
-        tracking_id = cargos[n]
-        self.tracking_cargo(tracking_id)
-
-    @task(10)
-    def list_cargo(self):
-      if len(cargos):
-        n = random.randint(0, len(cargos)-1)
-        tracking_id = cargos[n]
-        self.listing_cargo(tracking_id)
-
-        
-#    @task(1)
-#    def list_cargos(self):
-#        self.client.get("/booking/v1/cargos")
-
-#    @task(1)
-#    def list_locations(self):
-#        self.client.get("/booking/v1/locations")
-
+    @task(1)
+    def list_locations(self):
+        self.client.get("/booking/v1/locations")
 
 class LoggedInUser(HttpLocust):
     task_set = StaticTasks
-    min_wait = 500
-    max_wait = 1000

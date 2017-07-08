@@ -5,41 +5,34 @@ class Parser {
     }
     processLines(lines = []) {
         let benchmarkObj = {};
+        let measuringStart = "MEASURING START.";
+        let stoppingThreads = "STOPPING THREADS..................................................";
+        let capturedLines = [];
+        let captureMode = false;
 
-        let inRawResults = false;
-        let inTpmcResults = false;
-        let resultIndex = 0;
-        for (let i in lines) {
-            if (inTpmcResults) {
-                if (lines[i] === '') {
-                    inTpmcResults = false;
-                    continue;
-                }
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i]
+            if (line.indexOf(stoppingThreads) != -1) {
+                break;
+            }
 
-                benchmarkObj[resultIndex] = {
-                    "tpmc": lines[i].trim().split(" ")[0]
-                };
-                resultIndex++;
-            } else if (inRawResults) {
-                if (lines[i] === '') {
-                    inRawResults = false;
-                    continue;
-                }
+            if (captureMode) {
+                capturedLines.push(line);
+            }
 
-                let parts = lines[i].split(' ');
-                benchmarkObj[resultIndex] = {
-                    "sc": parts[3].split(':')[1],
-                    "lt": parts[5].split(':')[1],
-                    "rt": parts[7].split(':')[1],
-                    "fl": parts[9].split(':')[1]
-                };
-                resultIndex++;
-            } else if (inTpmcResults) {
+            if (line.indexOf(measuringStart) != -1) {
+                captureMode = true;
+            }
+        }
 
-            } else if (lines[i] === '<Raw Results2(sum ver.)>') {
-                inRawResults = true;
-            } else if (lines[i] === '<TpmC>') {
-                inTpmcResults = true;
+        for (let i in capturedLines) {
+            let capturedLine = capturedLines[i].trim();
+            if (capturedLine !== "") {
+                // We only expect one output as we should set interval to the length of the load test.
+                let values = capturedLine.split(",")[1].split(":")[1].split("|");
+                benchmarkObj["95th_percentile"] = parseFloat(values[0]);
+                benchmarkObj["99th_percentile"] = parseFloat(values[1]);
+                break;
             }
         }
 

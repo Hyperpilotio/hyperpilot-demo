@@ -2,113 +2,72 @@ const PARSER_DATASET = {
     'mysql': [
         {
             'input': `***************************************
-*** ###easy### TPC-C Load Generator ***
-***************************************
-option d with value 'tpcc'
-option h with value 'mysql-server'
-option u with value 'root'
-option w with value '20'
-option c with value '50'
-option r with value '20'
-option l with value '100'
-<Parameters>
-     [server]: mysql-server
-     [port]: 3306
-     [DBname]: tpcc
-       [user]: root
-       [pass]:
-  [warehouse]: 20
- [connection]: 50
-     [rampup]: 20 (sec.)
-    [measure]: 100 (sec.)
+                *** ###easy### TPC-C Load Generator ***
+                ***************************************
+                option d with value 'tpcc'
+            option h with value 'mysql-server'
+            option u with value 'root'
+            option w with value '20'
+            option c with value '50'
+            option r with value '20'
+            option l with value '100'
+                <Parameters>
+                [server]: mysql-server
+            [port]: 3306
+            [DBname]: tpcc
+            [user]: root
+            [pass]:
+            [warehouse]: 20
+            [connection]: 50
+            [rampup]: 20 (sec.)
+            [measure]: 100 (sec.)
 
-RAMP-UP TIME.(20 sec.)
+            RAMP-UP TIME.(20 sec.)
 
-MEASURING START.
+            MEASURING START.
 
-  10, 211(1):4.492|7.445, 201(0):1.157|1.548, 21(0):0.567|0.603, 21(0):5.835|5.989, 24(0):16.441|16.773
-  20, 225(0):3.901|4.183, 220(0):0.955|1.142, 22(0):0.452|0.505, 20(0):4.916|4.966, 21(0):13.186|13.491
-  30, 109(0):4.146|4.649, 132(0):1.082|1.167, 13(0):0.532|1.144, 13(0):5.195|5.557, 12(0):13.044|13.885
-  40, 123(1):4.878|5.569, 105(0):1.163|1.370, 10(0):0.370|0.563, 10(0):5.722|5.831, 12(0):14.324|14.604
-  50, 142(0):4.269|4.433, 162(0):1.119|1.173, 15(0):0.432|0.476, 16(0):5.406|5.849, 14(0):13.200|13.476
-  60, 215(0):3.999|4.430, 206(0):0.865|1.062, 21(0):0.399|0.468, 23(0):5.937|6.524, 22(0):13.349|13.691
-  70, 313(0):3.899|4.209, 317(0):1.022|1.283, 33(0):0.438|0.497, 31(0):4.969|5.227, 35(0):12.855|13.366
-  80, 274(0):3.811|4.424, 262(0):0.980|1.055, 25(0):0.468|0.560, 25(0):4.838|5.124, 26(0):12.856|13.509
-  90, 118(0):4.216|4.750, 132(0):1.007|1.354, 13(0):0.395|0.481, 14(0):5.191|5.213, 9(0):10.420|12.922
- 100, 114(0):3.666|4.247, 109(0):0.922|1.216, 12(0):0.290|0.390, 11(0):4.284|4.914, 16(0):12.448|14.702
+            100, 114(0):3.666|4.247, 109(0):0.922|1.216, 12(0):0.290|0.390, 11(0):4.284|4.914, 16(0):12.448|14.702
 
-STOPPING THREADS..................................................
+            STOPPING THREADS..................................................
 
-<Raw Results>
-  [0] sc:1842  lt:2  rt:0  fl:0
-  [1] sc:1846  lt:0  rt:0  fl:0
-  [2] sc:185  lt:0  rt:0  fl:0
-  [3] sc:184  lt:0  rt:0  fl:0
-  [4] sc:191  lt:0  rt:0  fl:0
- in 100 sec.
+                <Raw Results>
+                [0] sc:1842  lt:2  rt:0  fl:0
+            [1] sc:1846  lt:0  rt:0  fl:0
+            [2] sc:185  lt:0  rt:0  fl:0
+            [3] sc:184  lt:0  rt:0  fl:0
+            [4] sc:191  lt:0  rt:0  fl:0
+                in 100 sec.
 
-<Raw Results2(sum ver.)>
-  [0] sc:1846  lt:2  rt:0  fl:0
-  [1] sc:1848  lt:0  rt:0  fl:0
-  [2] sc:185  lt:0  rt:0  fl:0
-  [3] sc:184  lt:0  rt:0  fl:0
-  [4] sc:191  lt:0  rt:0  fl:0
+                <Raw Results2(sum ver.)>
+                [0] sc:1846  lt:2  rt:0  fl:0
+            [1] sc:1848  lt:0  rt:0  fl:0
+            [2] sc:185  lt:0  rt:0  fl:0
+            [3] sc:184  lt:0  rt:0  fl:0
+            [4] sc:191  lt:0  rt:0  fl:0
 
-<Constraint Check> (all must be [OK])
- [transaction percentage]
-        Payment: 43.44% (>=43.0%) [OK]
-   Order-Status: 4.35% (>= 4.0%) [OK]
-       Delivery: 4.33% (>= 4.0%) [OK]
-    Stock-Level: 4.49% (>= 4.0%) [OK]
- [response time (at least 90% passed)]
-      New-Order: 99.89%  [OK]
-        Payment: 100.00%  [OK]
-   Order-Status: 100.00%  [OK]
-       Delivery: 100.00%  [OK]
-    Stock-Level: 100.00%  [OK]
+                <Constraint Check> (all must be [OK])
+            [transaction percentage]
+            Payment: 43.44% (>=43.0%) [OK]
+            Order-Status: 4.35% (>= 4.0%) [OK]
+            Delivery: 4.33% (>= 4.0%) [OK]
+            Stock-Level: 4.49% (>= 4.0%) [OK]
+            [response time (at least 90% passed)]
+            New-Order: 99.89%  [OK]
+            Payment: 100.00%  [OK]
+            Order-Status: 100.00%  [OK]
+            Delivery: 100.00%  [OK]
+            Stock-Level: 100.00%  [OK]
 
-<TpmC>
-                 1106.400 TpmC`,
+                <TpmC>
+                1106.400 TpmC`,
             'expect': {
-                '0': {
-                    'fl': '0',
-                    'lt': '2',
-                    'rt': '0',
-                    'sc': '1846'
-                  },
-                '1': {
-                    'fl': '0',
-                    'lt': '0',
-                    'rt': '0',
-                    'sc': '1848'
-                  },
-                '2': {
-                    'fl': '0',
-                    'lt': '0',
-                    'rt': '0',
-                    'sc': '185'
-                  },
-                '3': {
-                    'fl': '0',
-                    'lt': '0',
-                    'rt': '0',
-                    'sc': '184'
-                  },
-                '4': {
-                    'fl': '0',
-                    'lt': '0',
-                    'rt': '0',
-                    'sc': '191'
-                  },
-                '5': {
-                    'tpmc': '1106.400'
-                  }
-              }
-          }
+                '95th_percentile': 3.666,
+                '99th_percentile': 4.247
+            }
+        }
     ]
-  };
+};
 
 module.exports = {
     'PARSER_DATASET': PARSER_DATASET
-  };
-
+};

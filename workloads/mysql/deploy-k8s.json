@@ -4,6 +4,10 @@
     "nodeMapping": [
         {
             "task": "benchmark-agent",
+            "id": 1
+        },
+        {
+            "task": "benchmark-agent",
             "id": 2
         },
         {
@@ -79,6 +83,10 @@
                                             }
                                         ],
                                         "resources": {
+                                            "request": {
+                                                "cpu": "1024.0m",
+                                                "memory": "500Mi"
+                                            },
                                             "limits": {
                                                 "cpu": "1024.0m",
                                                 "memory": "500Mi"

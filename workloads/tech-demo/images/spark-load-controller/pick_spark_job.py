@@ -30,6 +30,6 @@ TerasortSmall = SparkParams(TERASORT, 1, 1, 1, "1g", "2g")
 TerasortMedium = SparkParams(TERASORT, 1, 1, 2, "1g", "2g")
 TerasortLarge = SparkParams(TERASORT, 1, 1, 3, "1g", "2g")
 
-ALL_AVAILABLE_JOBS = [ SparkPiSmall, SparkPiMedium, SparkPiLarge, TerasortSmall, TerasortMedium, TerasortLarge ]
+ALL_AVAILABLE_JOBS = [ TerasortSmall, TerasortMedium, TerasortLarge ]
 
 print(random.choice(ALL_AVAILABLE_JOBS).command())

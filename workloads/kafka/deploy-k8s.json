@@ -17,6 +17,10 @@
         {
             "task": "kafka-bench",
             "id": 2
+        },
+        {
+            "task": "zookeeper",
+            "id": 3
         }
     ],
     "clusterDefinition": {
@@ -28,6 +32,10 @@
             {
                 "instanceType": "t2.large",
                 "id": 2
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 3
             }
         ]
     },
@@ -81,15 +89,13 @@
                                                 "containerPort": 9092,
                                                 "hostPort": 9092,
                                                 "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 2181,
-                                                "hostPort": 2181,
-                                                "protocol": "TCP"
                                             }
                                         ],
                                         "resources": {
-
+                                            "requests": {
+                                                "cpu": "1536.0m",
+                                                "memory": "2048Mi"
+                                            }
                                         }
                                     }
                                 ]
@@ -98,7 +104,61 @@
                     }
                 },
                 "portTypes": [
-                    0,0
+                    0
+                ],
+                "family": "kafka-serve"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "zookeeper"
+                        },
+                        "name": "zookeeper"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "zookeeper"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "zookeeper"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "zookeeper",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/zookeeper",
+                                        "name": "zookeeper",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 2181,
+                                                "hostPort": 2181,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "1536.0m",
+                                                "memory": "2048Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    0
                 ],
                 "family": "kafka-serve"
             },

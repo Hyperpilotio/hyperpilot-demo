@@ -6,7 +6,6 @@ describe('Parser', function() {
     it('should successfully parse the result of mysql-benchmark',
     function() {
         for (let i = 0; i < PARSER_DATASET.mysql.length; i ++) {
-
           const Parser = require('../parser');
           const parser = new Parser({});
           const lines = PARSER_DATASET.mysql[i].input.split('\n');
@@ -17,5 +16,3 @@ describe('Parser', function() {
       });
   });
 });
-
-

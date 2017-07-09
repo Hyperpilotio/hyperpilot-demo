@@ -6,6 +6,6 @@ if [ -z "$SERVICE_HOST" ]; then
 fi
 
 echo "Recreating tables..."
-cat /opt/tpcc-mysql/drop_cons.sql /opt/tpcc-mysql/create_table.sql | mysql -u root -h $SERVICE_HOST tpcc
+cat /opt/tpcc-mysql/create_table.sql | mysql -u root -h $SERVICE_HOST tpcc
 
 /opt/tpcc-mysql/tpcc_load "$@"

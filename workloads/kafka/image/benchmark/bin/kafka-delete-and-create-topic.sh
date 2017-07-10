@@ -16,7 +16,7 @@ while [ "$1" != "" ]; do
 	  "--topic")
 	    shift
 	    TOPIC=$1
-	    ;;		
+	    ;;
 	  *)
         echo "ERROR: unknown parameter \"$1\""
         exit 1
@@ -33,7 +33,7 @@ fi
 
 
 echo "deleting topic: $TOPIC";
-kafka-topics.sh --delete --zookeeper kafka-serve:2181 --topic tests --if-exist
+kafka-topics.sh --delete --zookeeper zookeeper.default:2181 --topic tests --if-exist
 
 while [ $(kafka-topics.sh --list --zookeeper $ZK | wc -l) -ne "0" ]
 do

@@ -4,8 +4,9 @@
         "mysql-server"
     ],
     "loadTester": {
-        "name": "mysql-benchmark",
+        "name": "tpcc-bench",
         "benchmarkController": {
+            "initializeType": "stage",
             "initialize": {
                 "path": "\/opt\/tpcc-mysql\/run.sh",
                 "args": [

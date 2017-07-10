@@ -33,7 +33,7 @@
     "type": "long-running",
     "slo": {
         "metric": "99thLatency",
-        "value": 200,
+        "value": 500,
         "type": "latency"
     }
 }

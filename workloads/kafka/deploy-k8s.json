@@ -98,7 +98,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1536.0m",
+                                                "cpu": "1024.0m",
                                                 "memory": "2048Mi"
                                             }
                                         }
@@ -165,7 +165,7 @@
                 "portTypes": [
                     0
                 ],
-                "family": "kafka-serve"
+                "family": "zookeeper"
             },
             {
                 "deployment": {
@@ -206,7 +206,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "512.0m",
                                                 "memory": "500Mi"
                                             }
                                         },

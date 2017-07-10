@@ -26,7 +26,7 @@
             },
             "initialize": {
                 "path": "kafka-delete-and-create-topic.sh",
-                "args": ["--partitions", "2", "--replication-factor", "1", "--zookeeper", "kafka-serve:2181", "--topic", "tests"]
+                "args": ["--partitions", "2", "--replication-factor", "1", "--zookeeper", "zookeeper:2181", "--topic", "tests"]
             }
         }
     },

@@ -76,13 +76,17 @@
             "task": "snap",
             "id": 4
         },
-        {
+        {   
             "task": "influxsrv",
             "id": 5
         },
         {
             "task": "grafana",
             "id": 5
+        },
+        {
+            "task": "zookeeper",
+            "id": 6
         },
         {
             "task": "kafka-bench",
@@ -244,7 +248,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine-init",
+                                        "image": "hyperpilot\/snap:alpine-init_dev",
                                         "name": "snap",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
@@ -374,7 +378,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine-init",
+                                        "image": "hyperpilot\/snap:alpine-init_dev",
                                         "name": "snap-goddd",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
@@ -1536,13 +1540,16 @@
                                                 "protocol": "TCP"
                                             },
                                             {
-                                                "containerPort": 2181,
-                                                "hostPort": 2181,
+                                                "containerPort": 8082,
+                                                "hostPort": 8082,
                                                 "protocol": "TCP"
                                             }
                                         ],
                                         "resources": {
-
+                                            "requests": {
+                                                "cpu": "1536.0m",
+                                                "memory": "2048Mi"
+                                            }
                                         }
                                     }
                                 ]
@@ -1551,9 +1558,63 @@
                     }
                 },
                 "portTypes": [
-                    0,0
+                    0, 0
                 ],
                 "family": "kafka-serve"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "zookeeper"
+                        },
+                        "name": "zookeeper"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "zookeeper"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "zookeeper"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "zookeeper",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/zookeeper",
+                                        "name": "zookeeper",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 2181,
+                                                "hostPort": 2181,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "1536.0m",
+                                                "memory": "2048Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    0
+                ],
+                "family": "zookeeper"
             },
             {
                 "deployment": {

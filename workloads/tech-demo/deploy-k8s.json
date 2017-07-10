@@ -803,6 +803,10 @@
                                                 "value": "5"
                                             },
                                             {
+                                                "name": "NO_PADDING",
+                                                "value": "True"
+                                            },
+                                            {
                                                 "name": "ROUTINGSERVICE_URL",
                                                 "value": "http:\/\/pathfinder:8080"
                                             },

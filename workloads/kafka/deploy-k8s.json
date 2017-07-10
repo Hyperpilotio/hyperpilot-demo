@@ -89,6 +89,11 @@
                                                 "containerPort": 9092,
                                                 "hostPort": 9092,
                                                 "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8082,
+                                                "hostPort": 8082,
+                                                "protocol": "TCP"
                                             }
                                         ],
                                         "resources": {
@@ -104,7 +109,7 @@
                     }
                 },
                 "portTypes": [
-                    0
+                    0, 0
                 ],
                 "family": "kafka-serve"
             },

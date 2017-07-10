@@ -48,7 +48,7 @@ class StaticTasks(TaskSet):
         self.route_cargo(tracking_id)
         self.delete_cargo(tracking_id)
 
-    @task(100)
+    @task(25)
     def list_cargos(self):
         self.client.get("/booking/v1/cargos")
 

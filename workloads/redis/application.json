@@ -43,5 +43,146 @@
         "metric": "GET",
         "value": 35000,
         "type": "throughput"
-    }
+    },
+    "deploymentTemplate": "analysis-base",
+    "taskDefinitions": [
+        {
+            "nodeMapping": {
+                "task": "redis-serve",
+                "id": 2
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "redis-serve"
+                        },
+                        "name": "redis-serve"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "redis-serve"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "redis-serve"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "redis-serve",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "redis:3.2.6",
+                                        "name": "redis-serve",
+                                        "ports": [
+                                            {
+                                                "containerPort": 6379,
+                                                "hostPort": 6379,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "500.0m",
+                                                "memory": "100Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "redis-serve"
+            }
+        },
+        {
+            "nodeMapping": {
+                "task": "redis-bench",
+                "id": 1
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "redis-bench"
+                        },
+                        "name": "redis-bench"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "redis-bench"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "redis-bench"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/benchmark-controller:redis",
+                                        "name": "redis-bench",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 6001,
+                                                "hostPort": 6001,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "350Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "redis-bench"
+            }
+        }
+    ]
 }

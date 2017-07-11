@@ -1,0 +1,391 @@
+{
+    "name": "goddd",
+    "region": "us-east-1",
+    "nodeMapping": [
+        {
+            "task": "slow-cooker",
+            "id": 1
+        },
+        {
+            "task": "benchmark-agent",
+            "id": 1
+        },
+        {
+            "task": "benchmark-agent",
+            "id": 2
+        },
+        {
+            "task": "benchmark-agent",
+            "id": 3
+        },
+        {
+            "task": "benchmark-agent",
+            "id": 4
+        },
+        {
+            "task": "goddd",
+            "id": 2
+        },
+        {
+            "task": "pathfinder",
+            "id": 3
+        },
+        {
+            "task": "mongo",
+            "id": 4
+        }
+    ],
+    "clusterDefinition": {
+        "nodes": [
+            {
+                "instanceType": "t2.large",
+                "id": 1
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 2
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 3
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 4
+            }
+        ]
+    },
+    "kubernetes": {
+        "secrets": [
+            {
+                "apiVersion": "v1",
+                "kind": "Secret",
+                "metadata": {
+                    "name": "myregistrykey"
+                },
+                "type": "kubernetes.io\/dockerconfigjson",
+                "data": {
+                    ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmRIVnpaWEk2YUhsd1pYSXhNak09IgoJCX0KCX0KfQ=="
+                }
+            }
+        ],
+        "taskDefinitions": [
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "goddd",
+                            "hyperpilot.io/qos": "true"
+                        },
+                        "name": "goddd",
+                        "namespace": "default"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "goddd"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "goddd",
+                                    "hyperpilot.io/qos": "true"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "env": [
+                                            {
+                                                "name": "BOOKING_MAXAGE",
+                                                "value": "5"
+                                            },
+                                            {
+                                                "name": "ROUTINGSERVICE_URL",
+                                                "value": "http:\/\/pathfinder:8080"
+                                            },
+                                            {
+                                                "name": "MONGO_MAXPOOLSIZE",
+                                                "value": "120"
+                                            },
+                                            {
+                                                "name": "MONGODB_URL",
+                                                "value": "mongo:27017"
+                                            },
+                                            {
+                                                "name": "DB_NAME",
+                                                "value": "goddd"
+                                            }
+                                        ],
+                                        "image": "hyperpilot\/goddd",
+                                        "name": "goddd",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8080,
+                                                "hostPort": 8080,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "256m",
+                                                "memory": "256Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "goddd"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "benchmark-agent"
+                        },
+                        "name": "benchmark-agent"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "benchmark-agent"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "benchmark-agent"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "benchmark-agent",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/benchmark-agent",
+                                        "name": "benchmark-agent",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7778,
+                                                "hostPort": 7778,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "1024.0m",
+                                                "memory": "500Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "benchmark-agent"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "pathfinder"
+                        },
+                        "name": "pathfinder",
+                        "namespace": "default"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "pathfinder"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "pathfinder"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "pathfinder",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/pathfinder",
+                                        "name": "pathfinder",
+                                        "env": [
+                                        ],
+                                        "ports": [
+                                            {
+                                                "containerPort": 8080,
+                                                "hostPort": 8080,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "200Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "pathfinder"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "mongo"
+                        },
+                        "name": "mongo"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "mongo"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "mongo"
+                                }
+                            },
+                            "spec": {
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/mongo_data"
+                                        },
+                                        "name": "mongo-data"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/data\/db",
+                                                "name": "mongo-data"
+                                            }
+                                        ],
+                                        "image": "mongo",
+                                        "name": "mongo",
+                                        "ports": [
+                                            {
+                                                "containerPort": 27017,
+                                                "hostPort": 27017,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512m",
+                                                "memory": "512Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "mongo"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "slow-cooker"
+                        },
+                        "name": "slow-cooker"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "slow-cooker"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "slow-cooker"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "slow-cooker",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/slow_cooker",
+                                        "name": "slow-cooker",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8081,
+                                                "hostPort": 8081,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "args": [
+                                            "-mode", "server", "-v", "1", "-logtostderr"
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "500.0m",
+                                                "memory": "100Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "slow-cooker"
+            }
+        ]
+    }
+}

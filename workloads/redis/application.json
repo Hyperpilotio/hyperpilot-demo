@@ -5,28 +5,38 @@
         "name": "redis-bench",
         "benchmarkController": {
             "initialize": {
-                "path": "\/usr\/bin\/redis-cli",
+                "image": "redis:3-alpine",
+                "path": "redis-cli",
                 "args": [
-                    "-h",
-                    "redis-serve",
-                    "-p",
-                    "6379",
                     "flushall"
-                ]
+                ],
+                "hostConfig": {
+                    "arg": "-h",
+                    "description": "host of the service"
+                },
+                "portConfig": {
+                    "arg": "-p",
+                    "description": "port of the service"
+                }
             },
             "command": {
-                "path": "\/usr\/bin\/redis-benchmark",
+                "image": "redis:3-alpine",
+                "path": "redis-benchmark",
                 "args": [
-                    "-h",
-                    "redis-serve",
-                    "-p",
-                    "6379",
                     "--csv",
                     "-n",
-                    "1000000",
+                    "10",
                     "-t",
                     "GET"
                 ],
+                "hostConfig": {
+                    "arg": "-h",
+                    "description": "host of the service"
+                },
+                "portConfig": {
+                    "arg": "-p",
+                    "description": "port of the service"
+                },
                 "intensityArgs": [
                     {
                         "name": "Number of connections",

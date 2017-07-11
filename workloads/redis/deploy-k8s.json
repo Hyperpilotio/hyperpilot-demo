@@ -214,7 +214,31 @@
                                                 "cpu": "512.0m",
                                                 "memory": "350Mi"
                                             }
-                                        }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "/var/run/docker.sock",
+                                                "name": "docker-sock"
+                                            },
+                                            {
+                                                "mountPath": "/usr/bin/docker",
+                                                "name": "usr-bin-docker"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "/var/run/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "/usr/bin/docker"
+                                        },
+                                        "name": "usr-bin-docker"
                                     }
                                 ]
                             }

@@ -259,9 +259,23 @@
                 "family": "redis-serve"
             },
             {
+                "volumes": [
+                    {
+                        "host": {
+                            "sourcePath": "\/var\/run\/docker.sock"
+                        },
+                        "name": "docker_sock"
+                    }
+                ],
                 "containerDefinitions": [
                     {
                         "essential": true,
+                        "mountPoints": [
+                            {
+                                "containerPath": "\/var\/run\/docker.sock",
+                                "sourceVolume": "docker_sock"
+                            }
+                        ],
                         "portMappings": [
                             {
                                 "hostPort": 6001,
@@ -270,7 +284,7 @@
                         ],
                         "memory": 500,
                         "cpu": 512,
-                        "image": "hyperpilot\/bench:redis",
+                        "image": "hyperpilot\/benchmark-controller:redis",
                         "name": "redis-bench"
                     }
                 ],

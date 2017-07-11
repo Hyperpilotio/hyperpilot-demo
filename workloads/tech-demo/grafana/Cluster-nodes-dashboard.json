@@ -48,11 +48,12 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_SNAP}",
-          "fill": 0,
+          "fill": 1,
           "height": "200px",
           "id": 1,
           "interval": "",
           "legend": {
+            "alignAsTable": false,
             "avg": true,
             "current": false,
             "max": false,
@@ -64,7 +65,7 @@
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "null",
+          "nullPointMode": "connected",
           "percentage": false,
           "pointradius": 5,
           "points": false,
@@ -99,8 +100,6 @@
               ],
               "measurement": "intel/procfs/cpu/utilization_jiffies",
               "policy": "default",
-              "query": "SELECT mean(\"value\") FROM \"intel/procfs/cpu/utilization_jiffies\" WHERE $timeFilter GROUP BY time($__interval), \"nodename\" fill(null)",
-              "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
@@ -125,7 +124,7 @@
           "timeShift": null,
           "title": "cpu-utilization",
           "tooltip": {
-            "shared": true,
+            "shared": false,
             "sort": 0,
             "value_type": "individual"
           },
@@ -134,12 +133,14 @@
             "mode": "time",
             "name": null,
             "show": true,
-            "values": []
+            "values": [
+              "total"
+            ]
           },
           "yaxes": [
             {
-              "format": "µs",
-              "label": "use time",
+              "format": "繕s",
+              "label": "",
               "logBase": 1,
               "max": null,
               "min": null,
@@ -174,7 +175,7 @@
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "null",
+          "nullPointMode": "connected",
           "percentage": false,
           "pointradius": 5,
           "points": false,
@@ -294,7 +295,7 @@
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "null",
+          "nullPointMode": "connected",
           "percentage": false,
           "pointradius": 5,
           "points": false,
@@ -402,7 +403,7 @@
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "null",
+          "nullPointMode": "connected",
           "percentage": true,
           "pointradius": 5,
           "points": false,
@@ -580,5 +581,5 @@
   },
   "timezone": "browser",
   "title": "Cluster-nodes-dashboard",
-  "version": 2
+  "version": 4
 }

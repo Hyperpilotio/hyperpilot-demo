@@ -254,7 +254,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-resources-alpha.s3.amazonaws.com\/snap-init.json"
+                                            "https:\/\/hyperpilot-snap-alpha.s3.amazonaws.com\/snap-init.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -384,7 +384,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-resources-alpha.s3.amazonaws.com\/snap-goddd-init.json"
+                                            "https:\/\/hyperpilot-snap-alpha.s3.amazonaws.com\/snap-goddd-init.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -514,7 +514,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-resources-alpha.s3.amazonaws.com\/snap-kafka-init.json"
+                                            "https:\/\/hyperpilot-snap-alpha.s3.amazonaws.com\/snap-kafka-init.json"
                                         ],
                                         "resources": {
                                             "limits": {

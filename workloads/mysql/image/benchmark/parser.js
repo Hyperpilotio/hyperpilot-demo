@@ -28,13 +28,6 @@ class Parser {
         for (let i in capturedLines) {
             let capturedLine = capturedLines[i].trim();
             if (capturedLine !== "") {
-                if (capturedLine.indexOf(",") == -1) {
-                    benchmarkObj["error"] = {
-                        message: "Benchmark failed with error output: " + capturedLines.join("\n")
-                    };
-                    return benchmarkObj;
-                }
-
                 // We only expect one output as we should set interval to the length of the load test.
                 let values = capturedLine.split(",")[1].split(":")[1].split("|");
                 benchmarkObj["95th_percentile"] = parseFloat(values[0]);

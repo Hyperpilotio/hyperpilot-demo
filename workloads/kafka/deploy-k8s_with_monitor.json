@@ -341,10 +341,6 @@
                                             "https:\/\/hyperpilot-snap-kafka.s3.amazonaws.com\/snap-kafka-init.json"
                                         ],
                                         "resources": {
-                                            "limits": {
-                                                "cpu": "1024.0m",
-                                                "memory": "2048Mi"
-                                            }
                                         },
                                         "imagePullPolicy": "Always",
                                         "securityContext": {

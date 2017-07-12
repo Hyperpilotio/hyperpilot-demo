@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "schedule": {
+    "type": "simple",
+    "interval": "5s"
+  },
+  "workflow": {
+    "collect": {
+      "metrics": {
+        "/hyperpilot/kafka/node/*/kafka_network/type/RequestMetrics/name/*/request/Produce/*": {},
+        "/hyperpilot/kafka/node/*/kafka_server/type/BrokerTopicMetrics/name/*": {}
+      },
+      "config": {
+        "/hyperpilot/kafka": {
+          "mx4j_url": "kafka-serve",
+          "mx4j_port": 8082
+        }
+      },
+      "publish": [{
+        "plugin_name": "influxdb",
+        "config": {
+          "host": "influxsrv",
+          "port": 8086,
+          "database": "snap",
+          "user": "root",
+          "password": "hyperpilot",
+          "https": false,
+          "skip-verify": false
+        }
+      }]
+    }
+  }
+}

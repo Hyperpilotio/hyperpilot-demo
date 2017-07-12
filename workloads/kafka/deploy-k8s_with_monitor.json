@@ -1,0 +1,602 @@
+{
+    "name": "kafka",
+    "region": "us-east-1",
+    "nodeMapping": [
+        {
+            "task": "benchmark-agent",
+            "id": 1
+        },
+        {
+            "task": "kafka-serve",
+            "id": 1
+        },
+        {
+            "task": "snap-kafka",
+            "id": 1
+        },
+        {
+            "task": "benchmark-agent",
+            "id": 2
+        },
+        {
+            "task": "kafka-bench",
+            "id": 2
+        },
+        {
+            "task": "zookeeper",
+            "id": 3
+        },
+        {   
+            "task": "influxsrv",
+            "id": 3
+        },
+        {
+            "task": "grafana",
+            "id": 3
+        }
+
+    ],
+    "clusterDefinition": {
+        "nodes": [
+            {
+                "instanceType": "t2.large",
+                "id": 1
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 2
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 3
+            }
+        ]
+    },
+    "kubernetes": {
+        "secrets": [
+            {
+                "apiVersion": "v1",
+                "kind": "Secret",
+                "metadata": {
+                    "name": "myregistrykey"
+                },
+                "type": "kubernetes.io/dockerconfigjson",
+                "data": {
+                    ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmRIVnpaWEk2YUhsd1pYSXhNak09IgoJCX0KCX0KfQ=="
+                }
+            }
+        ],
+        "taskDefinitions": [
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "kafka-serve"
+                        },
+                        "name": "kafka-serve"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "kafka-serve"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "kafka-serve"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "kafka-serve",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/kafka",
+                                        "name": "kafka-serve",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 9092,
+                                                "hostPort": 9092,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8082,
+                                                "hostPort": 8082,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "1024.0m",
+                                                "memory": "2048Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    0, 0
+                ],
+                "family": "kafka-serve"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "zookeeper"
+                        },
+                        "name": "zookeeper"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "zookeeper"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "zookeeper"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "zookeeper",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/zookeeper",
+                                        "name": "zookeeper",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 2181,
+                                                "hostPort": 2181,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "1536.0m",
+                                                "memory": "2048Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    0
+                ],
+                "family": "zookeeper"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "benchmark-agent"
+                        },
+                        "name": "benchmark-agent"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "benchmark-agent"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "benchmark-agent"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "benchmark-agent",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/benchmark-agent",
+                                        "name": "benchmark-agent",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7778,
+                                                "hostPort": 7778,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "500Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "/var/run/docker.sock",
+                                                "name": "docker-sock"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "/var/run/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "benchmark-agent"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "kafka-bench"
+                        },
+                        "name": "kafka-bench"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "kafka-bench"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "kafka-bench"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/benchmark-controller:kafka",
+                                        "name": "kafka-bench",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 6001,
+                                                "hostPort": 6001,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "kafka-bench"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "snap-kafka",
+                            "version": "latest"
+                        },
+                        "name": "snap-kafka"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "snap-kafka",
+                                "version": "latest"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "snap-kafka",
+                                    "version": "latest"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/snap:alpine-init",
+                                        "name": "snap-kafka",
+                                        "command": [
+                                            "\/usr\/local\/bin\/run.sh"
+                                        ],
+                                        "args": [
+                                            "https:\/\/hyperpilot-snap-alpha.s3.amazonaws.com\/snap-kafka-init.json"
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "1024.0m",
+                                                "memory": "2048Mi"
+                                            }
+                                        },
+                                        "imagePullPolicy": "Always",
+                                        "securityContext": {
+                                            "privileged": true
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run",
+                                                "name": "var-run"
+                                            },
+                                            {
+                                                "mountPath": "\/var\/log",
+                                                "name": "var-log"
+                                            },
+                                            {
+                                                "mountPath": "\/sys\/fs\/cgroup",
+                                                "name": "cgroup"
+                                            },
+                                            {
+                                                "mountPath": "\/var\/lib\/docker",
+                                                "name": "var-lib-docker"
+                                            },
+                                            {
+                                                "mountPath": "\/usr\/local\/bin\/docker",
+                                                "name": "usr-bin-docker"
+                                            },
+                                            {
+                                                "mountPath": "\/proc_host",
+                                                "name": "proc"
+                                            }
+                                        ],
+                                        "env": [
+                                            {
+                                                "name": "NODE_NAME",
+                                                "valueFrom": {
+                                                    "fieldRef": {
+                                                        "fieldPath": "spec.nodeName"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/sys\/fs\/cgroup"
+                                        },
+                                        "name": "cgroup"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/lib\/docker\/"
+                                        },
+                                        "name": "var-lib-docker"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/log"
+                                        },
+                                        "name": "var-log"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run"
+                                        },
+                                        "name": "var-run"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/usr\/bin\/docker"
+                                        },
+                                        "name": "usr-bin-docker"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/proc"
+                                        },
+                                        "name": "proc"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "snap-kafka"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "influxsrv"
+                        },
+                        "name": "influxsrv"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "influxsrv"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "influxsrv",
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/influx_data"
+                                        },
+                                        "name": "influx-data"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "env": [
+                                            {
+                                                "name": "ADMIN_USER",
+                                                "value": "root"
+                                            },
+                                            {
+                                                "name": "PRE_CREATE_DB",
+                                                "value": "snap;spark"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_INIT_PWD",
+                                                "value": "default"
+                                            }
+                                        ],
+                                        "image": "hyperpilot\/influx:1.2.2",
+                                        "name": "influxsrv",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8083,
+                                                "hostPort": 8083,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8086,
+                                                "hostPort": 8086,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/lib\/influxdb",
+                                                "name": "influx-data"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "2048m",
+                                                "memory": "4096Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "influxsrv",
+                "portTypes": [
+                    1,
+                    1
+                ]
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "grafana"
+                        },
+                        "name": "grafana"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "grafana"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "grafana",
+                                "containers": [
+                                    {
+                                        "env": [
+                                            {
+                                                "name": "INFLUXDB_NAME_SNAP",
+                                                "value": "snap"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_NAME_SPARK",
+                                                "value": "spark"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_HOST",
+                                                "value": "influxsrv"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_PORT",
+                                                "value": "8086"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_USER",
+                                                "value": "root"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_PASS",
+                                                "value": "default"
+                                            },
+                                            {
+                                                "name": "GF_AUTH_ANONYMOUS_ENABLED",
+                                                "value": "true"
+                                            },
+                                            {
+                                                "name": "GF_SERVER_ROOT_URL",
+                                                "value": "\/grafana"
+                                            }
+                                        ],
+                                        "image": "hyperpilot\/tech-demo-grafana",
+                                        "name": "grafana",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 3000,
+                                                "hostPort": 3000,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "600Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "grafana",
+                "portTypes": [
+                    1
+                ]
+            }
+        ]
+    }
+}

@@ -9,7 +9,7 @@
   },
   "tasks": [
     "http://hyperpilot-resources.s3.amazonaws.com/snap-intel.json",
-    "http://hyperpilot-resources-alpha.s3.amazonaws.com/snap-kafka-task.json"
+    "http://hyperpilot-snap-alpha.s3.amazonaws.com/snap-kafka-task.json"
   ],
   "pluginsPath": "/opt/snap/plugins",
   "tasksPath": "/opt/snap/tasks"

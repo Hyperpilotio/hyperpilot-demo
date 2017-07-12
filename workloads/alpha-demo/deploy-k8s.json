@@ -29,6 +29,10 @@
             "id": 1
         },
         {
+            "task": "zookeeper",
+            "id": 2
+        },
+        {
             "task": "goddd",
             "id": 2
         },
@@ -83,10 +87,6 @@
         {
             "task": "grafana",
             "id": 5
-        },
-        {
-            "task": "zookeeper",
-            "id": 6
         },
         {
             "task": "kafka-bench",
@@ -248,13 +248,13 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine-init_dev",
+                                        "image": "hyperpilot\/snap:alpine-init",
                                         "name": "snap",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-collectors.s3.amazonaws.com\/init.json"
+                                            "https:\/\/hyperpilot-resources-alpha.s3.amazonaws.com\/snap-init.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -378,13 +378,13 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine-init_dev",
+                                        "image": "hyperpilot\/snap:alpine-init",
                                         "name": "snap-goddd",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-collectors.s3.amazonaws.com\/init-goddd.json"
+                                            "https:\/\/hyperpilot-resources-alpha.s3.amazonaws.com\/snap-goddd-init.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -508,13 +508,13 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine-init_dev",
+                                        "image": "hyperpilot\/snap:alpine-init",
                                         "name": "snap-kafka",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https://hyperpilot-resources.s3.amazonaws.com/init-kafka.json"
+                                            "https:\/\/hyperpilot-resources-alpha.s3.amazonaws.com\/snap-kafka-init.json"
                                         ],
                                         "resources": {
                                             "limits": {

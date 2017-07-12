@@ -1,0 +1,66 @@
+{
+  "schedule": {
+    "interval": "5s",
+    "type": "simple"
+  },
+  "version": 1,
+  "workflow": {
+    "collect": {
+      "config": {
+        "/intel/mongodb": {
+          "uri": "mongo:27017",
+          "username": "",
+          "password": ""
+        }
+      },
+      "metrics": {
+        "/intel/mongodb/opscounters/command": {
+        },
+        "/intel/mongodb/opscounters/delete": {
+        },
+        "/intel/mongodb/opscounters/getmore": {
+        },
+        "/intel/mongodb/opscounters/insert": {
+        },
+        "/intel/mongodb/opscounters/query": {
+        },
+        "/intel/mongodb/opscounters/update": {
+        },
+        "/intel/mongodb/tmalloc/aggressive_memory_decommit": {
+        },
+        "/intel/mongodb/tmalloc/central_cache_free_bytes": {
+        },
+        "/intel/mongodb/tmalloc/current_allocated_bytes": {
+        },
+        "/intel/mongodb/tmalloc/current_total_thread_cache_bytes": {
+        },
+        "/intel/mongodb/tmalloc/heap_size": {
+        },
+        "/intel/mongodb/tmalloc/max_total_thread_cache_bytes": {
+        },
+        "/intel/mongodb/tmalloc/pageheap_free_bytes": {
+        },
+        "/intel/mongodb/tmalloc/pageheap_unmapped_bytes": {
+        },
+        "/intel/mongodb/tmalloc/thread_cache_free_bytes": {
+        },
+        "/intel/mongodb/tmalloc/total_free_bytes": {
+        },
+        "/intel/mongodb/tmalloc/transfer_cache_free_bytes": {
+        }
+      },
+      "publish": [{
+        "plugin_name": "influxdb",
+        "config": {
+          "host": "influxsrv",
+          "port": 8086,
+          "database": "snap",
+          "user": "root",
+          "password": "hyperpilot",
+          "https": false,
+          "skip-verify": false
+        }
+      }]
+    }
+  }
+}

@@ -8,7 +8,7 @@
   "tasks": [  
     "https://s3.amazonaws.com/hyperpilot-swh/snap-cpu.json",
     "https://s3.amazonaws.com/hyperpilot-swh/snap-docker-cpu.json",
-    "https://hyperpilot-snap.s3.amazonaws.com/snap-kafka-task.json"
+    "https://hyperpilot-snap-alpha.s3.amazonaws.com/snap-kafka-task.json"
   ],
   "pluginsPath": "/opt/snap/plugins",
   "tasksPath": "/opt/snap/tasks"

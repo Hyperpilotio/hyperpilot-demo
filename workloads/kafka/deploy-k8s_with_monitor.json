@@ -1,5 +1,5 @@
 {
-    "name": "kafka",
+    "name": "kafka-monitoring",
     "region": "us-east-1",
     "nodeMapping": [
         {
@@ -338,7 +338,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-alpha.s3.amazonaws.com\/snap-kafka-init.json"
+                                            "https:\/\/hyperpilot-snap-kafka.s3.amazonaws.com\/snap-kafka-init.json"
                                         ],
                                         "resources": {
                                             "limits": {

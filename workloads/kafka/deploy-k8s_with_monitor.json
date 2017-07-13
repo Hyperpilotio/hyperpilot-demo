@@ -165,7 +165,6 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1536.0m",
                                                 "memory": "2048Mi"
                                             }
                                         }
@@ -338,7 +337,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-kafka.s3.amazonaws.com\/snap-kafka-init.json"
+                                            "https:\/\/hyperpilot-snap-kafka.s3.amazonaws.com\/snap-kafka-init_dev.json"
                                         ],
                                         "resources": {
                                         },
@@ -494,8 +493,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "2048m",
-                                                "memory": "4096Mi"
+                                                "memory": "2048Mi"
                                             }
                                         }
                                     }

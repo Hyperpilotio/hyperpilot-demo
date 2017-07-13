@@ -4,6 +4,10 @@
     "nodeMapping": [
         {
             "task": "benchmark-agent",
+            "id": 1
+        },
+        {
+            "task": "benchmark-agent",
             "id": 2
         },
         {

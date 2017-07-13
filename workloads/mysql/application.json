@@ -39,7 +39,7 @@
                     {
                         "name": "Number of connections",
                         "arg": "-c",
-                        "startingValue": 5,
+                        "startingValue": 150,
                         "step": 15
                     }
                 ]

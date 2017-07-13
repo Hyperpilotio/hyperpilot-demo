@@ -1,4 +1,5 @@
 {
+    "userId": "xiaoyun",
     "name": "mongo",
     "region": "us-east-1",
     "nodeMapping": [
@@ -12,11 +13,11 @@
         },
         {
             "task": "mongo-serve",
-            "id": 2
+            "id": 1
         },
         {
             "task": "mongo-bench",
-            "id": 1
+            "id": 2
         }
     ],
     "clusterDefinition": {
@@ -95,13 +96,7 @@
                                                 "hostPort": 27017,
                                                 "protocol": "TCP"
                                             }
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "1024Mi"
-                                            }
-                                        }
+                                        ]
                                     }
                                 ]
                             }
@@ -211,7 +206,7 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot/benchmark-controller:mongo",
+                                        "image": "hyperpilot/mongo-bench",
                                         "name": "mongo-bench",
                                         "imagePullPolicy": "Always",
                                         "ports": [

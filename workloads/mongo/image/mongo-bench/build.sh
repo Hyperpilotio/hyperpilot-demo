@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo docker build -t hyperpilot/benchmark-controller:mongo . && sudo docker push hyperpilot/benchmark-controller:mongo
+sudo docker build -t hyperpilot/mongo-bench . && sudo docker push hyperpilot/mongo-bench

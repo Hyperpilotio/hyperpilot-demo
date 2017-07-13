@@ -1,34 +1,26 @@
 {
-    "name": "kafka-monitoring",
+    "name": "mongo-monitoring",
     "region": "us-east-1",
     "nodeMapping": [
         {
-            "task": "benchmark-agent",
+            "task": "mongo-bench",
             "id": 1
-        },
-        {
-            "task": "kafka-serve",
-            "id": 1
-        },
-        {
-            "task": "snap-kafka",
-            "id": 1
-        },
-        {
-            "task": "benchmark-agent",
-            "id": 2
-        },
-        {
-            "task": "kafka-bench",
-            "id": 2
-        },
-        {
-            "task": "zookeeper",
-            "id": 3
         },
         {   
             "task": "influxsrv",
-            "id": 3
+            "id": 1
+        },
+        {
+            "task": "benchmark-agent",
+            "id": 2
+        },
+        {
+            "task": "mongo-serve",
+            "id": 2
+        },
+        {
+            "task": "snap-mongo",
+            "id": 2
         }
     ],
     "clusterDefinition": {
@@ -40,10 +32,6 @@
             {
                 "instanceType": "t2.large",
                 "id": 2
-            },
-            {
-                "instanceType": "t2.large",
-                "id": 3
             }
         ]
     },
@@ -68,46 +56,54 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "kafka-serve"
+                            "app": "mongo-serve"
                         },
-                        "name": "kafka-serve"
+                        "name": "mongo-serve"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "kafka-serve"
+                                "app": "mongo-serve"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "kafka-serve"
+                                    "app": "mongo-serve"
                                 }
                             },
                             "spec": {
-                                "hostname": "kafka-serve",
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/mongo_data"
+                                        },
+                                        "name": "mongo-data"
+                                    }
+                                ],
+                                "hostname": "mongo-serve",
                                 "containers": [
                                     {
-                                        "image": "hyperpilot/kafka",
-                                        "name": "kafka-serve",
-                                        "imagePullPolicy": "Always",
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/data\/db",
+                                                "name": "mongo-data"
+                                            }
+                                        ],
+                                        "image": "mongo:3.0.15",
+                                        "name": "mongo-serve",
                                         "ports": [
                                             {
-                                                "containerPort": 9092,
-                                                "hostPort": 9092,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 8082,
-                                                "hostPort": 8082,
+                                                "containerPort": 27017,
+                                                "hostPort": 27017,
                                                 "protocol": "TCP"
                                             }
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1024.0m",
-                                                "memory": "2048Mi"
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
                                             }
                                         }
                                     }
@@ -117,62 +113,9 @@
                     }
                 },
                 "portTypes": [
-                    0, 0
+                    1
                 ],
-                "family": "kafka-serve"
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "zookeeper"
-                        },
-                        "name": "zookeeper"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "zookeeper"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "zookeeper"
-                                }
-                            },
-                            "spec": {
-                                "hostname": "zookeeper",
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot/zookeeper",
-                                        "name": "zookeeper",
-                                        "imagePullPolicy": "Always",
-                                        "ports": [
-                                            {
-                                                "containerPort": 2181,
-                                                "hostPort": 2181,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "memory": "2048Mi"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "portTypes": [
-                    0
-                ],
-                "family": "zookeeper"
+                "family": "mongo-serve"
             },
             {
                 "deployment": {
@@ -203,7 +146,6 @@
                                     {
                                         "image": "hyperpilot/benchmark-agent",
                                         "name": "benchmark-agent",
-                                        "imagePullPolicy": "Always",
                                         "ports": [
                                             {
                                                 "containerPort": 7778,
@@ -213,7 +155,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "512.0m",
+                                                "cpu": "1024.0m",
                                                 "memory": "500Mi"
                                             }
                                         },
@@ -248,21 +190,21 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "kafka-bench"
+                            "app": "mongo-bench"
                         },
-                        "name": "kafka-bench"
+                        "name": "mongo-bench"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "kafka-bench"
+                                "app": "mongo-bench"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "kafka-bench"
+                                    "app": "mongo-bench"
                                 }
                             },
                             "spec": {
@@ -273,8 +215,8 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot/benchmark-controller:kafka",
-                                        "name": "kafka-bench",
+                                        "image": "hyperpilot/benchmark-controller:mongo",
+                                        "name": "mongo-bench",
                                         "imagePullPolicy": "Always",
                                         "ports": [
                                             {
@@ -284,7 +226,10 @@
                                             }
                                         ],
                                         "resources": {
-
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "512Mi"
+                                            }
                                         }
                                     }
                                 ]
@@ -295,7 +240,7 @@
                 "portTypes": [
                     1
                 ],
-                "family": "kafka-bench"
+                "family": "mongo-bench"
             },
             {
                 "deployment": {
@@ -303,23 +248,104 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "snap-kafka",
+                            "app": "influxsrv"
+                        },
+                        "name": "influxsrv"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "influxsrv"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "influxsrv",
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/influx_data"
+                                        },
+                                        "name": "influx-data"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "env": [
+                                            {
+                                                "name": "ADMIN_USER",
+                                                "value": "root"
+                                            },
+                                            {
+                                                "name": "PRE_CREATE_DB",
+                                                "value": "snap;spark"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_INIT_PWD",
+                                                "value": "default"
+                                            }
+                                        ],
+                                        "image": "hyperpilot\/influx:1.2.2",
+                                        "name": "influxsrv",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8083,
+                                                "hostPort": 8083,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8086,
+                                                "hostPort": 8086,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/lib\/influxdb",
+                                                "name": "influx-data"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "memory": "2048Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "influxsrv",
+                "portTypes": [
+                    1,
+                    1
+                ]
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "snap-mongo",
                             "version": "latest"
                         },
-                        "name": "snap-kafka"
+                        "name": "snap-mongo"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "snap-kafka",
+                                "app": "snap-mongo",
                                 "version": "latest"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "snap-kafka",
+                                    "app": "snap-mongo",
                                     "version": "latest"
                                 }
                             },
@@ -327,12 +353,12 @@
                                 "containers": [
                                     {
                                         "image": "hyperpilot\/snap:alpine-init",
-                                        "name": "snap-kafka",
+                                        "name": "snap-mongo",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-kafka.s3.amazonaws.com\/snap-kafka-init.json"
+                                            "https:\/\/hyperpilot-snap-alpha.s3.amazonaws.com\/snap-mongo-init.json"
                                         ],
                                         "resources": {
                                         },
@@ -420,88 +446,7 @@
                         }
                     }
                 },
-                "family": "snap-kafka"
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "influxsrv"
-                        },
-                        "name": "influxsrv"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "influxsrv"
-                                }
-                            },
-                            "spec": {
-                                "hostname": "influxsrv",
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/influx_data"
-                                        },
-                                        "name": "influx-data"
-                                    }
-                                ],
-                                "containers": [
-                                    {
-                                        "env": [
-                                            {
-                                                "name": "ADMIN_USER",
-                                                "value": "root"
-                                            },
-                                            {
-                                                "name": "PRE_CREATE_DB",
-                                                "value": "snap;spark"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_INIT_PWD",
-                                                "value": "default"
-                                            }
-                                        ],
-                                        "image": "hyperpilot\/influx:1.2.2",
-                                        "name": "influxsrv",
-                                        "ports": [
-                                            {
-                                                "containerPort": 8083,
-                                                "hostPort": 8083,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 8086,
-                                                "hostPort": 8086,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/var\/lib\/influxdb",
-                                                "name": "influx-data"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "memory": "2048Mi"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "influxsrv",
-                "portTypes": [
-                    1,
-                    1
-                ]
+                "family": "snap-mongo"
             }
         ]
     }

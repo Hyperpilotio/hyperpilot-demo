@@ -7,8 +7,10 @@
   "workflow": {
     "collect": {
       "metrics": {
-        "/hyperpilot/kafka/node/*/kafka_network/type/RequestMetrics/name/*/request/Produce/*": {},
-        "/hyperpilot/kafka/node/*/kafka_server/type/BrokerTopicMetrics/name/*": {}
+        "/hyperpilot/kafka/node/*/kafka_network/type/RequestMetrics/name/TotalTimeMs/request/Produce/*": {},
+        "/hyperpilot/kafka/node/*/kafka_network/type/RequestMetrics/name/RequestsPerSec/request/Produce/*": {},
+        "/hyperpilot/kafka/node/*/kafka_server/type/BrokerTopicMetrics/name/FailedProduceRequestsPerSec/*": {},
+        "/hyperpilot/kafka/node/*/kafka_server/type/BrokerTopicMetrics/name/MessagesInPerSec/*": {}
       },
       "config": {
         "/hyperpilot/kafka": {

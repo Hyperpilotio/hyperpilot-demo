@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "schedule": {
+    "type": "simple",
+    "interval": "5s"
+  },
+  "workflow": {
+    "collect": {
+      "metrics": {
+        "/intel/docker/*/stats/cgroups/cpu_stats/throttling_data/throttled_time": {},
+        "/intel/docker/*/stats/cgroups/memory_stats/usage/usage": {},
+        "/intel/docker/*/stats/cgroups/memory_stats/usage/failcnt": {},
+        "/intel/docker/*/stats/cgroups/memory_stats/statistics/total_pgfault": {},
+        "/intel/docker/*/stats/cgroups/memory_stats/statistics/total_pgpgin": {},
+        "/intel/docker/*/stats/cgroups/memory_stats/statistics/total_pgpgout": {},
+        "/intel/docker/*/stats/cgroups/memory_stats/statistics/working_set": {},
+        "/intel/docker/*/stats/cgroups/blkio_stats/*": {},
+        "/intel/docker/*/stats/network/total/*": {},
+        "/intel/docker/*/stats/filesystem/*": {},
+	"/intel/procfs/cpu/*": {},
+	"/intel/procfs/meminfo/active": {},
+	"/intel/procfs/meminfo/inactive": {},
+	"/intel/procfs/meminfo/buffers": {},
+	"/intel/procfs/meminfo/cached": {},
+	"/intel/procfs/meminfo/mem_free": {},
+	"/intel/procfs/meminfo/mem_used": {}
+      },
+      "config": {
+        "/intel/procfs": {
+          "proc_path": "/proc_host"
+        },
+        "/intel/docker": {
+          "procfs": "/proc_host"
+        }
+      },
+      "tags": {
+        "/intel": {
+          "nodename": "<%= NODE_NAME =>"
+        }
+      },
+      "publish": [
+        {
+          "plugin_name": "influxdb",
+          "config": {
+            "host": "influxsrv",
+            "port": 8086,
+            "database": "snap",
+            "user": "root",
+            "password": "hyperpilot",
+            "https": false,
+            "skip-verify": false
+          }
+        }
+      ]
+    }
+  }
+}

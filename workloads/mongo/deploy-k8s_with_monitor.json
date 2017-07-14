@@ -271,8 +271,8 @@
                             },
                             "spec": {
                                 "containers": [
-                                    {
-                                        "image": "hyperpilot\/snap:alpine-init",
+                                   {
+                                        "image": "hyperpilot\/snap:alpine-init_dev",
                                         "name": "snap-mongo",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"

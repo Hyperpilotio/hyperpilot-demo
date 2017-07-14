@@ -15,7 +15,7 @@
             "id": 2
         },
         {
-            "task": "redis-bench",
+            "task": "benchmark-controller",
             "id": 1
         }
     ],
@@ -174,21 +174,21 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "redis-bench"
+                            "app": "benchmark-controller"
                         },
-                        "name": "redis-bench"
+                        "name": "benchmark-controller"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "redis-bench"
+                                "app": "benchmark-controller"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "redis-bench"
+                                    "app": "benchmark-controller"
                                 }
                             },
                             "spec": {
@@ -199,8 +199,8 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/benchmark-controller:redis",
-                                        "name": "redis-bench",
+                                        "image": "hyperpilot\/benchmark-controller:dev",
+                                        "name": "benchmark-controller",
                                         "imagePullPolicy": "Always",
                                         "ports": [
                                             {
@@ -248,7 +248,7 @@
                 "portTypes": [
                     1
                 ],
-                "family": "redis-bench"
+                "family": "benchmark-controller"
             }
         ]
     }

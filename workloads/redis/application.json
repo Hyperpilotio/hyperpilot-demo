@@ -2,7 +2,7 @@
     "name": "redis",
     "serviceNames": ["redis-serve"],
     "loadTester": {
-        "name": "redis-bench",
+        "name": "benchmark-controller",
         "benchmarkController": {
             "initialize": {
                 "image": "redis:3-alpine",
@@ -29,6 +29,7 @@
                     "-t",
                     "GET"
                 ],
+                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/redis/parser.js",
                 "hostConfig": {
                     "arg": "-h",
                     "description": "host of the service"

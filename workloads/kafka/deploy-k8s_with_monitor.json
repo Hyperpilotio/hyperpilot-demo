@@ -160,7 +160,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "memory": "2048Mi"
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
                                             }
                                         }
                                     }
@@ -284,7 +285,10 @@
                                             }
                                         ],
                                         "resources": {
-
+                                            "requests": {
+                                                "cpu": "1024.0m",
+                                                "memory": "512Mi"
+                                            }
                                         }
                                     }
                                 ]
@@ -326,7 +330,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine-init",
+                                        "image": "hyperpilot\/snap:alpine-init_dev",
                                         "name": "snap-kafka",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
@@ -488,6 +492,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
+                                                "cpu": "512.0m",
                                                 "memory": "2048Mi"
                                             }
                                         }

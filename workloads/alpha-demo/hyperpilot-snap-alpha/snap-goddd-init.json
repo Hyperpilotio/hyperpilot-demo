@@ -5,7 +5,7 @@
     "cpu": "https://github.com/intelsdi-x/snap-plugin-collector-cpu/releases/download/6/snap-plugin-collector-cpu_linux_x86_64",
     "meminfo": "http://snap.ci.snap-telemetry.io/plugins/snap-plugin-collector-meminfo/latest/linux/x86_64/snap-plugin-collector-meminfo",
     "disk": "https://github.com/intelsdi-x/snap-plugin-collector-disk/releases/download/4/snap-plugin-collector-disk_linux_x86_64",
-    "snap-plugin-collector-goddd": "https://s3.amazonaws.com/hyperpilot-swh/snap-plugin-collector-goddd",
+    "snap-plugin-collector-goddd": "http://hyperpilot-snap-alpha.s3.amazonaws.com/snap-plugin-collector-goddd",
     "snap-plugin-processor-agent": "https://hyperpilot-resources.s3.amazonaws.com/snap-plugin-processor-agent"
   },
   "tasks": [

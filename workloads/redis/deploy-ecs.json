@@ -25,7 +25,7 @@
             "id": 1
         },
         {
-            "task": "redis-bench",
+            "task": "benchmark-controller",
             "id": 2
         }
     ],
@@ -285,10 +285,10 @@
                         "memory": 500,
                         "cpu": 512,
                         "image": "hyperpilot\/benchmark-controller:redis",
-                        "name": "redis-bench"
+                        "name": "benchmark-controller"
                     }
                 ],
-                "family": "redis-bench"
+                "family": "benchmark-controller"
             }
         ]
     }

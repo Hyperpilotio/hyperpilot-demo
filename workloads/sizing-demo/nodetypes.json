@@ -1,6 +1,6 @@
     {
+      "name": "t2.large",
       "instanceFamily": "t2",
-      "instanceType": "t2.large",
       "category": "Burstable Performance",
       "hourlyCost": {
 	      "LinuxOnDemand": 0.094,
@@ -29,8 +29,8 @@
       }
     }
     {
+      "name": "m4.large",
       "instanceFamily": "m4",
-      "instanceType": "m4.large",
       "category": "General Purpose",
       "hourlyCost": {
 	      "LinuxOnDemand": 0.100,
@@ -58,8 +58,8 @@
       }
     }
     {
+      "name": "m3.large",
       "instanceFamily": "m3",
-      "instanceType": "m3.large",
       "category": "General Purpose",
       "hourlyCost": {
 	      "LinuxOnDemand": 0.133,
@@ -87,8 +87,8 @@
       }
     }
     {
+      "name": "c4.large",
       "instanceFamily": "c4",
-      "instanceType": "c4.large",
       "category": "Compute Optimized",
       "hourlyCost": {
 	      "LinuxOnDemand": 0.100,
@@ -116,8 +116,8 @@
       }
     }
     {
+      "name": "x1.16xlarge",
       "instanceFamily": "x1",
-      "instanceType": "x1.16xlarge",
       "category": "Memory Optimized",
       "hourlyCost": {
 	      "LinuxOnDemand": 6.669,
@@ -145,8 +145,8 @@
       }
     }
     {
+      "name": "i3.large",
       "instanceFamily": "i3",
-      "instanceType": "i3.large",
       "category": "Storage Optimized",
       "hourlyCost": {
 	      "LinuxOnDemand": 0.156,

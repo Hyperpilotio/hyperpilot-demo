@@ -138,87 +138,6 @@
         ],
         "taskDefinitions": [
             {
-                "daemonset": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "DaemonSet",
-                    "metadata": {
-                        "name": "controller-daemonset",
-                        "namespace": "hyperpilot"
-                    },
-                    "spec": {
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "name": "controller-daemonset"
-                                }
-                            },
-                            "spec": {
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/controller",
-                                        "imagePullPolicy": "Always",
-                                        "name": "controller",
-                                        "securityContext": {
-                                            "privileged": true
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/var\/run\/docker.sock",
-                                                "name": "docker-sock"
-                                            },
-                                            {
-                                                "mountPath": "\/var\/run\/command.sock",
-                                                "name": "command-sock"
-                                            },
-					                        {
-                                                "mountPath": "\/sys\/fs\/cgroup",
-                                                "name": "cgroup"
-                                            }
-                                        ],
-                                        "env": [
-                                            {
-                                                "name": "MY_NODE_NAME",
-                                                "valueFrom": {
-                                                    "fieldRef": {
-                                                        "fieldPath": "spec.nodeName"
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/var\/run\/docker.sock"
-                                        },
-                                        "name": "docker-sock"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/var\/run\/command.sock"
-                                        },
-                                        "name": "command-sock"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/sys\/fs\/cgroup"
-                                        },
-                                        "name": "cgroup"
-                                    }
-                                ],
-                                "imagePullSecrets": [
-                                    {
-                                        "name": "myregistrykey"
-                                    }
-                                ],
-                                "terminationGracePeriodSeconds": 10
-                            }
-                        }
-                    }
-                }
-            },
-            {
                 "deployment": {
                     "apiVersion": "extensions\/v1beta1",
                     "kind": "Deployment",
@@ -553,6 +472,14 @@
                                             }
                                         ],
                                         "env": [
+                                            {
+                                                "name": "MX4J_URL",
+                                                "value": "kafka-serve.default"
+                                            },
+                                            {
+                                                "name": "MX4J_PORT",
+                                                "value": "8082"
+                                            },
                                             {
                                                 "name": "NODE_NAME",
                                                 "valueFrom": {

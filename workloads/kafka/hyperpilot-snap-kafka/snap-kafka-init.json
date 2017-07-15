@@ -1,0 +1,16 @@
+{
+  "plugins": {
+    "meminfo": "http://snap.ci.snap-telemetry.io/plugins/snap-plugin-collector-meminfo/latest/linux/x86_64/snap-plugin-collector-meminfo",
+    "influxdb": "https://github.com/intelsdi-x/snap-plugin-publisher-influxdb/releases/download/22/snap-plugin-publisher-influxdb_linux_x86_64",
+    "docker": "http://hyperpilot-snap-collectors.s3.amazonaws.com/snap-plugin-collector-docker",
+    "disk": "https://github.com/intelsdi-x/snap-plugin-collector-disk/releases/download/4/snap-plugin-collector-disk_linux_x86_64",
+    "cpu": "https://github.com/intelsdi-x/snap-plugin-collector-cpu/releases/download/6/snap-plugin-collector-cpu_linux_x86_64",
+    "snap-plugin-collector-kafka": "https://hyperpilot-snap-alpha.s3.amazonaws.com/snap-plugin-collector-kafka"
+  },
+  "tasks": [
+    "http://hyperpilot-snap-alpha.s3.amazonaws.com/snap-intel.json",
+    "http://hyperpilot-snap-kafka.s3.amazonaws.com/snap-kafka-task.json"
+  ],
+  "pluginsPath": "/opt/snap/plugins",
+  "tasksPath": "/opt/snap/tasks"
+}

@@ -22,6 +22,6 @@
     "slo": {
         "metric": "95",
         "value": 20,
-        "type": "throughput"
+        "type": "latency"
     }
 }

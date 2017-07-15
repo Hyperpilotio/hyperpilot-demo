@@ -1,0 +1,175 @@
+    {
+      "name": "t2.large",
+      "instanceFamily": "t2",
+      "category": "Burstable Performance",
+      "hourlyCost": {
+	      "LinuxOnDemand": 0.094,
+	      "LinuxReserved": 0.067,
+	      "WindowsOnDemand": 0.122,
+	      "WindowsOnDemand": 0.095
+      },
+      "cpuConfig": {
+        "vCPU": 2,
+        "cpuCredits": "36",
+        "cpuType": "Intel Xeon",
+        "clockSpeed": 3.0
+      },
+      "memoryConfig": {
+        "size": 8
+      },
+      "networkConfig": {
+        "performane": "Low to Moderate",
+        "bandwidth": 0,
+        "clusterNetworking": "false"
+      },
+      "storageConfig": {
+        "size": 0,
+        "storageType": "EBS Only",
+        "bandwidth": 0
+      }
+    }
+    {
+      "name": "m4.large",
+      "instanceFamily": "m4",
+      "category": "General Purpose",
+      "hourlyCost": {
+	      "LinuxOnDemand": 0.100,
+	      "LinuxReserved": 0.062,
+	      "WindowsOnDemand": 0.192,
+	      "WindowsOnDemand": 0.154
+      },
+      "cpuConfig": {
+        "vCPU": 2,
+        "cpuType": "E5-2676 v3",
+        "clockSpeed": 2.4
+      },
+      "memoryConfig": {
+        "size": 8
+      },
+      "networkConfig": {
+        "performance": "Moderate",
+        "bandwidth": 0,
+        "enhancedNetworking": "true"
+      },
+      "storageConfig": {
+        "size": 0,
+        "storageType": "EBS Optimized",
+        "bandwidth": 450
+      }
+    }
+    {
+      "name": "m3.large",
+      "instanceFamily": "m3",
+      "category": "General Purpose",
+      "hourlyCost": {
+	      "LinuxOnDemand": 0.133,
+	      "LinuxReserved": 0.095,
+	      "WindowsOnDemand": 0.259,
+	      "WindowsOnDemand": 0.199
+      },
+      "cpuConfig": {
+        "vCPU": 2,
+        "cpuType": "E5-2670 v2",
+        "clockSpeed": 2.5
+      },
+      "memoryConfig": {
+        "size": 7.5
+      },
+      "networkConfig": {
+        "performance": "Moderate",
+        "bandwidth": 0,
+        "enhancedNetworking": "false"
+      },
+      "storageConfig": {
+        "size": 32,
+        "storageType": "SSD",
+        "bandwidth": 0
+      }
+    }
+    {
+      "name": "c4.large",
+      "instanceFamily": "c4",
+      "category": "Compute Optimized",
+      "hourlyCost": {
+	      "LinuxOnDemand": 0.100,
+	      "LinuxReserved": 0.063,
+	      "WindowsOnDemand": 0.192,
+	      "WindowsOnDemand": 0.155
+      },
+      "cpuConfig": {
+        "vCPU": 2,
+        "cpuType": "E5-2666 v3",
+        "clockSpeed": 2.9
+      },
+      "memoryConfig": {
+        "size": 3.75
+      },
+      "networkConfig": {
+        "performance": "Moderate",
+        "bandwidth": 0,
+        "enhancedNetworking": "true"
+      },
+      "storageConfig": {
+        "size": 0,
+        "storageType": "EBS-optimized",
+        "bandwidth": 500
+      }
+    }
+    {
+      "name": "x1.16xlarge",
+      "instanceFamily": "x1",
+      "category": "Memory Optimized",
+      "hourlyCost": {
+	      "LinuxOnDemand": 6.669,
+	      "LinuxReserved": 4.110,
+	      "WindowsOnDemand": 9.613,
+	      "WindowsOnDemand": 7.054
+      },
+      "cpuConfig": {
+        "vCPU": 64,
+        "cpuType": "E7-8880 v3",
+        "clockSpeed": 2.3
+      },
+      "memoryConfig": {
+        "size": 976
+      },
+      "networkConfig": {
+        "performance": "High",
+        "bandwidth": 0,
+        "enhancedNetworking": "true"
+      },
+      "storageConfig": {
+        "size": 1920,
+        "storageType": "SSD",
+        "bandwidth": 5000
+      }
+    }
+    {
+      "name": "i3.large",
+      "instanceFamily": "i3",
+      "category": "Storage Optimized",
+      "hourlyCost": {
+	      "LinuxOnDemand": 0.156,
+	      "LinuxReserved": 0.107,
+	      "WindowsOnDemand": 0.248,
+	      "WindowsOnDemand": 0.199
+      },
+      "cpuConfig": {
+        "vCPU": 2,
+        "cpuType": "E5-2686 v4",
+        "clockSpeed": 2.3
+      },
+      "memoryConfig": {
+        "size": 15.25
+      },
+      "networkConfig": {
+        "networkType": "High",
+        "bandwidth": 10,
+        "enhancedNetworking": "true"
+      },
+      "storageConfig": {
+        "size": 475,
+        "storageType": "NVMe SSD",
+        "bandwidth": 0
+      }
+    }

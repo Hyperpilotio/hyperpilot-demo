@@ -3,12 +3,13 @@
     "interval": "5s",
     "type": "simple"
   },
+  "max-failures": -1,
   "version": 1,
   "workflow": {
     "collect": {
       "config": {
         "/intel/mongodb": {
-          "uri": "mongo:27017",
+          "uri": "mongo-serve:27017",
           "username": "",
           "password": ""
         }

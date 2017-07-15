@@ -27,22 +27,22 @@ def parse_arguments():
                         default=None)
     parser.add_argument('-t', '--threads', dest='threads', nargs="+",
                         help='Specify which thread configuration to use',
-                        type=int, default=[1, 2, 4, 8, 12, 16])
+                        type=int, default=[4, 8, 12, 16])
     parser.add_argument('-m', '--multidb', dest='multidb',
                         help='Specify how many databases the test should use',
-                        type=int, default=1)
+                        type=int, default=5)
     parser.add_argument('-c', '--multicoll', dest='multicoll',
                         help='Specify how many collections the test should use',
-                        type=int, default=1)
+                        type=int, default=10)
     parser.add_argument('--trialTime', dest='seconds',
                         help='Specify how many seconds to run each trial',
-                        type=int, default=5)
+                        type=int, default=20)
     parser.add_argument('--trialCount', dest='trials',
                         help='Specify how many trials to run',
-                        type=int, default=1)
+                        type=int, default=3)
     parser.add_argument('--host', dest='hostname',
                         help='hostname of the mongod/mongos under test',
-                        default='localhost')
+                        default='mongo-serve')
     parser.add_argument('--port', dest='port',
                         help='Port of the mongod/mongos under test',
                         default='27017')
@@ -71,7 +71,7 @@ def parse_arguments():
     parser.add_argument('-j', dest='j',
                         nargs='?', const='true', choices=['true', 'false'],
                         help='this option turns on the j write concern',
-                        default='false')
+                        default='true')
     parser.add_argument('--writeCmd', dest='writeCmd',
                         nargs='?', const='true', choices=['true', 'false'],
                         help='this option turns on use of the write commands instead of legacy write operations',
@@ -79,7 +79,7 @@ def parse_arguments():
     parser.add_argument('--readCmd', dest='readCmd',
                         nargs='?', const='true', choices=['true', 'false'],
                         help='this option turns on use of the read commands instead of legacy read operations',
-                        default='false')
+                        default='true')
 
     parser.add_argument('--includeFilter', dest='includeFilter', nargs='+', action="append",
                         help="Run just the specified tests/suites. Can specify multiple tags per --includeFilter\n"

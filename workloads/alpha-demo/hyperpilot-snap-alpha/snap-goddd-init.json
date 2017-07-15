@@ -1,15 +1,16 @@
 {
   "plugins": {
     "influxdb": "https://github.com/intelsdi-x/snap-plugin-publisher-influxdb/releases/download/22/snap-plugin-publisher-influxdb_linux_x86_64",
-    "docker": "http://hyperpilot-snap-collectors.s3.amazonaws.com/snap-plugin-collector-docker",
+    "docker": "https://hyperpilot-snap-collectors.s3.amazonaws.com/snap-plugin-collector-docker",
     "cpu": "https://github.com/intelsdi-x/snap-plugin-collector-cpu/releases/download/6/snap-plugin-collector-cpu_linux_x86_64",
-    "snap-plugin-collector-goddd": "https://s3.amazonaws.com/hyperpilot-swh/snap-plugin-collector-goddd",
+    "meminfo": "https://snap.ci.snap-telemetry.io/plugins/snap-plugin-collector-meminfo/latest/linux/x86_64/snap-plugin-collector-meminfo",
+    "disk": "https://github.com/intelsdi-x/snap-plugin-collector-disk/releases/download/4/snap-plugin-collector-disk_linux_x86_64",
+    "snap-plugin-collector-goddd": "https://hyperpilot-snap-alpha.s3.amazonaws.com/snap-plugin-collector-goddd",
     "snap-plugin-processor-agent": "https://hyperpilot-resources.s3.amazonaws.com/snap-plugin-processor-agent"
   },
   "tasks": [
-    "https://s3.amazonaws.com/hyperpilot-swh/snap-cpu.json",
-    "https://s3.amazonaws.com/hyperpilot-swh/snap-docker-cpu.json",
-    "https://s3.amazonaws.com/hyperpilot-snap-alpha/snap-goddd-task.json"
+    "https://hyperpilot-snap-alpha.s3.amazonaws.com/snap-intel.json",
+    "https://hyperpilot-snap-alpha.s3.amazonaws.com/snap-goddd-task.json"
   ],
   "pluginsPath": "/opt/snap/plugins",
   "tasksPath": "/opt/snap/tasks"

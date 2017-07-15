@@ -10,14 +10,19 @@
                 "args": [
                     "flushall"
                 ],
-                "hostConfig": {
-                    "arg": "-h",
-                    "description": "host of the service"
-                },
-                "portConfig": {
-                    "arg": "-p",
-                    "description": "port of the service"
-                }
+                "serviceConfig": [
+                    {
+                        "name": "redis-serve",
+                        "hostConfig": {
+                            "arg": "-h",
+                            "description": "host of the service"
+                        },
+                        "portConfig": {
+                            "arg": "-p",
+                            "description": "port of the service"
+                        }
+                    }
+                ]
             },
             "command": {
                 "image": "redis:3-alpine",
@@ -30,14 +35,19 @@
                     "GET"
                 ],
                 "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/redis/parser.js",
-                "hostConfig": {
-                    "arg": "-h",
-                    "description": "host of the service"
-                },
-                "portConfig": {
-                    "arg": "-p",
-                    "description": "port of the service"
-                },
+                "serviceConfig": [
+                    {
+                        "name": "redis-serve",
+                        "hostConfig": {
+                            "arg": "-h",
+                            "description": "host of the service"
+                        },
+                        "portConfig": {
+                            "arg": "-p",
+                            "description": "port of the service"
+                        }
+                    }
+                ],
                 "intensityArgs": [
                     {
                         "name": "Number of connections",

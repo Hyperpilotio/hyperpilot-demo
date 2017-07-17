@@ -24,6 +24,9 @@ class StaticTasks(TaskSet):
     def delete_cargo(self, tracking_id):
         self.client.delete("/booking/v1/cargos/" + tracking_id)
 
+    def listing_cargo(self, tracking_id):
+        self.client.get("/booking/v1/cargos/" + tracking_id)
+
     def route_cargo(self, tracking_id):
         response = self.client.get("/booking/v1/cargos/" + tracking_id + "/request_routes")
         if response.content == "":
@@ -42,15 +45,16 @@ class StaticTasks(TaskSet):
         picked_route = json.dumps(routes['routes'][route])
         self.client.post("/booking/v1/cargos/" + tracking_id + "/assign_to_route", data=picked_route)
 
-#    @task(100)
-#    def create_route_delete_cargo(self):
-#        tracking_id = self.book_new_cargo()
-#        self.route_cargo(tracking_id)
-#        self.delete_cargo(tracking_id)
+    @task(50)
+    def create_route_delete_cargo(self):
+        tracking_id = self.book_new_cargo()
+        self.route_cargo(tracking_id)
+        self.listing_cargo(tracking_id)
+        self.delete_cargo(tracking_id)
 
-    @task(25)
-    def list_cargos(self):
-        self.client.get("/booking/v1/cargos")
+#    @task(1)
+#    def list_cargos(self):
+#        self.client.get("/booking/v1/cargos")
 
 
 class LoggedInUser(HttpLocust):

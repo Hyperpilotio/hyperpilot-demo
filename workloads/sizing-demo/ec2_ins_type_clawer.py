@@ -1,8 +1,11 @@
 """EC2 Instance Type Clawer."""
 from objdict import ObjDict
+from pymongo import MongoClient
 import urllib2
 import json
 import argparse
+import sys
+
 
 AWS_REGION = "us-east-1"
 OUTPUT_FILE_NAME = "nodetypes.json"
@@ -64,10 +67,45 @@ def grab(region):
     return ec2_instances
 
 
+def updateDB(mongoUrl, region, postData):
+    """update mongo db."""
+    client = MongoClient(mongoUrl)
+    db = client.configdb
+    # search for record
+    post = postData
+    post.region = region
+    result = db.nodetypes.update({"region": region}, post, upsert=True)
+    print result
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-r", type=str, required=False, dest="region", default=AWS_REGION, help="set aws-region, default is {}".format(AWS_REGION))
-    parser.add_argument("-o", type=str, required=False, dest="output", default=OUTPUT_FILE_NAME, help="set output file name")
+    parser.add_argument("-r",
+                        type=str,
+                        required=False,
+                        dest="region",
+                        default=AWS_REGION,
+                        help="set aws-region, default is {}".format(AWS_REGION))
+
+    parser.add_argument("-o",
+                        type=str,
+                        required=False,
+                        dest="output",
+                        default=OUTPUT_FILE_NAME,
+                        help="set output file name")
+
+    parser.add_argument("--mongo-url",
+                        type=str,
+                        required=False,
+                        dest="conn",
+                        default="mongodb://localhost:27017",
+                        help="mongoDB connection url, for example: --mongo-url=mongodb://user:password@mongo.host:port")
     args = parser.parse_args()
+    postData = grab(args.region)
+    try:
+        updateDB(args.conn, args.region, postData)
+    except Exception as e:
+        print "Error: {}".format(e)
+        sys.exit()
     with open(args.output, "w") as dumpFile:
-        dumpFile.write(json.dumps(json.loads(grab(args.region).__str__()), indent=4))
+        dumpFile.write(json.dumps(json.loads(postData.__str__()), indent=4))

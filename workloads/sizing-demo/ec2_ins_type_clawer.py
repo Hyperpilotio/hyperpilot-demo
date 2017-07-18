@@ -5,66 +5,146 @@ import urllib2
 import json
 import argparse
 import sys
+import ijson
 
 
 AWS_REGION = "us-east-1"
 OUTPUT_FILE_NAME = "nodetypes.json"
+AWS_PRICING_API_BASE_URL = "https://pricing.us-east-1.amazonaws.com"
+AWS_PRICING_API = AWS_PRICING_API_BASE_URL + "/offers/v1.0/aws/index.json"
+
+products = {}
+onDemandPricing = {}
+reservedPricing = {}
+
+
+def compose(region):
+    # search for insTypes
+    insTypes = list(set(map(lambda x: x["attributes"]["instanceType"], products.values())))
+    ec2Instances = ObjDict()
+    ec2Instances.data = []
+    ec2Instances.region = region
+    # for each insTypes find Linux / Windows pricing
+    for insType in insTypes:
+        product = filter(lambda x:
+                         x["attributes"]["instanceType"] == insType and
+                         x["attributes"]["tenancy"] == "Shared", products.values())[0]
+        result = ObjDict()
+        result.name = insType
+        result.instanceFamily = insType.split(".")[0]
+        result.category = product["productFamily"]
+
+        result.hourlyCost = findPrice(insType)
+
+        result.cpuConfig = ObjDict()
+        result.cpuConfig.vCPU = product["attributes"]["vcpu"]
+        result.cpuConfig.cpuCredits = product["attributes"]["ecu"]
+        result.cpuConfig.cpuType = product["attributes"]["physicalProcessor"]
+        result.cpuConfig.clockSpeed = product["attributes"].get("clockSpeed", 0)
+
+        result.memoryConfig = ObjDict()
+        result.memoryConfig.size = product["attributes"]["memory"]
+
+        result.networkConfig = ObjDict()
+        result.networkConfig.performance = product["attributes"]["networkPerformance"]
+        result.networkConfig.bandwidth = 0
+        result.networkConfig.enhancedNetworking = False
+
+        result.storageConfig = ObjDict()
+        storage = product["attributes"]["storage"]
+        if storage == "EBS only":
+            result.storageConfig.devices = 0
+            result.storageConfig.size = 0
+            result.storageConfig.storageType = storage
+        else:
+
+            parse = storage.split(" ")
+            result.storageConfig.devices = parse[0]
+            result.storageConfig.size = parse[2]
+            result.storageConfig.storageType = "HDD" if len(parse) < 4 else parse[3]
+        result.storageConfig.bandwidth = product["attributes"].get("dedicatedEbsThroughput", "0")
+        ec2Instances.data.append(result)
+    return ec2Instances
 
 
 def grab(region):
     """grab."""
-    response = urllib2.urlopen('http://www.ec2instances.info/instances.json')
+    response = urllib2.urlopen(AWS_PRICING_API)
     data = json.load(response)
-    ec2_instances = ObjDict()
-    ec2_instances.data = []
-    for obj in data:
-        if obj.get("pricing", {}).get(region) is None:
-            continue
-        ec2 = ObjDict()
-        ec2.name = obj.get("instance_type")
-        ec2.instanceFamily = obj.get("instance_type", "").split(".")[0]
-        ec2.category = obj.get("family", "")
-        ec2.hourlyCost = ObjDict()
-        hourlyCostLinux = obj.get("pricing", {}).get(region, {}).get("linux", {})
-        ec2.hourlyCost.LinuxOnDemand = hourlyCostLinux.get("ondemand", 0.0)
-        ec2.hourlyCost.LinuxReserved = hourlyCostLinux.get("reserved", {}).get("yrTerm1Standard.allUpfront", 0.0)
-        hourlyCostMsWin = obj.get("pricing", {}).get(region, {}).get("mswin", {})
-        ec2.hourlyCost.WindowsOnDemand = hourlyCostMsWin.get("ondemand", 0.0)
-        ec2.hourlyCost.WindowsReserved = hourlyCostMsWin.get("reserved", {}).get("yrTerm1Standard.allUpfront", 0.0)
-        ec2.cpuConfig = ObjDict()
-        ec2.cpuConfig.vCPU = obj.get("vCPU", 0)
-        ec2.cpuConfig.cpuCredits = ""
-        ec2.cpuConfig.cpuType = ""
-        ec2.cpuConfig.clockSpeed = ""
-        ec2.memoryConfig = ObjDict()
-        ec2.memoryConfig.size = obj.get("memory", 0)
-        ec2.networkConfig = ObjDict()
-        ec2.networkConfig.performance = obj.get("network_performance", 0)
-        ec2.networkConfig.bandwidth = 0
-        ec2.networkConfig.clusterNetworking = ""
-        ec2.storageConfig = ObjDict()
+    ec2RegionIndex = AWS_PRICING_API_BASE_URL + data["offers"]["AmazonEC2"]["currentRegionIndexUrl"]
+    # working with huge JSON data
+    ec2InsSpecsIndex = json.load(urllib2.urlopen(ec2RegionIndex))
 
-        if obj.get("storage") is None:
-            storageType = "EBS Only"
+    ec2InsSpecs = ijson.items(urllib2.urlopen(AWS_PRICING_API_BASE_URL + ec2InsSpecsIndex["regions"][region]["currentVersionUrl"]), "")
+
+    for item in ec2InsSpecs:
+        for key, value in item.items():
+            if key == "products":
+                for objKey, objValue in value.items():
+                    if objValue["productFamily"] == "Compute Instance":
+                        # insert each products into products collection
+                        products[objKey] = objValue
+
+            if key == "terms":
+                for objKey, objValue in value.items():
+                    if objKey == "OnDemand":
+                        for k, v in objValue.items():
+                            onDemandPricing[k] = v
+                    if objKey == "Reserved":
+                        for k, v in objValue.items():
+                            reservedPricing[k] = v
+
+
+def findPrice(instanceType):
+    """find price."""
+    hourlyCost = ObjDict()
+    linuxProductList = filter(lambda x:
+                              x["attributes"]["operatingSystem"] == "Linux" and
+                              x["attributes"]["instanceType"] == instanceType and
+                              x["attributes"]["tenancy"] == "Shared",
+                              products.values())
+    skulinux = map(lambda x: x["sku"], linuxProductList)
+    if len(skulinux) == 0:
+        hourlyCost.LinuxOnDeamond = 0
+    else:
+        hourlyCost.LinuxOnDeamond = onDemandPricing[skulinux[0]].values()[0]["priceDimensions"].values()[0]["pricePerUnit"]["USD"]
+
+    reservedLinuxDict = {k: v for k, v in reservedPricing.iteritems() if k in skulinux}
+    for _, v in reservedLinuxDict.items():
+        price = filter(lambda x:
+                       x["termAttributes"]["LeaseContractLength"] == "1yr" and
+                       x["termAttributes"]["PurchaseOption"] == "No Upfront",
+                       v.values())
+        if len(price) == 0:
+            hourlyCost.LinuxReserved = 0
         else:
-            storage = obj.get("storage", {})
-            storageType = "{} GB".format(storage.get("size", 0) * storage.get("devices", 0))
-            if storage.get("devices", 0) > 1:
-                storageType += "( {} * {} GB)".format(
-                    storage.get("devices", 0),
-                    storage.get("size", 0))
-            if storage.get("includes_swap_partition", False):
-                storageType += " + 900M swap"
-            if storage.get("nvme_ssd", False):
-                storageType += " NVMe"
-            if storage.get("ssd", False):
-                storageType += " SSD"
-            else:
-                storageType += " HDD"
-        ec2.storageConfig.storageType = storageType
-        ec2.storageConfig.bandwidth = obj.get("ebs_max_bandwidth")
-        ec2_instances.data.append(ec2)
-    return ec2_instances
+            hourlyCost.LinuxReserved = price[0]["priceDimensions"].values()[0]["pricePerUnit"]["USD"]
+
+    windowsProductList = filter(lambda x:
+                                x["attributes"]["operatingSystem"] == "Windows" and
+                                x["attributes"]["instanceType"] == instanceType and
+                                x["attributes"]["tenancy"] == "Shared" and
+                                x["attributes"]["licenseModel"] == "License Included" and
+                                x["attributes"]["preInstalledSw"] == "NA",
+                                products.values())
+
+    skuWindows = map(lambda x: x["sku"], windowsProductList)
+    if len(skuWindows) == 0:
+        hourlyCost.WindowsOnDemand = 0
+    else:
+        hourlyCost.WindowsOnDemand = onDemandPricing[skuWindows[0]].values()[0]["priceDimensions"].values()[0]["pricePerUnit"]["USD"]
+    reservedWindowsDict = {k: v for k, v in reservedPricing.iteritems() if k in skuWindows}
+    for _, v in reservedWindowsDict.items():
+        price = filter(lambda x:
+                       x["termAttributes"]["LeaseContractLength"] == "1yr" and
+                       x["termAttributes"]["PurchaseOption"] == "No Upfront",
+                       v.values())
+        if len(price) == 0:
+            hourlyCost.WindowsReserved = 0
+        else:
+            hourlyCost.WindowsReserved = price[0]["priceDimensions"].values()[0]["pricePerUnit"]["USD"]
+
+    return hourlyCost
 
 
 def updateDB(mongoUrl, region, postData):
@@ -73,7 +153,6 @@ def updateDB(mongoUrl, region, postData):
     db = client.configdb
     # search for record
     post = postData
-    post.region = region
     result = db.nodetypes.update({"region": region}, post, upsert=True)
     print result
 
@@ -85,7 +164,7 @@ if __name__ == '__main__':
                         required=False,
                         dest="region",
                         default=AWS_REGION,
-                        help="set aws-region, default is {}".format(AWS_REGION))
+                        help="set aws-region, default is all regions")
 
     parser.add_argument("-o",
                         type=str,
@@ -101,11 +180,12 @@ if __name__ == '__main__':
                         default="mongodb://localhost:27017",
                         help="mongoDB connection url, for example: --mongo-url=mongodb://user:password@mongo.host:port")
     args = parser.parse_args()
-    postData = grab(args.region)
+    grab(args.region)
+    result = compose(args.region)
     try:
-        updateDB(args.conn, args.region, postData)
+        updateDB(args.conn, args.region, result)
     except Exception as e:
         print "Error: {}".format(e)
         sys.exit()
     with open(args.output, "w") as dumpFile:
-        dumpFile.write(json.dumps(json.loads(postData.__str__()), indent=4))
+        dumpFile.write(json.dumps(json.loads(result.__str__()), indent=4))

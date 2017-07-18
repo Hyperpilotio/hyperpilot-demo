@@ -57,9 +57,8 @@ def compose(region):
             result.storageConfig.size = 0
             result.storageConfig.storageType = storage
         else:
-
             parse = storage.split(" ")
-            result.storageConfig.devices = parse[0]
+            result.storageConfig.devices = int(parse[0])
             result.storageConfig.size = parse[2]
             result.storageConfig.storageType = "HDD" if len(parse) < 4 else parse[3]
         result.storageConfig.bandwidth = product["attributes"].get("dedicatedEbsThroughput", "0")

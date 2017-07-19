@@ -4,6 +4,12 @@
 # ec2_ins_type_clawer.py: 2
 ObjDict == 0.4.3
 
+# ec2_ins_type_clawer.py: 4
+bs4 == 0.0.1
+
+# ec2_ins_type_clawer.py: 9
+ijson == 2.3
+
 # ec2_ins_type_clawer.py: 3
 pymongo == 3.4.0
 

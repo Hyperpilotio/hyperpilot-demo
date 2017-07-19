@@ -12,6 +12,7 @@ AWS_REGION = "us-east-1"
 OUTPUT_FILE_NAME = "nodetypes.json"
 AWS_PRICING_API_BASE_URL = "https://pricing.us-east-1.amazonaws.com"
 AWS_PRICING_API = AWS_PRICING_API_BASE_URL + "/offers/v1.0/aws/index.json"
+AWS_PRICING_API_REGION_INDEX = "/offers/v1.0/aws/AmazonEC2/current/region_index.json"
 
 products = {}
 onDemandPricing = {}
@@ -32,13 +33,13 @@ def compose(region):
         result = ObjDict()
         result.name = insType
         result.instanceFamily = insType.split(".")[0]
-        result.category = product["productFamily"]
+        result.category = product["attributes"]["instanceFamily"]
 
         result.hourlyCost = findPrice(insType)
 
         result.cpuConfig = ObjDict()
         result.cpuConfig.vCPU = product["attributes"]["vcpu"]
-        result.cpuConfig.cpuCredits = product["attributes"]["ecu"]
+        result.cpuConfig.cpuCredits = product["attributes"].get("ecu", 0)
         result.cpuConfig.cpuType = product["attributes"]["physicalProcessor"]
         result.cpuConfig.clockSpeed = product["attributes"].get("clockSpeed", 0)
 
@@ -73,7 +74,6 @@ def grab(region):
     ec2RegionIndex = AWS_PRICING_API_BASE_URL + data["offers"]["AmazonEC2"]["currentRegionIndexUrl"]
     # working with huge JSON data
     ec2InsSpecsIndex = json.load(urllib2.urlopen(ec2RegionIndex))
-
     ec2InsSpecs = ijson.items(urllib2.urlopen(AWS_PRICING_API_BASE_URL + ec2InsSpecsIndex["regions"][region]["currentVersionUrl"]), "")
 
     for item in ec2InsSpecs:
@@ -162,7 +162,7 @@ if __name__ == '__main__':
                         type=str,
                         required=False,
                         dest="region",
-                        default=AWS_REGION,
+                        default="ALL",
                         help="set aws-region, default is all regions")
 
     parser.add_argument("-o",
@@ -179,12 +179,20 @@ if __name__ == '__main__':
                         default="mongodb://localhost:27017",
                         help="mongoDB connection url, for example: --mongo-url=mongodb://user:password@mongo.host:port")
     args = parser.parse_args()
-    grab(args.region)
-    result = compose(args.region)
-    try:
-        updateDB(args.conn, args.region, result)
-    except Exception as e:
-        print "Error: {}".format(e)
-        sys.exit()
-    with open(args.output, "w") as dumpFile:
-        dumpFile.write(json.dumps(json.loads(result.__str__()), indent=4))
+    regions = []
+    if args.region == "ALL":
+        regions = json.load(urllib2.urlopen(AWS_PRICING_API_BASE_URL + AWS_PRICING_API_REGION_INDEX))["regions"].keys()
+    else:
+        regions.append(args.region)
+
+    print regions
+    for region in regions:
+        grab(region)
+        result = compose(region)
+        try:
+            updateDB(args.conn, region, result)
+        except Exception as e:
+            print "Error: {}".format(e)
+            sys.exit()
+        with open("{}-{}".format(region, args.output), "w") as dumpFile:
+            dumpFile.write(json.dumps(json.loads(result.__str__()), indent=4))

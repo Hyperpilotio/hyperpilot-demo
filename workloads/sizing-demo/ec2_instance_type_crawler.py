@@ -1,4 +1,4 @@
-"""EC2 Instance Type Clawer."""
+"""EC2 Instance Type Crawler."""
 from objdict import ObjDict
 from pymongo import MongoClient
 from bs4 import BeautifulSoup as soup

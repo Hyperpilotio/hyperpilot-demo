@@ -33,7 +33,7 @@ fi
 
 
 echo "deleting topic: $TOPIC";
-kafka-topics.sh --delete --zookeeper zookeeper.default:2181 --topic $TOPIC --if-exist
+kafka-topics.sh --delete --zookeeper zookeeper:2181 --topic $TOPIC --if-exist
 
 while [ $(kafka-topics.sh --list --zookeeper $ZK | grep $TOPIC | wc -l) -ne "0" ]
 do

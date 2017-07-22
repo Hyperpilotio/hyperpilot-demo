@@ -1,6 +1,10 @@
 {
     "name": "in-cluster",
     "region": "us-east-1",
+    "vpcPeering": {
+        "targetOwnerId": "416594702355",
+        "targetVpcId": "vpc-973026f1"
+    },
     "nodeMapping": [
         {
             "task": "deployer",
@@ -67,7 +71,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/deployer",
+                                        "image": "hyperpilot\/deployer:in-cluster",
                                         "name": "deployer",
                                         "ports": [
                                             {
@@ -136,7 +140,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/workload-profiler",
+                                        "image": "hyperpilot\/workload-profiler:sizing",
                                         "name": "deployer",
                                         "ports": [
                                             {

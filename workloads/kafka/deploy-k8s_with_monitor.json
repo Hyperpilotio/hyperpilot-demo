@@ -19,7 +19,7 @@
             "id": 2
         },
         {
-            "task": "kafka-bench",
+            "task": "benchmark-controller",
             "id": 2
         },
         {
@@ -249,21 +249,21 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "kafka-bench"
+                            "app": "benchmark-controller"
                         },
-                        "name": "kafka-bench"
+                        "name": "benchmark-controller"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "kafka-bench"
+                                "app": "benchmark-controller"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "kafka-bench"
+                                    "app": "benchmark-controller"
                                 }
                             },
                             "spec": {
@@ -275,7 +275,7 @@
                                 "containers": [
                                     {
                                         "image": "hyperpilot/benchmark-controller:kafka",
-                                        "name": "kafka-bench",
+                                        "name": "benchmark-controller",
                                         "imagePullPolicy": "Always",
                                         "ports": [
                                             {
@@ -299,7 +299,7 @@
                 "portTypes": [
                     1
                 ],
-                "family": "kafka-bench"
+                "family": "benchmark-controller"
             },
             {
                 "deployment": {

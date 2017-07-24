@@ -1,10 +1,15 @@
 #!/bin/sh
+
 while [ "$1" != "" ]; do
 	case $1 in
-	  "--zookeeper")
-		shift
-		ZK=$1
-		;;
+	  "--zookeeper-host")
+			shift
+    	ZK_HOST=$1
+			;;
+	  "--zookeeper-port")
+	    shift
+	    ZK_PORT=$1
+	    ;;
 	  "--partitions")
 	    shift
 	    PARTITIONS=$1
@@ -25,15 +30,23 @@ while [ "$1" != "" ]; do
 	shift
 done
 
+if [	"X$ZK_PORT" != "X"	]; then
+			ZK="$ZK_HOST:$ZK_PORT"
+else 
+			ZK="$ZK_HOST"
+fi
 
 if [ ! $ZK ] || [ ! $PARTITIONS ] || [ ! $REPLICATION_FACTOR ] || [ ! $TOPIC ]; then
 	echo "ERROR: missing parameter"
+	echo "ZK = $ZK"
+	echo "PARTITIONS = $PARTITIONS"
+	echo "REPLICATION_FACTOR = $REPLICATION_FACTOR"
+	echo "TOPIC = $TOPIC"
 	exit 1
 fi
 
-
 echo "deleting topic: $TOPIC";
-kafka-topics.sh --delete --zookeeper zookeeper:2181 --topic $TOPIC --if-exist
+kafka-topics.sh --delete --zookeeper $ZK --topic $TOPIC --if-exist
 
 while [ $(kafka-topics.sh --list --zookeeper $ZK | grep $TOPIC | wc -l) -ne "0" ]
 do

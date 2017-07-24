@@ -15,7 +15,7 @@
             "id": 2
         },
         {
-            "task": "kafka-bench",
+            "task": "benchmark-controller",
             "id": 2
         },
         {
@@ -109,7 +109,8 @@
                     }
                 },
                 "portTypes": [
-                    0, 0
+                    1,
+                    1
                 ],
                 "family": "kafka-serve"
             },
@@ -163,7 +164,7 @@
                     }
                 },
                 "portTypes": [
-                    0
+                    1
                 ],
                 "family": "zookeeper"
             },
@@ -241,21 +242,21 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "kafka-bench"
+                            "app": "benchmark-controller"
                         },
-                        "name": "kafka-bench"
+                        "name": "benchmark-controller"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "kafka-bench"
+                                "app": "benchmark-controller"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "kafka-bench"
+                                    "app": "benchmark-controller"
                                 }
                             },
                             "spec": {
@@ -266,8 +267,8 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot/benchmark-controller:kafka",
-                                        "name": "kafka-bench",
+                                        "image": "hyperpilot\/benchmark-controller:dev",
+                                        "name": "benchmark-controller",
                                         "imagePullPolicy": "Always",
                                         "ports": [
                                             {
@@ -277,8 +278,35 @@
                                             }
                                         ],
                                         "resources": {
-
-                                        }
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "350Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "/var/run/docker.sock",
+                                                "name": "docker-sock"
+                                            },
+                                            {
+                                                "mountPath": "/usr/bin/docker",
+                                                "name": "usr-bin-docker"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "/var/run/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "/usr/bin/docker"
+                                        },
+                                        "name": "usr-bin-docker"
                                     }
                                 ]
                             }
@@ -288,7 +316,7 @@
                 "portTypes": [
                     1
                 ],
-                "family": "kafka-bench"
+                "family": "benchmark-controller"
             }
         ]
     }

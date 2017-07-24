@@ -1,6 +1,6 @@
 organization=hyperpilot
-image-name=kafka
-tag=latest
+image-name=load-tester
+tag=kafka
 
 build: Dockerfile
 	docker build -t $(organization)/$(image-name):$(tag) .

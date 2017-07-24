@@ -1,11 +1,15 @@
 {
     "name": "kafka",
-    "serviceNames": ["kafka-serve"],
+    "serviceNames": [
+        "kafka-serve", "zookeeper"
+    ],
     "loadTester": {
-        "name": "kafka-bench",
+        "name": "benchmark-controller",
         "benchmarkController": {
             "command": {
-                "path": "kafka-run-class.sh",
+                "image": "hyperpilot/load-tester:kafka",
+                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/kafka/parser.js",
+                "path": "kafka-run-class-wrapper.sh",
                 "args": [
                     "org.apache.kafka.tools.ProducerPerformance",
                     "--topic",
@@ -17,16 +21,63 @@
                     "--record-size",
                     "16384"
                 ],
-                "intensityArgs": [{
-                    "name": "Throughput throttle",
-                    "arg": "--throughput",
-                    "startingValue": 3096,
-                    "step": 512
-                }]
+                "serviceConfigs": [
+                    {
+                        "name": "zookeeper",
+                        "hostConfig": {
+                            "arg": "--zookeeper-host",
+                            "description": "Host of zookeeper"
+                        },
+                        "portConfig": {
+                            "arg": "--zookeeper-port",
+                            "description": "Port of zookeeper"
+                        }
+                    },
+                    {
+                        "name": "kafka-serve",
+                        "hostConfig": {
+                            "arg": "--kafka-host",
+                            "description": "Host of kafka"
+                        },
+                        "portConfig": {
+                            "arg": "--kafka-port",
+                            "description": "Port of kafka"
+                        }
+                    }
+                ],
+                "intensityArgs": [
+                    {
+                        "name": "Throughput throttle",
+                        "arg": "--throughput",
+                        "startingValue": 3096,
+                        "step": 512
+                    }
+                ]
             },
             "initialize": {
+                "image": "hyperpilot\/load-tester:kafka",
                 "path": "kafka-delete-and-create-topic.sh",
-                "args": ["--partitions", "2", "--replication-factor", "1", "--zookeeper", "zookeeper:2181", "--topic", "tests"]
+                "args": [
+                    "--partitions",
+                    "2",
+                    "--replication-factor",
+                    "1",
+                    "--topic",
+                    "tests"
+                ],
+                "serviceConfigs": [
+                    {
+                        "name": "zookeeper",
+                        "hostConfig": {
+                            "arg": "--zookeeper-host",
+                            "description": "Host of zookeeper"
+                        },
+                        "portConfig": {
+                            "arg": "--zookeeper-port",
+                            "description": "Port of zookeeper"
+                        }
+                    }
+                ]
             }
         }
     },

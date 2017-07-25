@@ -2,18 +2,28 @@
     "name": "mongo",
     "serviceNames": ["mongo-serve"],
     "loadTester": {
-        "name": "mongo-bench",
+        "name": "benchmark-controller",
         "benchmarkController": {
             "command": {
-                "path": "python",
+                "image": "hyperpilot/load-tester:mongo",
+                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/mongo/parser.js",
+                "path": "/mongo-perf/benchrun.py",
                 "args": [
-                    "/app/mongo-perf/benchrun.py",
                     "-f",
-                    "/app/mongo-perf/testcases/complex_update.js",
-                    "--host",
-                    "mongo-serve",
-                    "--port",
-                    "27017"
+                    "/mongo-perf/testcases/complex_update.js"
+                ],
+                "serviceConfigs": [
+                    {
+                        "name": "mongo-serve",
+                        "hostConfig": {
+                            "arg": "--host",
+                            "description": ""
+                        },
+                        "portConfig": {
+                            "arg": "--port",
+                            "description": ""
+                        }
+                    }
                 ],
                 "intensityArgs": [
                     {

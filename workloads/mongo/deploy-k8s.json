@@ -1,5 +1,4 @@
 {
-    "userId": "xiaoyun",
     "name": "mongo",
     "region": "us-east-1",
     "nodeMapping": [
@@ -16,7 +15,7 @@
             "id": 1
         },
         {
-            "task": "mongo-bench",
+            "task": "benchmark-controller",
             "id": 2
         }
     ],
@@ -89,6 +88,7 @@
                                             }
                                         ],
                                         "image": "mongo:3.0.15",
+                                        "imagePullPolicy": "Always",
                                         "name": "mongo-serve",
                                         "ports": [
                                             {
@@ -181,21 +181,21 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "mongo-bench"
+                            "app": "benchmark-controller"
                         },
-                        "name": "mongo-bench"
+                        "name": "benchmark-controller"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "mongo-bench"
+                                "app": "benchmark-controller"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "mongo-bench"
+                                    "app": "benchmark-controller"
                                 }
                             },
                             "spec": {
@@ -206,8 +206,8 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot/mongo-bench",
-                                        "name": "mongo-bench",
+                                        "image": "hyperpilot\/benchmark-controller:dev",
+                                        "name": "benchmark-controller",
                                         "imagePullPolicy": "Always",
                                         "ports": [
                                             {
@@ -219,9 +219,33 @@
                                         "resources": {
                                             "requests": {
                                                 "cpu": "512.0m",
-                                                "memory": "512Mi"
+                                                "memory": "350Mi"
                                             }
-                                        }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "/var/run/docker.sock",
+                                                "name": "docker-sock"
+                                            },
+                                            {
+                                                "mountPath": "/usr/bin/docker",
+                                                "name": "usr-bin-docker"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "/var/run/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "/usr/bin/docker"
+                                        },
+                                        "name": "usr-bin-docker"
                                     }
                                 ]
                             }
@@ -231,7 +255,7 @@
                 "portTypes": [
                     1
                 ],
-                "family": "mongo-bench"
+                "family": "benchmark-controller"
             }
         ]
     }

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env /usr/bin/python
 from argparse import ArgumentParser, RawTextHelpFormatter
 from subprocess import Popen, PIPE, call
 import datetime
@@ -9,7 +9,7 @@ import os
 
 if __file__ not in os.listdir('.'):
     try:
-        os.chdir('/app/mongo-perf') # assume python code is executed in correct folder
+        os.chdir('/mongo-perf') # assume python code is executed in correct folder
     except:
         assert False, "make sure this code is executed correct folder"
 

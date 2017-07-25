@@ -3,10 +3,10 @@
     "region": "us-east-1",
     "nodeMapping": [
         {
-            "task": "mongo-bench",
+            "task": "benchmark-controller",
             "id": 1
         },
-        {   
+        {
             "task": "influxsrv",
             "id": 1
         },
@@ -22,7 +22,6 @@
             "task": "snap-mongo",
             "id": 2
         }
-
     ],
     "clusterDefinition": {
         "nodes": [
@@ -191,21 +190,21 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "mongo-bench"
+                            "app": "benchmark-controller"
                         },
-                        "name": "mongo-bench"
+                        "name": "benchmark-controller"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "mongo-bench"
+                                "app": "benchmark-controller"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "mongo-bench"
+                                    "app": "benchmark-controller"
                                 }
                             },
                             "spec": {
@@ -216,8 +215,8 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot/benchmark-controller:mongo",
-                                        "name": "mongo-bench",
+                                        "image": "hyperpilot\/benchmark-controller:dev",
+                                        "name": "benchmark-controller",
                                         "imagePullPolicy": "Always",
                                         "ports": [
                                             {
@@ -229,9 +228,33 @@
                                         "resources": {
                                             "requests": {
                                                 "cpu": "512.0m",
-                                                "memory": "1024Mi"
+                                                "memory": "350Mi"
                                             }
-                                        }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "/var/run/docker.sock",
+                                                "name": "docker-sock"
+                                            },
+                                            {
+                                                "mountPath": "/usr/bin/docker",
+                                                "name": "usr-bin-docker"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "/var/run/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "/usr/bin/docker"
+                                        },
+                                        "name": "usr-bin-docker"
                                     }
                                 ]
                             }
@@ -241,7 +264,7 @@
                 "portTypes": [
                     1
                 ],
-                "family": "mongo-bench"
+                "family": "benchmark-controller"
             },
             {
                 "deployment": {
@@ -271,7 +294,7 @@
                             },
                             "spec": {
                                 "containers": [
-                                   {
+                                    {
                                         "image": "hyperpilot\/snap:alpine-init_dev",
                                         "name": "snap-mongo",
                                         "command": [
@@ -280,8 +303,7 @@
                                         "args": [
                                             "https:\/\/hyperpilot-snap-alpha.s3.amazonaws.com\/snap-mongo-init.json"
                                         ],
-                                        "resources": {
-                                        },
+                                        "resources": {},
                                         "imagePullPolicy": "Always",
                                         "securityContext": {
                                             "privileged": true
@@ -398,46 +420,46 @@
                                 ],
                                 "containers": [
                                     {
-                                        "env": [
-                                            {
-                                                "name": "ADMIN_USER",
-                                                "value": "root"
-                                            },
-                                            {
-                                                "name": "PRE_CREATE_DB",
-                                                "value": "snap;spark"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_INIT_PWD",
-                                                "value": "default"
-                                            }
-                                        ],
-                                        "image": "hyperpilot\/influx:1.2.2",
-                                        "name": "influxsrv",
+                                        "image": "hyperpilot\/benchmark-controller:dev",
+                                        "name": "benchmark-controller",
+                                        "imagePullPolicy": "Always",
                                         "ports": [
                                             {
-                                                "containerPort": 8083,
-                                                "hostPort": 8083,
+                                                "containerPort": 6001,
+                                                "hostPort": 6001,
                                                 "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 8086,
-                                                "hostPort": 8086,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/var\/lib\/influxdb",
-                                                "name": "influx-data"
                                             }
                                         ],
                                         "resources": {
                                             "requests": {
                                                 "cpu": "512.0m",
-                                                "memory": "1024Mi"
+                                                "memory": "350Mi"
                                             }
-                                        }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "/var/run/docker.sock",
+                                                "name": "docker-sock"
+                                            },
+                                            {
+                                                "mountPath": "/usr/bin/docker",
+                                                "name": "usr-bin-docker"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "/var/run/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "/usr/bin/docker"
+                                        },
+                                        "name": "usr-bin-docker"
                                     }
                                 ]
                             }

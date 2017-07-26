@@ -44,6 +44,12 @@ if [ -n "${PRE_CREATE_DB}" ]; then
               influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -username=${ADMIN_USER} -password="${PASS}" -execute="alter retention policy autogen ON ${x} DURATION ${DB_RETENTION_HOURS} REPLICATION 1 shard duration ${DB_RETENTION_HOURS} DEFAULT"
           done
           echo ""
+          if [[ "${TELEGRAF_HOST_SNAP}" ]]; then
+              influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -username=${ADMIN_USER} -password="${PASS}" -execute="CREATE SUBSCRIPTION sub_snap ON snap.autogen DESTINATIONS ALL '${TELEGRAF_HOST_SNAP}'"
+          fi
+          if [[ "${TELEGRAF_HOST_SPARK}" ]]; then
+              influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -username=${ADMIN_USER} -password="${PASS}" -execute="CREATE SUBSCRIPTION sub_spark ON spark.autogen DESTINATIONS ALL '${TELEGRAF_HOST_SPARK}'"
+          fi
         else
           for x in $arr
           do
@@ -51,6 +57,12 @@ if [ -n "${PRE_CREATE_DB}" ]; then
               influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -execute="create database \"${x}\""
               influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -execute="alter retention policy autogen ON ${x} DURATION ${DB_RETENTION_HOURS} REPLICATION 1  shard duration ${DB_RETENTION_HOURS} DEFAULT"
           done
+          if [[ "${TELEGRAF_HOST_SNAP}" ]]; then
+              influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -execute="CREATE SUBSCRIPTION sub_snap ON snap.autogen DESTINATIONS ALL '${TELEGRAF_HOST_SNAP}'"
+          fi
+          if [[ "${TELEGRAF_HOST_SPARK}" ]]; then
+              influx -host=${INFLUX_HOST} -port=${INFLUX_API_PORT} -execute="CREATE SUBSCRIPTION sub_spark ON spark.autogen DESTINATIONS ALL '${TELEGRAF_HOST_SPARK}'"
+          fi
         fi
 
         touch "${DATA_DIR}/.pre_db_created"

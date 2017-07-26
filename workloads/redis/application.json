@@ -2,30 +2,51 @@
     "name": "redis",
     "serviceNames": ["redis-serve"],
     "loadTester": {
-        "name": "redis-bench",
+        "name": "benchmark-controller",
         "benchmarkController": {
             "initialize": {
-                "path": "\/usr\/bin\/redis-cli",
+                "image": "redis:3-alpine",
+                "path": "redis-cli",
                 "args": [
-                    "-h",
-                    "redis-serve",
-                    "-p",
-                    "6379",
                     "flushall"
+                ],
+                "serviceConfigs": [
+                    {
+                        "name": "redis-serve",
+                        "hostConfig": {
+                            "arg": "-h",
+                            "description": "host of the service"
+                        },
+                        "portConfig": {
+                            "arg": "-p",
+                            "description": "port of the service"
+                        }
+                    }
                 ]
             },
             "command": {
-                "path": "\/usr\/bin\/redis-benchmark",
+                "image": "redis:3-alpine",
+                "path": "redis-benchmark",
                 "args": [
-                    "-h",
-                    "redis-serve",
-                    "-p",
-                    "6379",
                     "--csv",
                     "-n",
-                    "1000000",
+                    "10",
                     "-t",
                     "GET"
+                ],
+                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/redis/parser.js",
+                "serviceConfigs": [
+                    {
+                        "name": "redis-serve",
+                        "hostConfig": {
+                            "arg": "-h",
+                            "description": "host of the service"
+                        },
+                        "portConfig": {
+                            "arg": "-p",
+                            "description": "port of the service"
+                        }
+                    }
                 ],
                 "intensityArgs": [
                     {
@@ -100,15 +121,12 @@
                         }
                     }
                 },
-                "portTypes": [
-                    1
-                ],
                 "family": "redis-serve"
             }
         },
         {
             "nodeMapping": {
-                "task": "redis-bench",
+                "task": "benchmark-controller",
                 "id": 1
             },
             "taskDefinition": {
@@ -117,21 +135,21 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "redis-bench"
+                            "app": "benchmark-controller"
                         },
-                        "name": "redis-bench"
+                        "name": "benchmark-controller"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "redis-bench"
+                                "app": "benchmark-controller"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "redis-bench"
+                                    "app": "benchmark-controller"
                                 }
                             },
                             "spec": {
@@ -142,8 +160,8 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/benchmark-controller:redis",
-                                        "name": "redis-bench",
+                                        "image": "hyperpilot\/benchmark-controller:dev",
+                                        "name": "benchmark-controller",
                                         "imagePullPolicy": "Always",
                                         "ports": [
                                             {
@@ -162,6 +180,10 @@
                                             {
                                                 "mountPath": "\/var\/run\/docker.sock",
                                                 "name": "docker-sock"
+                                            },
+                                            {
+                                                "mountPath": "\/usr\/bin\/docker",
+                                                "name": "usr-bin-docker"
                                             }
                                         ]
                                     }
@@ -172,16 +194,19 @@
                                             "path": "\/var\/run\/docker.sock"
                                         },
                                         "name": "docker-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/usr\/bin\/docker"
+                                        },
+                                        "name": "usr-bin-docker"
                                     }
                                 ]
                             }
                         }
                     }
                 },
-                "portTypes": [
-                    1
-                ],
-                "family": "redis-bench"
+                "family": "benchmark-controller"
             }
         }
     ]

@@ -121,6 +121,8 @@ def compose(region):
         result = ObjDict()
         result.name = insType
         result.instanceFamily = insType.split(".")[0]
+        if "instanceFamily" not in product["attributes"]:
+          continue
         result.category = product["attributes"]["instanceFamily"]
 
         result.hourlyCost = findPrice(insType)

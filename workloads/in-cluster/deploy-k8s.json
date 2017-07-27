@@ -1,10 +1,6 @@
-{
+ {
     "name": "in-cluster",
     "region": "us-east-1",
-    "vpcPeering": {
-        "targetOwnerId": "416594702355",
-        "targetVpcId": "vpc-973026f1"
-    },
     "nodeMapping": [
         {
             "task": "deployer",
@@ -12,6 +8,14 @@
         },
         {
             "task": "workload-profiler",
+            "id": 1
+        },
+        {
+            "task": "analyzer",
+            "id": 1
+        },
+        {
+            "task": "mongo-serve",
             "id": 1
         }
     ],
@@ -71,7 +75,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/deployer:in-cluster",
+                                        "image": "hyperpilot\/deployer",
                                         "name": "deployer",
                                         "ports": [
                                             {
@@ -89,11 +93,11 @@
                                         "env": [
                                             {
                                                 "name": "AWS_ACCESS_KEY_ID",
-                                                "value": ""
+                                                "value": "AKIAIB2YMXXKLRAKQE6Q"
                                             },
                                             {
                                                 "name": "AWS_SECRET_ACCESS_KEY",
-                                                "value": ""
+                                                "value": "0Hlr6bdj2a3XF7YpEaPUTcGUckmY6Tq1mvj+\/TCL"
                                             }
                                         ]
                                     }
@@ -140,7 +144,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/workload-profiler:sizing",
+                                        "image": "hyperpilot\/workload-profiler",
                                         "name": "deployer",
                                         "ports": [
                                             {
@@ -158,11 +162,11 @@
                                         "env": [
                                             {
                                                 "name": "AWS_ACCESS_KEY_ID",
-                                                "value": ""
+                                                "value": "AKIAIB2YMXXKLRAKQE6Q"
                                             },
                                             {
                                                 "name": "AWS_SECRET_ACCESS_KEY",
-                                                "value": ""
+                                                "value": "0Hlr6bdj2a3XF7YpEaPUTcGUckmY6Tq1mvj+\/TCL"
                                             }
                                         ]
                                     }
@@ -175,6 +179,126 @@
                     1
                 ],
                 "family": "workload-profiler"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "mongo-serve"
+                        },
+                        "name": "mongo-serve"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "mongo-serve"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "mongo-serve"
+                                }
+                            },
+                            "spec": {
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/mongo_data"
+                                        },
+                                        "name": "mongo-data"
+                                    }
+                                ],
+                                "hostname": "mongo-serve",
+                                "containers": [
+                                    {
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/data\/db",
+                                                "name": "mongo-data"
+                                            }
+                                        ],
+                                        "image": "mongo:3.0.15",
+                                        "name": "mongo-serve",
+                                        "ports": [
+                                            {
+                                                "containerPort": 27017,
+                                                "hostPort": 27017,
+                                                "protocol": "TCP"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    0
+                ],
+                "family": "mongo-serve"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "analyzer"
+                        },
+                        "name": "analyzer"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "analyzer"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "analyzer"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "hostname": "deployer",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/analyzer:tim",
+                                        "name": "analyzer",
+                                        "ports": [
+                                            {
+                                                "containerPort": 5050,
+                                                "hostPort": 5050,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    0
+                ],
+                "family": "analyzer"
             }
         ]
     }

@@ -35,6 +35,8 @@ reservedPricing = {}
 cpuCredits = []
 bandwidth = []
 clusterNetworking = ["r4", "x1", "m4", "c4", "c3", "i2", "cr1", "hs1", "p2", "g3", "d2"]
+
+
 def getEBSConfig(instanceType):
     if len(bandwidth) <= 0:
         mp = soup(urllib2.urlopen("http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-ec2-config.html"), "html.parser")
@@ -125,11 +127,13 @@ def compose(region):
 
         result.cpuConfig = ObjDict()
         result.cpuConfig.vCPU = int(product["attributes"].get("vcpu", 0))
-        result.cpuConfig.ecu = product["attributes"].get("ecu", "0")
+        ecu = product["attributes"].get("ecu", "0")
+        ecu = "0" if ecu == "Variable" else ecu
+        result.cpuConfig.ecu = float(ecu)
         result.cpuConfig.cpuCredits = 0
         credits = getCpuCredits(insType)
         if credits is None:
-            result.cpuConfig.cpuCredits = 0
+            result.cpuConfig.cpuCredits = {}
         else:
             credit = ObjDict()
             credit.max = int(credits[KEY_CPU_CREDITS_MAX_EARN])
@@ -154,6 +158,7 @@ def compose(region):
         result.networkConfig = ObjDict()
         result.networkConfig.performance = product["attributes"].get("networkPerformance", "")
         result.networkConfig.clusterNetworking = True if insType.split(".")[0] in clusterNetworking else False
+        result.networkConfig.enhancedNetworking = bool(product["attributes"].get("enhancedNetworkingSupported", "False"))
 
         result.storageConfig = ObjDict()
         storage = product["attributes"]["storage"]
@@ -171,7 +176,7 @@ def compose(region):
         ebsItem = getEBSConfig(insType)
         if ebsItem is not None:
             result.storageConfig.EBSOptimized = ebsItem[KEY_NETWORK_BANDWIDTH_DEFAULT_EBS_OPTIMIZE]
-            result.storageConfig.bandwidth = makeValueWithUnit(int(ebsItem[KEY_NETWORK_BANDWIDTH_MAX].replace(",","")), "Mbps")
+            result.storageConfig.maxBandwidth = makeValueWithUnit(int(ebsItem[KEY_NETWORK_BANDWIDTH_MAX].replace(",","")), "Mbps")
             result.storageConfig.expectedThroughput = makeValueWithUnit(float(ebsItem[KEY_NETWORK_BANDWIDTH_EXPECTED_THROUGHPUT].replace(",", "")), "MB/s")
             result.storageConfig.maxIOPS = makeValueWithUnit(int(ebsItem[KEY_NETWORK_BANDWIDTH_MAX_IOPS].replace(",", "")), "16KB I/O size")
 

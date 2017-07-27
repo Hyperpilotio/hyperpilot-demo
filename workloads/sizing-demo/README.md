@@ -27,7 +27,7 @@ python ec2_ins_type_crawler.py --help
             "name": "d2.2xlarge",
             "instanceFamily": "Storage optimized",
             "hourlyCost": {
-                "LinuxOnDeamond": {
+                "LinuxOnDemand": {
                     "value": 1.38,
                     "unit": "USD"
                 },

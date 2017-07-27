@@ -1,11 +1,11 @@
-# EC2 Instance Type Clawer
+# EC2 Instance Type Crawler
 
 get EC2 instance type details
 
 ## USAGE
 
 ```
-python ec2_ins_type_clawer.py --help
+python ec2_ins_type_crawler.py --help
 ```
 
 ## ARGUMENTS
@@ -24,61 +24,67 @@ python ec2_ins_type_clawer.py --help
     },
     "data": [
         {
-            "name": "m1.small",
-            "instanceFamily": "m1",
-            "category": "General purpose",
+            "name": "d2.2xlarge",
+            "instanceFamily": "Storage optimized",
             "hourlyCost": {
-                "LinuxOnDemand": "0.044",
-                "LinuxReserved": "0.024",
-                "WindowsOnDemand": "0.075",
-                "WindowsReserved": "0.048"
+                "LinuxOnDeamond": {
+                    "value": 1.38,
+                    "unit": "USD"
+                },
+                "LinuxReserved": {
+                    "value": 0.804,
+                    "unit": "USD"
+                },
+                "WindowsOnDemand": {
+                    "value": 1.601,
+                    "unit": "USD"
+                },
+                "WindowsReserved": {
+                    "value": 0.885,
+                    "unit": "USD"
+                }
             },
             "cpuConfig": {
-                "vCPU": 1,
-                "cpuCredits": "",
-                "cpuType": "",
-                "clockSpeed": ""
+                "vCPU": 8,
+                "ecu": 104,
+                "cpuCredits": {},
+                "cpuType": "Intel Xeon E5-2676v3 (Haswell)",
+                "clockSpeed": {
+                    "value": 2.4,
+                    "unit": "GHz"
+                }
             },
             "memoryConfig": {
-                "size": 1.7
+                "size": {
+                    "value": 61,
+                    "unit": "GiB"
+                }
             },
             "networkConfig": {
-                "performance": "Low",
-                "bandwidth": 0,
-                "clusterNetworking": ""
+                "performance": "High",
+                "clusterNetworking": true,
+                "enhancedNetworking": true
             },
             "storageConfig": {
-                "storageType": "160 GB + 900M swap HDD",
-                "bandwidth": 0
-            }
-        },
-        {
-            "name": "m1.medium",
-            "instanceFamily": "m1",
-            "category": "General purpose",
-            "hourlyCost": {
-                "LinuxOnDemand": "0.087",
-                "LinuxReserved": "0.047",
-                "WindowsOnDemand": "0.149",
-                "WindowsReserved": "0.096"
-            },
-            "cpuConfig": {
-                "vCPU": 1,
-                "cpuCredits": "",
-                "cpuType": "",
-                "clockSpeed": ""
-            },
-            "memoryConfig": {
-                "size": 3.75
-            },
-            "networkConfig": {
-                "performance": "Moderate",
-                "bandwidth": 0,
-                "clusterNetworking": ""
-            },
-            "storageConfig": {
-                "storageType": "410 GB HDD",
-                "bandwidth": 0
+                "devices": 6,
+                "size": {
+                    "value": 2000,
+                    "unit": "GB"
+                },
+                "storageType": "HDD",
+                "EBSOptimized": "Yes",
+                "maxBandwidth": {
+                    "value": 1000,
+                    "unit": "Mbps"
+                },
+                "expectedThroughput": {
+                    "value": 125,
+                    "unit": "MB/s"
+                },
+                "maxIOPS": {
+                    "value": 8000,
+                    "unit": "16KB I/O size"
+                }
             }
         }
     ],

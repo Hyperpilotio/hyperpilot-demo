@@ -1,6 +1,7 @@
 {
     "name": "alpha-demo",
     "region": "us-east-1",
+    "userId": "william",
     "files": [
         {
             "fileId": "tech_demo_load_test",
@@ -990,7 +991,7 @@
                                                 "value": "http:\/\/telegraf-spark:8187"
                                             }
                                         ],
-                                        "image": "hyperpilot\/influxdb:1.2.2.a",
+                                        "image": "hyperpilot\/influx:1.2.2.a",
                                         "name": "influxsrv",
                                         "ports": [
                                             {

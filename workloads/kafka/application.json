@@ -86,5 +86,9 @@
         "metric": "99thLatency",
         "value": 500,
         "type": "latency"
+    },
+    "budget": {
+        "value": 150,
+        "unit": "dollar"
     }
 }

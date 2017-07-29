@@ -21,7 +21,10 @@
     "type": "long-running",
     "slo": {
         "metric": "95",
-        "value": 20,
+        "value": 19,
         "type": "latency"
-    }
+    },
+    "budget": {
+	"value": 150,
+	"unit": "dollar"
 }

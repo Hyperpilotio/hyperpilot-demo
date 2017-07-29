@@ -39,7 +39,11 @@
     "type": "long-running",
     "slo": {
         "metric": "Update.SetWithMultiIndex.Random",
-        "value": 500,
+        "value": 11112,
         "type": "throughput"
+    },
+    "budget": {
+        "value": 150,
+        "unit": "dollar"
     }
 }

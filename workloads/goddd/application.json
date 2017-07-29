@@ -23,5 +23,9 @@
         "metric": "95",
         "value": 400,
         "type": "latency"
+    },
+    "budget": {
+        "value": 150,
+        "unit": "dollar"
     }
 }

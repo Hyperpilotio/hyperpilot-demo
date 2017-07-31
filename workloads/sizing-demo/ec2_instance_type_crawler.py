@@ -122,7 +122,7 @@ def compose(region):
                          x["attributes"]["tenancy"] == "Shared", products.values())[0]
         result = ObjDict()
         result.name = insType
-        result.instanceFamily = product["attributes"].get("instanceFamily", "")
+        result.instanceFamily = product["attributes"].get("instanceFamily", insType.split(".")[0])
         result.hourlyCost = findPrice(insType)
 
         result.cpuConfig = ObjDict()

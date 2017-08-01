@@ -1,0 +1,47 @@
+{
+    "apiVersion": "batch\/v1",
+    "kind": "Job",
+    "metadata": {
+        "labels": {
+            "app": "cloudsuite-client",
+            "version": "latest"
+        },
+        "name": "cloudsuite-client",
+        "namespace": "default"
+    },
+    "spec": {
+        "template": {
+            "metadata": {
+                "name": "cloudsuite-client",
+                "labels": {
+                    "app": "cloudsuite-client",
+                    "version": "latest"
+                }
+            },
+            "spec": {
+                "restartPolicy": "OnFailure",
+                "containers": [
+                    {
+                        "image": "cloudsuite/web-search:client",
+                        "name": "cloudsuite-client",
+                        "ports": [
+                            {
+                                "containerPort": 9980,
+                                "hostPort": 9980,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "args": [
+                            "cloudsuite-server",
+                            "50",
+                            "90",
+                            "60",
+                            "60"
+                        ],
+                        "imagePullPolicy": "Always"
+                    }
+                ]
+            }
+        }
+    }
+}

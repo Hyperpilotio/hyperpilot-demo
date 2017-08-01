@@ -1,0 +1,158 @@
+{
+    "name": "alpha-demo",
+    "region": "us-east-1",
+    "userId": "william",
+    "nodeMapping": [
+        {
+            "task": "cloudsuite-server",
+            "id": 2
+        }
+    ],
+    "clusterDefinition": {
+        "nodes": [
+            {
+                "instanceType": "c4.xlarge",
+                "id": 1
+            },
+            {
+                "instanceType": "c4.xlarge",
+                "id": 2
+            }
+        ]
+    },
+    "kubernetes": {
+        "taskDefinitions": [
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "cloudsuite-server"
+                        },
+                        "name": "cloudsuite-server",
+                        "namespace": "default"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "cloudsuite-server"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "cloudsuite-server"
+                                }
+                            },
+                            "spec": {
+                                "hard": {
+                                    "requests.storage": "20Gi"
+                                },
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/usr\/ubuntu\/solr"
+                                        },
+                                        "name": "solr-home"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/cloudsuite-web-search:server",
+                                        "name": "cloudsuite-server",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8983,
+                                                "hostPort": 8983,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/usr\/src\/solr_cores",
+                                                "name": "solr-home"
+                                            }
+                                        ],
+                                        "args": [
+                                            "12g",
+                                            "1"
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "cloudsuite-server"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "cloudsuite-client"
+                        },
+                        "name": "cloudsuite-client",
+                        "namespace": "default"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "cloudsuite-client"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "cloudsuite-client"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "image": "cloudsuite\/web-search:client",
+                                        "name": "cloudsuite-client",
+                                        "imagePullPolicy": "Always",
+                                        "args": [
+                                            "cloudsuite-server",
+                                            "50",
+                                            "90",
+                                            "60",
+                                            "60"
+                                        ],
+                                        "ports": [
+                                            {
+                                                "containerPort": 9980,
+                                                "hostPort": 9980,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "cloudsuite-client"
+            }
+        ]
+    }
+}

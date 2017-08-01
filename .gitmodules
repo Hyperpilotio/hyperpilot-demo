@@ -13,3 +13,6 @@
 [submodule "kubernetes/heapster"]
 	path = kubernetes/heapster
 	url = git@github.com:swhsiang/heapster.git
+[submodule "workloads/memcached/image/loadTester/mutilate"]
+	path = workloads/memcached/image/loadTester/mutilate
+	url = git@github.com:leverich/mutilate.git

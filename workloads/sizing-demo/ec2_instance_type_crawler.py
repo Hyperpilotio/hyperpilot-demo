@@ -221,7 +221,7 @@ def findPrice(instanceType):
                               products.values())
     skulinux = map(lambda x: x["sku"], linuxProductList)
     if len(skulinux) == 0:
-        hourlyCost.LinuxOnDemand = 0
+        hourlyCost.LinuxOnDemand = makeValueWithUnit(0, "USD")
     else:
         hourlyCost.LinuxOnDemand = makeValueWithUnit(float(onDemandPricing[skulinux[0]].values()[0]["priceDimensions"].values()[0]["pricePerUnit"]["USD"]), "USD")
 
@@ -249,6 +249,7 @@ def findPrice(instanceType):
         hourlyCost.WindowsOnDemand = makeValueWithUnit(0, "USD")
     else:
         hourlyCost.WindowsOnDemand = makeValueWithUnit(float(onDemandPricing[skuWindows[0]].values()[0]["priceDimensions"].values()[0]["pricePerUnit"]["USD"]), "USD")
+
     reservedWindowsDict = {k: v for k, v in reservedPricing.iteritems() if k in skuWindows}
     for _, v in reservedWindowsDict.items():
         price = filter(lambda x:

@@ -212,7 +212,9 @@ def grab(region):
 
 
 def findPrice(instanceType):
-    """find price."""
+    """find hourly price of a given instance type."""
+    LinuxReservedToOnDemandRatio = 0.7
+    WindowsReservedToOnDemandRatio = 0.75
     hourlyCost = ObjDict()
     linuxProductList = filter(lambda x:
                               x["attributes"]["operatingSystem"] == "Linux" and
@@ -235,6 +237,9 @@ def findPrice(instanceType):
             hourlyCost.LinuxReserved = makeValueWithUnit(0, "USD")
         else:
             hourlyCost.LinuxReserved = makeValueWithUnit(float(price[0]["priceDimensions"].values()[0]["pricePerUnit"]["USD"]), "USD")
+
+    if ("LinuxReserved" not in hourlyCost or hourlyCost.LinuxReserved["value"] == 0) and (hourlyCost.LinuxOnDemand["value"] > 0):
+        hourlyCost.LinuxReserved = makeValueWithUnit(hourlyCost.LinuxOnDemand["value"] * LinuxReservedToOnDemandRatio, "USD")
 
     windowsProductList = filter(lambda x:
                                 x["attributes"]["operatingSystem"] == "Windows" and
@@ -260,6 +265,9 @@ def findPrice(instanceType):
             hourlyCost.WindowsReserved = makeValueWithUnit(0, "USD")
         else:
             hourlyCost.WindowsReserved = makeValueWithUnit(float(price[0]["priceDimensions"].values()[0]["pricePerUnit"]["USD"]), "USD")
+
+    if ("WindowsReserved" not in hourlyCost or hourlyCost.WindowsReserved["value"] == 0) and (hourlyCost.WindowsOnDemand["value"] > 0):
+        hourlyCost.WindowsReserved = makeValueWithUnit(hourlyCost.WindowsOnDemand["value"] * WindowsReservedToOnDemandRatio, "USD")
 
     return hourlyCost
 

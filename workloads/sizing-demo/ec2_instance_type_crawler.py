@@ -197,8 +197,8 @@ def grab(region):
         for key, value in item.items():
             if key == "products":
                 for objKey, objValue in value.items():
-                    if objValue["productFamily"] == "Compute Instance":
-                        # insert each products into products collection
+                    if ( objValue["productFamily"] == "Compute Instance" and "vcpu" in objValue["attributes"] ):
+                        # insert each products into products collection, if it has at least the vcpu attribute
                         products[objKey] = objValue
 
             if key == "terms":

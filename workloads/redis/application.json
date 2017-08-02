@@ -10,7 +10,7 @@
                 "args": [
                     "flushall"
                 ],
-                "serviceConfig": [
+                "serviceConfigs": [
                     {
                         "name": "redis-serve",
                         "hostConfig": {
@@ -35,7 +35,7 @@
                     "GET"
                 ],
                 "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/redis/parser.js",
-                "serviceConfig": [
+                "serviceConfigs": [
                     {
                         "name": "redis-serve",
                         "hostConfig": {

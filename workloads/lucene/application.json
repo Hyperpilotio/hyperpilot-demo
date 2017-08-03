@@ -1,0 +1,119 @@
+{
+    "name": "lucene",
+    "serviceNames": ["lucene-serve"],
+    "loadTester": {
+        "name": "benchmark-controller",
+        "benchmarkController": {
+            "command": {
+                "image": "hyperpilot/load-tester:lucene",
+                "args": [
+                    "-u",
+                    "90",
+                    "-s",
+                    "60",
+                    "-d",
+                    "60"
+                ],
+                "path": "-l",
+                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/lucene/parser.js",
+                "serviceConfigs": [
+                    {
+                        "name": "lucene-serve",
+                        "hostConfig": {
+                            "arg": "-h",
+                            "description": "host of the service"
+                        }
+                    }
+                ],
+                "intensityArgs": [
+                    {
+                        "name": "Number of connections",
+                        "arg": "-c",
+                        "startingValue": 10,
+                        "step": 5
+                    }
+                ]
+            }
+        }
+    },
+    "type": "long-running",
+    "slo": {
+        "metric": "ops/sec",
+        "value": 6,
+        "type": "throughput"
+    },
+    "deploymentTemplate": "analysis-base",
+    "taskDefinitions": [
+        {
+            "nodeMapping": {
+                "task": "lucene-serve",
+                "id": 2
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "lucene-serve"
+                        },
+                        "name": "lucene-serve"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "lucene-serve"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "lucene-serve"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "lucene-serve",
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/usr\/ubuntu\/solr"
+                                        },
+                                        "name": "solr-home"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/cloudsuite-web-search:server",
+                                        "name": "lucene-serve",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8983,
+                                                "hostPort": 8983,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/usr\/src\/solr_cores",
+                                                "name": "solr-home"
+                                            }
+                                        ],
+                                        "args": [
+                                            "12g",
+                                            "1"
+                                        ],
+                                        "resources": {
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "lucene-serve"
+            }
+        }
+    ]
+}

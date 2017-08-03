@@ -2,17 +2,11 @@
 
 if [ "$#" -lt 1 ]
 then
-    echo "Usage: deploy-k8s.sh <userId:required> <mode:optional>"
+    echo "Usage: deploy-k8s.sh <userId:required>"
     exit 1
 fi
 
-if [ "-$2" = "-" ]; then
-  MODE=""
-else
-  MODE="-$2"
-fi
-
-FILE_NAME="deploy-k8s$MODE.json"
+FILE_NAME="deploy-k8s.json"
 
 DEPLOYER_URL="localhost"
 #DEPLOYER_URL="internal-deployer-605796188.us-east-1.elb.amazonaws.com"

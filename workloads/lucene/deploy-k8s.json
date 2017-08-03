@@ -1,89 +1,101 @@
 {
-    "name": "alpha-demo",
+    "name": "lucene",
     "region": "us-east-1",
-    "userId": "william",
     "nodeMapping": [
         {
-            "task": "cloudsuite-server",
-            "id": 2
+            "task": "deployer",
+            "id": 1
+        },
+        {
+            "task": "workload-profiler",
+            "id": 1
+        },
+        {
+            "task": "analyzer",
+            "id": 1
         }
     ],
     "clusterDefinition": {
         "nodes": [
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "t2.medium",
                 "id": 1
-            },
-            {
-                "instanceType": "c4.xlarge",
-                "id": 2
             }
         ]
     },
     "kubernetes": {
+        "secrets": [
+            {
+                "apiVersion": "v1",
+                "kind": "Secret",
+                "metadata": {
+                    "name": "myregistrykey"
+                },
+                "type": "kubernetes.io\/dockerconfigjson",
+                "data": {
+                    ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmRIVnpaWEk2YUhsd1pYSXhNak09IgoJCX0KCX0KfQ=="
+                }
+            }
+        ],
         "taskDefinitions": [
             {
                 "deployment": {
-                    "apiVersion": "extensions/v1beta1",
+                    "apiVersion": "extensions\/v1beta1",
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "cloudsuite-server"
+                            "app": "deployer"
                         },
-                        "name": "cloudsuite-server",
-                        "namespace": "default"
+                        "name": "deployer"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "cloudsuite-server"
+                                "app": "deployer"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "cloudsuite-server"
+                                    "app": "deployer"
                                 }
                             },
                             "spec": {
-                                "hard": {
-                                    "requests.storage": "20Gi"
-                                },
-                                "volumes": [
+                                "imagePullSecrets": [
                                     {
-                                        "hostPath": {
-                                            "path": "\/usr\/ubuntu\/solr"
-                                        },
-                                        "name": "solr-home"
+                                        "name": "myregistrykey"
                                     }
                                 ],
+                                "hostname": "deployer",
                                 "containers": [
                                     {
-                                        "image": "hyperpilot/cloudsuite-web-search:server",
-                                        "name": "cloudsuite-server",
                                         "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/deployer:alan",
+                                        "name": "deployer",
                                         "ports": [
                                             {
-                                                "containerPort": 8983,
-                                                "hostPort": 8983,
+                                                "containerPort": 7777,
+                                                "hostPort": 7777,
                                                 "protocol": "TCP"
                                             }
                                         ],
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/usr\/src\/solr_cores",
-                                                "name": "solr-home"
-                                            }
-                                        ],
-                                        "args": [
-                                            "12g",
-                                            "1"
-                                        ],
                                         "resources": {
-                                            "requests": {
+                                            "limits": {
+                                                "cpu": "256.0m",
+                                                "memory": "1024Mi"
                                             }
-                                        }
+                                        },
+                                        "env": [
+                                            {
+                                                "name": "AWS_ACCESS_KEY_ID",
+                                                "value": "AKIAIZ6UPMWK3A7HGPBQ"
+                                            },
+                                            {
+                                                "name": "AWS_SECRET_ACCESS_KEY",
+                                                "value": "ee4wtJc6O+z3nDOH+limT1aXTBA/G4HiSOm8uQ/g"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -93,54 +105,124 @@
                 "portTypes": [
                     1
                 ],
-                "family": "cloudsuite-server"
+                "family": "deployer"
             },
             {
                 "deployment": {
-                    "apiVersion": "extensions/v1beta1",
+                    "apiVersion": "extensions\/v1beta1",
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "cloudsuite-client"
+                            "app": "workload-profiler"
                         },
-                        "name": "cloudsuite-client",
-                        "namespace": "default"
+                        "name": "workload-profiler"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "cloudsuite-client"
+                                "app": "workload-profiler"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "cloudsuite-client"
+                                    "app": "workload-profiler"
                                 }
                             },
                             "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "hostname": "deployer",
                                 "containers": [
                                     {
-                                        "image": "cloudsuite\/web-search:client",
-                                        "name": "cloudsuite-client",
                                         "imagePullPolicy": "Always",
-                                        "args": [
-                                            "cloudsuite-server",
-                                            "50",
-                                            "90",
-                                            "60",
-                                            "60"
-                                        ],
+                                        "image": "hyperpilot\/workload-profiler:william",
+                                        "name": "deployer",
                                         "ports": [
                                             {
-                                                "containerPort": 9980,
-                                                "hostPort": 9980,
+                                                "containerPort": 7779,
+                                                "hostPort": 7779,
                                                 "protocol": "TCP"
                                             }
                                         ],
                                         "resources": {
-
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        },
+                                        "env": [
+                                            {
+                                                "name": "AWS_ACCESS_KEY_ID",
+                                                "value": "AKIAIZ6UPMWK3A7HGPBQ"
+                                            },
+                                            {
+                                                "name": "AWS_SECRET_ACCESS_KEY",
+                                                "value": "ee4wtJc6O+z3nDOH+limT1aXTBA/G4HiSOm8uQ/g"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "workload-profiler"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "analyzer"
+                        },
+                        "name": "analyzer"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "analyzer"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "analyzer"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "hostname": "analyzer",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/analyzer:tim",
+                                        "name": "analyzer",
+                                        "ports": [
+                                            {
+                                                "containerPort": 5000,
+                                                "hostPort": 5000,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
+                                            }
                                         }
                                     }
                                 ]
@@ -151,7 +233,7 @@
                 "portTypes": [
                     1
                 ],
-                "family": "cloudsuite-client"
+                "family": "analyzer"
             }
         ]
     }

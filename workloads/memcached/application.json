@@ -10,8 +10,6 @@
                 "image": "hyperpilot/load-tester:memcached",
                 "path": "mutilate",
                 "args": [
-                    "-s",
-                    "memcached",
                     "-T",
                     "24",
                     "-B",
@@ -20,7 +18,7 @@
                     "-Q",
                     "1000"
                 ],
-                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/memcache/parser.js",
+                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/memcached/parser.js",
                 "intensityArgs": [
                     {
                         "name": "Number of connections",
@@ -37,26 +35,167 @@
                             "description": "Host of zookeeper"
                         }
                     }
-                ],
-                "intensityArgs": [
-                    {
-                        "name": "Throughput",
-                        "arg": "--throughput",
-                        "startingValue": 3096,
-                        "step": 512
-                    }
                 ]
             }
         }
     },
     "type": "long-running",
     "slo": {
-        "metric": "99thLatency",
-        "value": 500,
+        "metric": "TotalQps",
+        "value": 12664.0,
         "type": "latency"
     },
     "budget": {
         "value": 150,
         "unit": "dollar"
-    }
+    },
+    "deploymentTemplate": "analysis-base",
+    "taskDefinitions": [
+        {
+            "nodeMapping": {
+                "task": "memcached",
+                "id": 2
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "memcached"
+                        },
+                        "name": "memcached"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "memcached"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "memcached"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "memcached",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "memcached:1.5.0-alpine",
+                                        "name": "memcached",
+                                        "ports": [
+                                            {
+                                                "containerPort": 11211,
+                                                "hostPort": 11211,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "500.0m",
+                                                "memory": "100Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "memcached"
+            }
+        },
+        {
+            "nodeMapping": {
+                "task": "benchmark-controller",
+                "id": 1
+            },
+            "deployment": {
+                "apiVersion": "extensions\/v1beta1",
+                "kind": "Deployment",
+                "metadata": {
+                    "labels": {
+                        "app": "benchmark-controller"
+                    },
+                    "name": "benchmark-controller"
+                },
+                "spec": {
+                    "replicas": 1,
+                    "selector": {
+                        "matchLabels": {
+                            "app": "benchmark-controller"
+                        }
+                    },
+                    "template": {
+                        "metadata": {
+                            "labels": {
+                                "app": "benchmark-controller"
+                            }
+                        },
+                        "spec": {
+                            "imagePullSecrets": [
+                                {
+                                    "name": "myregistrykey"
+                                }
+                            ],
+                            "containers": [
+                                {
+                                    "image": "hyperpilot\/benchmark-controller",
+                                    "name": "benchmark-controller",
+                                    "imagePullPolicy": "Always",
+                                    "ports": [
+                                        {
+                                            "containerPort": 6001,
+                                            "hostPort": 6001,
+                                            "protocol": "TCP"
+                                        }
+                                    ],
+                                    "resources": {
+                                        "requests": {
+                                            "cpu": "512.0m",
+                                            "memory": "350Mi"
+                                        }
+                                    },
+                                    "volumeMounts": [
+                                        {
+                                            "mountPath": "/var/run/docker.sock",
+                                            "name": "docker-sock"
+                                        },
+                                        {
+                                            "mountPath": "/usr/bin/docker",
+                                            "name": "usr-bin-docker"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "volumes": [
+                                {
+                                    "hostPath": {
+                                        "path": "/var/run/docker.sock"
+                                    },
+                                    "name": "docker-sock"
+                                },
+                                {
+                                    "hostPath": {
+                                        "path": "/usr/bin/docker"
+                                    },
+                                    "name": "usr-bin-docker"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "portTypes": [
+                1
+            ],
+            "family": "benchmark-controller"
+        }
+    ]
 }

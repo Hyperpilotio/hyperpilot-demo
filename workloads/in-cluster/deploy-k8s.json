@@ -222,6 +222,8 @@
                                             }
                                         ],
                                         "image": "mongo:3.0.15",
+                                        "command": ["mongod"],
+                                        "args": ["-auth"],
                                         "name": "mongo-serve",
                                         "ports": [
                                             {

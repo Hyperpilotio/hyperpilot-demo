@@ -5,7 +5,7 @@
   "main": "parser.js",
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha -R spec test/",
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf node_modules package-lock.json"
   },
   "author": "",
   "license": "ISC",

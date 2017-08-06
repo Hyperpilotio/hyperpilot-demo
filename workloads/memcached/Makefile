@@ -14,7 +14,7 @@ CURL_ARGS="-d \"{\"deploymentId\":\"$(DEPLOYMENT_ID)\", \"startingIntensity\":10
 #DEPLOYER_URL=localhost:7777
 #PROFILER_URL=localhost:7779
 DEPLOYER_URL=internal-deployer-605796188.us-east-1.elb.amazonaws.com:7777
-PROFILER_URL=a4d522c8479a111e793c50ae2e11e2ff-981220592.us-east-1.elb.amazonaws.com:7779
+PROFILER_URL=localhost:7779
 
 help: ## This help message
 	@echo "             COMMAND"
@@ -27,7 +27,7 @@ benchmark: ## make benchmark DEPLOYMENT_ID=
 	@curl $(POST_ARG) http://$(PROFILER_URL)/benchmarks/$(WORKLOAD) $(CURL_ARGS)
 
 calibrate: ## make calibrate DEPLOYMENT_ID=
-	@curl $(POST_ARG) http://$(PROFILER_URL)/calibrate/$(WORKLOAD)
+	@curl -XPOST http://$(PROFILER_URL)/calibrate/$(WORKLOAD)
 
 deploy-ecs:  ## make deploy-ecs USER_ID=
 deploy-ecs: deploy-ecs.json

@@ -8,12 +8,10 @@ DEPLOYMENT_ID=hyperpilot
 
 # ARGUMENTS
 POST_ARG=-XPOST -H "Content-Type: application/json"
-CURL_ARGS="-d \"{\"deploymentId\":\"$(DEPLOYMENT_ID)\", \"startingIntensity\":10, \"step\": 10}\""
+CURL_ARGS=-d "{\"startingIntensity\":10, \"step\": 10}"
 
 # URL
-#DEPLOYER_URL=localhost:7777
-#PROFILER_URL=localhost:7779
-DEPLOYER_URL=internal-deployer-605796188.us-east-1.elb.amazonaws.com:7777
+DEPLOYER_URL=localhost:7777
 PROFILER_URL=localhost:7779
 
 help: ## This help message

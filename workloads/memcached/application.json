@@ -1,0 +1,62 @@
+{
+    "name": "memcached",
+    "serviceNames": [
+        "memcached"
+    ],
+    "loadTester": {
+        "name": "benchmark-controller",
+        "benchmarkController": {
+            "command": {
+                "image": "hyperpilot/load-tester:memcached",
+                "path": "mutilate",
+                "args": [
+                    "-s",
+                    "memcached",
+                    "-T",
+                    "24",
+                    "-B",
+                    "-D",
+                    "4",
+                    "-Q",
+                    "1000"
+                ],
+                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/memcache/parser.js",
+                "intensityArgs": [
+                    {
+                        "name": "Number of connections",
+                        "arg": "-C",
+                        "startingValue": 5,
+                        "step": 3
+                    }
+                ],
+                "serviceConfigs": [
+                    {
+                        "name": "memcached",
+                        "hostConfig": {
+                            "arg": "-s",
+                            "description": "Host of zookeeper"
+                        }
+                    }
+                ],
+                "intensityArgs": [
+                    {
+                        "name": "Throughput",
+                        "arg": "--throughput",
+                        "startingValue": 3096,
+                        "step": 512
+                    }
+                ]
+            }
+        }
+    },
+    "type": "long-running",
+    "slo": {
+        "metric": "99thLatency",
+        "value": 500,
+        "type": "latency"
+    },
+    "budget": {
+        "value": 150,
+        "unit": "dollar"
+    }
+}

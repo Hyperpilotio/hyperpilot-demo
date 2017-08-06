@@ -1,5 +1,5 @@
 {
-    "name": "memcache",
+    "name": "memcached",
     "region": "us-east-1",
     "allowedPorts": [
         8083,
@@ -12,7 +12,7 @@
     ],
     "nodeMapping": [
         {
-            "task": "memcache",
+            "task": "memcached",
             "id": 1
         },
         {
@@ -24,7 +24,7 @@
             "id": 1
         },
         {
-            "task": "mutilate",
+            "task": "benchmark-controller",
             "id": 2
         }
     ],
@@ -245,7 +245,7 @@
                         "name": "benchmark-agent"
                     }
                 ],
-                "family": "memcache"
+                "family": "memcached"
             },
             {
                 "containerDefinitions": [
@@ -254,11 +254,11 @@
                         "portMappings": [],
                         "memory": 150,
                         "cpu": 128,
-                        "image": "hyperpilot\/mutilate",
-                        "name": "mutilate"
+                        "image": "hyperpilot\/benchmark-controller",
+                        "name": "benchmark-controller"
                     }
                 ],
-                "family": "mutilate"
+                "family": "benchmark-controller"
             }
         ]
     }

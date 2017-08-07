@@ -3,18 +3,17 @@ SHELL := /bin/bash
 
 # ARGUMENTS
 POST_ARG=-XPOST -H "Content-Type: application/json"
-CURL_ARGS="-d \"{\"deploymentId\":\"$(DEPLOYMENT_ID)\", \"startingIntensity\":10, \"step\": 10}\""
+CURL_ARGS="-d \"{\"startingIntensity\":10, \"step\": 10}\""
 
 # Variable
 WORKLOAD=redis
 USER_ID=hyperpilot
-DEPLOYMENT_ID=hyperpilot
 
 # URL
 #DEPLOYER_URL=localhost:7777
-#PROFILER_URL=localhost:7779
+PROFILER_URL=a6f3f670a7b3211e7bd6d0ed36a5fbea-1651628725.us-east-1.elb.amazonaws.com:7779
 DEPLOYER_URL=internal-deployer-605796188.us-east-1.elb.amazonaws.com:7777
-PROFILER_URL=localhost:7779
+#PROFILER_URL=localhost:7779
 INTERNAL_PROFILER_URL=internal-profiler-25087965.us-east-1.elb.amazonaws.com:7779
 
 help: ## This help message
@@ -24,10 +23,10 @@ help: ## This help message
 aws-size: ## make aws-size
 	@curl $(POST_ARG) http://$(PROFILER_URL)/sizing/aws/$(WORKLOAD)
 
-benchmark: ## make benchmark DEPLOYMENT_ID=
+benchmark: ## make benchmark
 	@curl $(POST_ARG) http://$(PROFILER_URL)/benchmarks/$(WORKLOAD) $(CURL_ARGS)
 
-calibrate: ## make calibrate DEPLOYMENT_ID=
+calibrate: ## make calibrate
 	@curl $(POST_ARG) http://$(PROFILER_URL)/calibrate/$(WORKLOAD) $(CURL_ARGS)
 
 deploy-ecs:  ## make deploy-ecs USER_ID=

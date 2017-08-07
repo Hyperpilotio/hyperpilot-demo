@@ -64,7 +64,7 @@
     "type": "long-running",
     "slo": {
         "metric": "GET",
-        "value": 57085,
+        "value": 50000,
         "type": "throughput"
     },
     "budget": {

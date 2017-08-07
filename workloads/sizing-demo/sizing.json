@@ -1,0 +1,71 @@
+{
+  "app_id": "59306145e3fd9e5094db04e5",
+  "appName": "redis",
+  "slo_type": "throughput",
+  "slo_value": 57085,
+  "budget": 300,
+  "sizingRuns": [
+    {
+      "run": 1,
+      "samples": 3,
+      "results": [
+        {
+          "nodetype": "c3.4xlarge",
+          "status": "done",
+          "qosValue": 480000.0,
+          "cost": 420.48,
+          "perfOverCost": 1141.553
+        },
+        {
+          "nodetype": "m3.large",
+          "status": "done",
+          "qosValue": 60000.0,
+          "cost": 68.40,
+          "perfOverCost": 877.193
+        },
+        {
+          "nodetype": "r4.xlarge",
+          "status": "done",
+          "qosValue": 120000.0,
+          "cost": 120.96,
+          "perfOverCost": 992.063
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "samples": 2,
+      "results": [
+        {
+          "nodetype": "p2.16xlarge",
+          "status": "done",
+          "qosValue": 1920000.0,
+          "cost": 7076.16,
+          "perfOverCost": 271.334 
+        },
+        {
+          "nodetype": "c4.4xlarge",
+          "status": "done",
+          "qosValue": 480000.0,
+          "cost": 362.88,
+          "perfOverCost": 1322.751 
+        }
+      ]
+    }
+  ],
+  "status": "complete",
+  "recommendations": [
+    {
+      "nodetype": "c4.4xlarge",
+      "objective": "perfOverCost"
+    },
+    {
+      "nodetype": "m3.large",
+      "objective": "minCostWithPerfLimit"
+    },
+    {
+      "nodetype": "r4.xlarge",
+      "objective": "MaxPerfWithCostLimit"
+    }
+  ]
+}

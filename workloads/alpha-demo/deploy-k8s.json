@@ -53,10 +53,6 @@
             "id": 3
         },
         {
-            "task": "snap",
-            "id": 3
-        },
-        {
             "task": "mongo",
             "id": 4
         },
@@ -268,9 +264,9 @@
                 "family": "snap"
             },
             {
-                "deployment": {
+                "daemonset": {
                     "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
+                    "kind": "DaemonSet",
                     "metadata": {
                         "labels": {
                             "app": "snap-goddd",
@@ -307,8 +303,8 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "1024.0m",
-                                                "memory": "2048Mi"
+                                                "cpu": "256.0m",
+                                                "memory": "512Mi"
                                             }
                                         },
                                         "imagePullPolicy": "Always",
@@ -339,6 +335,14 @@
                                             {
                                                 "mountPath": "\/proc_host",
                                                 "name": "proc"
+                                            },
+                                            {
+                                                "mountPath": "\/sys_host",
+                                                "name": "sys"
+                                            },
+                                            {
+                                                "mountPath": "\/etc_host",
+                                                "name": "etc"
                                             }
                                         ],
                                         "env": [
@@ -349,6 +353,18 @@
                                                         "fieldPath": "spec.nodeName"
                                                     }
                                                 }
+                                            },
+                                            {
+                                                "name": "HOST_PROC",
+                                                "value": "/proc_host"
+                                            },
+                                            {
+                                                "name": "HOST_ETC",
+                                                "value": "/etc_host"
+                                            },
+                                            {
+                                                "name": "HOST_SYS",
+                                                "value": "/sys_host"
                                             }
                                         ]
                                     }
@@ -389,6 +405,18 @@
                                             "path": "\/proc"
                                         },
                                         "name": "proc"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/sys"
+                                        },
+                                        "name": "sys"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/etc"
+                                        },
+                                        "name": "etc"
                                     }
                                 ]
                             }

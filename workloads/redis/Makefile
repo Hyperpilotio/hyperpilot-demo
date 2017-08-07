@@ -14,7 +14,7 @@ DEPLOYMENT_ID=hyperpilot
 #DEPLOYER_URL=localhost:7777
 #PROFILER_URL=localhost:7779
 DEPLOYER_URL=internal-deployer-605796188.us-east-1.elb.amazonaws.com:7777
-PROFILER_URL=a4c51bb336f7811e7ad9a02954c97250-1848550319.us-east-1.elb.amazonaws.com:7779
+PROFILER_URL=localhost:7779
 INTERNAL_PROFILER_URL=internal-profiler-25087965.us-east-1.elb.amazonaws.com:7779
 
 help: ## This help message

@@ -57,11 +57,11 @@
   "recommendations": [
     {
       "nodetype": "c4.4xlarge",
-      "objective": "perfOverCost"
+      "objective": "MaxPerfOverCost"
     },
     {
       "nodetype": "m3.large",
-      "objective": "minCostWithPerfLimit"
+      "objective": "MinCostWithPerfLimit"
     },
     {
       "nodetype": "r4.xlarge",

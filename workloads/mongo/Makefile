@@ -4,11 +4,10 @@ SHELL := /bin/bash
 # Variable
 WORKLOAD=mongo
 USER_ID=hyperpilot
-DEPLOYMENT_ID=hyperpilot
 
 # ARGUMENTS
 POST_ARG=-XPOST -H "Content-Type: application/json"
-CURL_ARGS="-d \"{\"deploymentId\":\"$(DEPLOYMENT_ID)\", \"startingIntensity\":10, \"step\": 10}\""
+CURL_ARGS=-d "{\"startingIntensity\":10, \"step\": 10}"
 
 # URL
 DEPLOYER_URL=localhost:7777
@@ -21,10 +20,10 @@ help: ## This help message
 aws-size: ## make aws-size
 	@curl $(POST_ARG) http://$(PROFILER_URL)/sizing/aws/$(WORKLOAD)
 
-benchmark: ## make benchmark DEPLOYMENT_ID=
+benchmark: ## make benchmark 
 	@curl $(POST_ARG) http://$(PROFILER_URL)/benchmarks/$(WORKLOAD) $(CURL_ARGS)
 
-calibrate: ## make calibrate DEPLOYMENT_ID=
+calibrate: ## make calibrate
 	@curl -XPOST http://$(PROFILER_URL)/calibrate/$(WORKLOAD)
 
 deploy-ecs:  ## make deploy-ecs USER_ID=

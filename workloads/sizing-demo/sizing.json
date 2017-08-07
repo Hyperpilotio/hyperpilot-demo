@@ -1,8 +1,8 @@
 {
-  "app_id": "59306145e3fd9e5094db04e5",
+  "appId": "59306145e3fd9e5094db04e5",
   "appName": "redis",
-  "slo_type": "throughput",
-  "slo_value": 57085,
+  "sloType": "throughput",
+  "sloValue": 57085,
   "budget": 300,
   "sizingRuns": [
     {

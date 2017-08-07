@@ -239,7 +239,7 @@
                     }
                 },
                 "portTypes": [
-                    0
+                    1
                 ],
                 "family": "mongo-serve"
             },

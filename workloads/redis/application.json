@@ -1,6 +1,8 @@
 {
     "name": "redis",
-    "serviceNames": ["redis-serve"],
+    "serviceNames": [
+        "redis-serve"
+    ],
     "loadTester": {
         "name": "benchmark-controller",
         "benchmarkController": {
@@ -125,92 +127,10 @@
                         }
                     }
                 },
+                "portTypes": [
+                    1
+                ],
                 "family": "redis-serve"
-            }
-        },
-        {
-            "nodeMapping": {
-                "task": "benchmark-controller",
-                "id": 1
-            },
-            "taskDefinition": {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "benchmark-controller"
-                        },
-                        "name": "benchmark-controller"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "benchmark-controller"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "benchmark-controller"
-                                }
-                            },
-                            "spec": {
-                                "imagePullSecrets": [
-                                    {
-                                        "name": "myregistrykey"
-                                    }
-                                ],
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/benchmark-controller:dev",
-                                        "name": "benchmark-controller",
-                                        "imagePullPolicy": "Always",
-                                        "ports": [
-                                            {
-                                                "containerPort": 6001,
-                                                "hostPort": 6001,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "350Mi"
-                                            }
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/var\/run\/docker.sock",
-                                                "name": "docker-sock"
-                                            },
-                                            {
-                                                "mountPath": "\/usr\/bin\/docker",
-                                                "name": "usr-bin-docker"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/var\/run\/docker.sock"
-                                        },
-                                        "name": "docker-sock"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/usr\/bin\/docker"
-                                        },
-                                        "name": "usr-bin-docker"
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "benchmark-controller"
             }
         }
     ]

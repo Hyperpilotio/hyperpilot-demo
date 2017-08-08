@@ -35,24 +35,23 @@ reservedPricing = {}
 cpuCredits = []
 bandwidth = []
 clusterNetworking = ["r4", "x1", "m4", "c4", "c3", "i2", "cr1", "hs1", "p2", "g3", "d2"]
-outDatingInstanceType = []
 
-
-def isOutdatingInsType(instanceType):
-    """Get privious generation instance type."""
-    if len(outDatingInstanceType) <= 0:
-        mp = soup(urllib2.urlopen("https://aws.amazon.com/ec2/previous-generation/"), "html.parser")
-        table = mp.find(id="element-bbb1ae82-351a-4027-870d-ab82a58d9d91")
-        trs = table.find_all("tr")
-        firstRow = True
-        for row in trs:
-            if firstRow:
-                firstRow = False
-                continue
-            tds = row.find_all("td")
-            outDatingInstanceType.append(tds[1].text)
-        print "out dating instance type list: {}".format(outDatingInstanceType)
-    return instanceType in outDatingInstanceType
+def getPreviousGenerationTypes():
+    """Get previous generation instance type."""
+    # We need to grab the previous generation types from the amazon website because
+    # the pricing API json currentGeneration attribute is not always correct.
+    previousGenerationTypes = []
+    mp = soup(urllib2.urlopen("https://aws.amazon.com/ec2/previous-generation/"), "html.parser")
+    table = mp.find(id="element-bbb1ae82-351a-4027-870d-ab82a58d9d91")
+    trs = table.find_all("tr")
+    firstRow = True
+    for row in trs:
+        if firstRow:
+            firstRow = False
+            continue
+        tds = row.find_all("td")
+        previousGenerationTypes.append(tds[1].text)
+    return previousGenerationTypes
 
 
 def getEBSConfig(instanceType):
@@ -127,7 +126,7 @@ def makeValueWithUnit(value, unit):
     data.unit = unit
     return data
 
-def compose(region):
+def compose(region, previousGenerationTypes):
     # search for insTypes
     insTypes = list(set(map(lambda x: x["attributes"]["instanceType"], products.values())))
     ec2Instances = ObjDict()
@@ -135,21 +134,20 @@ def compose(region):
     ec2Instances.region = region
     # for each insTypes find Linux / Windows pricing
     for insType in insTypes:
-        if isOutdatingInsType(insType):
-            # print "{} is an out dating instance type".format(insType)
+        if insType in previousGenerationTypes:
+            print("Skipping {} as it's previous generation instance type".format(insType))
             continue
-        # else:
-        #     print "{} is current generation instance type".format(insType)
+
         productList = filter(lambda x:
                              x["attributes"]["instanceType"] == insType and
                              x["attributes"]["tenancy"] == "Shared",
                              products.values())
 
         if len(productList) <= 0:
-            # print "region {} doesn't has current generation shared insType: {}".format(region, insType)
+            print("region {} and instance type {} doesn't has shared tenancy information".format(region, insType))
             continue
-        product = productList[0]
 
+        product = productList[0]
         result = ObjDict()
         result.name = insType
         result.instanceFamily = product["attributes"].get("instanceFamily", insType.split(".")[0])
@@ -342,9 +340,12 @@ if __name__ == '__main__':
         regions.append(args.region)
 
     print regions
+
+    previousGenerationTypes = getPreviousGenerationTypes()
+
     for region in regions:
         grab(region)
-        result = compose(region)
+        result = compose(region, previousGenerationTypes)
         try:
             updateDB(args.conn, region, result)
         except Exception as e:

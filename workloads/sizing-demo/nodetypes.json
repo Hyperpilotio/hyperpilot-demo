@@ -65,53 +65,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 2.712
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.532
                 },
                 "LinuxReserved": {
@@ -1098,49 +1051,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 61.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -2540,66 +2450,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 0.702
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.514
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.185
                 },
                 "LinuxReserved": {
@@ -3612,53 +3462,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 61.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 2.056
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
                 }
             }
         },
@@ -4772,49 +4575,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -6141,66 +5901,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 0.702
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.514
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.185
                 },
                 "LinuxReserved": {
@@ -7226,53 +6926,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 61.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 1.896
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
                 }
             }
         },
@@ -8493,49 +8146,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -9802,66 +9412,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 1.0
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.474
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.185
                 },
                 "LinuxReserved": {
@@ -10776,53 +10326,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 61.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 2.712
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
                 }
             }
         },
@@ -11823,49 +11326,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -12958,66 +12418,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 16.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 1.0
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.514
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
                 }
             }
         },
@@ -14393,53 +13793,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 2.712
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.761
                 },
                 "LinuxReserved": {
@@ -15553,49 +14906,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 1.68
                 },
                 "LinuxReserved": {
@@ -16555,66 +15865,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 244.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 1.0
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.514
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
                 }
             }
         },
@@ -18003,53 +17253,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 2.712
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.761
                 },
                 "LinuxReserved": {
@@ -19043,49 +18246,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -20118,66 +19278,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 16.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 1.0
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.514
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
                 }
             }
         },
@@ -21673,53 +20773,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 1.896
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.761
                 },
                 "LinuxReserved": {
@@ -22933,49 +21986,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -24246,66 +23256,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 1.0
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.474
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.185
                 },
                 "LinuxReserved": {
@@ -25220,53 +24170,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 61.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 1.896
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
                 }
             }
         },
@@ -26434,49 +25337,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 1.68
                 },
                 "LinuxReserved": {
@@ -27747,66 +26607,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 1.0
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.474
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.185
                 },
                 "LinuxReserved": {
@@ -28834,53 +27634,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 61.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 1.896
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
                 }
             }
         },
@@ -30048,49 +28801,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 1.68
                 },
                 "LinuxReserved": {
@@ -31361,66 +30071,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 1.0
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.474
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.185
                 },
                 "LinuxReserved": {
@@ -32448,53 +31098,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 61.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 2.712
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
                 }
             }
         },
@@ -33555,49 +32158,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -35037,66 +33597,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 0.898
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.514
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.185
                 },
                 "LinuxReserved": {
@@ -36002,53 +34502,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 61.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 2.6
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 1.896
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
                 }
             }
         },
@@ -37042,49 +35495,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -38478,66 +36888,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 0.65
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.474
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.012
                 },
                 "LinuxReserved": {
@@ -39509,53 +37859,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 61.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 2.712
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
                 }
             }
         },
@@ -40616,49 +38919,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -42045,66 +40305,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 0.898
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.514
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.185
                 },
                 "LinuxReserved": {
@@ -43179,53 +41379,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 61.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 1.896
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
                 }
             }
         },
@@ -44386,49 +42539,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -45702,66 +43812,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 1.0
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.474
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.185
                 },
                 "LinuxReserved": {
@@ -46963,53 +45013,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 2.056
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 4.7424
                 },
                 "LinuxReserved": {
@@ -47876,49 +45879,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -48825,66 +46785,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 16.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0.702
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.514
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
                 }
             }
         },
@@ -50350,53 +48250,6 @@
             "hourlyCost": {
                 "LinuxOnDemand": {
                     "unit": "USD",
-                    "value": 2.808
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 1.896
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.8xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 120.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 32,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 104.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 60.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
                     "value": 0.761
                 },
                 "LinuxReserved": {
@@ -51490,49 +49343,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 30.5
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "cg1.4xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "HDD",
-                "devices": 2,
-                "size": {
-                    "unit": "GB",
-                    "value": 840.0
-                }
-            },
-            "networkConfig": {
-                "performance": "10 Gigabit",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 16,
-                "cpuType": "Intel Xeon x5570",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 0.0
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 22.5
                 }
             }
         },
@@ -52859,66 +50669,6 @@
                 "size": {
                     "unit": "GiB",
                     "value": 64.0
-                }
-            }
-        },
-        {
-            "hourlyCost": {
-                "LinuxOnDemand": {
-                    "unit": "USD",
-                    "value": 1.0
-                },
-                "LinuxReserved": {
-                    "unit": "USD",
-                    "value": 0.474
-                },
-                "WindowsOnDemand": {
-                    "unit": "USD",
-                    "value": 0
-                }
-            },
-            "name": "g2.2xlarge",
-            "instanceFamily": "GPU instance",
-            "storageConfig": {
-                "storageType": "SSD",
-                "devices": 1,
-                "EBSOptimized": "",
-                "maxBandwidth": {
-                    "unit": "Mbps",
-                    "value": 1000
-                },
-                "expectedThroughput": {
-                    "unit": "MB/s",
-                    "value": 125.0
-                },
-                "maxIOPS": {
-                    "unit": "16KB I/O size",
-                    "value": 8000
-                },
-                "size": {
-                    "unit": "GB",
-                    "value": 60.0
-                }
-            },
-            "networkConfig": {
-                "performance": "High",
-                "enhancedNetworking": true,
-                "clusterNetworking": false
-            },
-            "cpuConfig": {
-                "vCPU": 8,
-                "cpuType": "Intel Xeon E5-2670 (Sandy Bridge)",
-                "ecu": 26.0,
-                "cpuCredits": {},
-                "clockSpeed": {
-                    "unit": "GHz",
-                    "value": 2.6
-                }
-            },
-            "memoryConfig": {
-                "size": {
-                    "unit": "GiB",
-                    "value": 15.0
                 }
             }
         },

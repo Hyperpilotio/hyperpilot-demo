@@ -1,4 +1,4 @@
- {
+{
     "name": "in-cluster",
     "region": "us-east-1",
     "nodeMapping": [
@@ -16,6 +16,10 @@
         },
         {
             "task": "mongo-serve",
+            "id": 1
+        },
+        {
+            "task": "influxdb",
             "id": 1
         }
     ],
@@ -222,8 +226,12 @@
                                             }
                                         ],
                                         "image": "mongo:3.4",
-                                        "command": ["mongod"],
-                                        "args": ["-auth"],
+                                        "command": [
+                                            "mongod"
+                                        ],
+                                        "args": [
+                                            "-auth"
+                                        ],
                                         "name": "mongo-serve",
                                         "ports": [
                                             {
@@ -301,6 +309,89 @@
                     0
                 ],
                 "family": "analyzer"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "influxdb"
+                        },
+                        "name": "influxdb",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "influxdb"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "influxdb",
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/influx_data"
+                                        },
+                                        "name": "influx-data"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "env": [
+                                            {
+                                                "name": "ADMIN_USER",
+                                                "value": "root"
+                                            },
+                                            {
+                                                "name": "PRE_CREATE_DB",
+                                                "value": "snap"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_INIT_PWD",
+                                                "value": "default"
+                                            }
+                                        ],
+                                        "image": "hyperpilot\/influx:1.2.2.a",
+                                        "name": "influxdb",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8083,
+                                                "hostPort": 8083,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8086,
+                                                "hostPort": 8086,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/lib\/influxdb",
+                                                "name": "influx-data"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "2048m",
+                                                "memory": "4096Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "influxdb",
+                "portTypes": [
+                    1,
+                    1
+                ]
             }
         ]
     }

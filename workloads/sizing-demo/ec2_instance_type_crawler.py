@@ -128,7 +128,7 @@ def compose(region):
         result.cpuConfig = ObjDict()
         result.cpuConfig.vCPU = int(product["attributes"].get("vcpu", 0))
         ecu = product["attributes"].get("ecu", "0")
-        ecu = "0" if ecu == "Variable" else ecu
+        ecu = "0" if ecu == "Variable" or ecu == "NA" else ecu
         result.cpuConfig.ecu = float(ecu)
         result.cpuConfig.cpuCredits = 0
         credits = getCpuCredits(insType)
@@ -169,7 +169,7 @@ def compose(region):
         else:
             parse = storage.split(" ")
             result.storageConfig.devices = int(parse[0])
-            result.storageConfig.size = makeValueWithUnit(int(parse[2].replace(",", "")), "GB")
+            result.storageConfig.size = makeValueWithUnit(float(parse[2].replace(",", "")), "GB")
             result.storageConfig.storageType = "HDD" if len(parse) < 4 else parse[3]
         # result.storageConfig.bandwidth = makeValueWithUnit(int(product["attributes"].get("dedicatedEbsThroughput", "0").split(" ")[0]), "Mbps")
 

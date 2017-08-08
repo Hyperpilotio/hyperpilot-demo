@@ -35,6 +35,24 @@ reservedPricing = {}
 cpuCredits = []
 bandwidth = []
 clusterNetworking = ["r4", "x1", "m4", "c4", "c3", "i2", "cr1", "hs1", "p2", "g3", "d2"]
+outDatingInstanceType = []
+
+
+def isOutdatingInsType(instanceType):
+    """Get privious generation instance type."""
+    if len(outDatingInstanceType) <= 0:
+        mp = soup(urllib2.urlopen("https://aws.amazon.com/ec2/previous-generation/"), "html.parser")
+        table = mp.find(id="element-bbb1ae82-351a-4027-870d-ab82a58d9d91")
+        trs = table.find_all("tr")
+        firstRow = True
+        for row in trs:
+            if firstRow:
+                firstRow = False
+                continue
+            tds = row.find_all("td")
+            outDatingInstanceType.append(tds[1].text)
+        print "out dating instance type list: {}".format(outDatingInstanceType)
+    return instanceType in outDatingInstanceType
 
 
 def getEBSConfig(instanceType):
@@ -117,9 +135,15 @@ def compose(region):
     ec2Instances.region = region
     # for each insTypes find Linux / Windows pricing
     for insType in insTypes:
+        if isOutdatingInsType(insType):
+            # print "{} is an out dating instance type".format(insType)
+            continue
+        # else:
+        #     print "{} is current generation instance type".format(insType)
         productList = filter(lambda x:
                              x["attributes"]["instanceType"] == insType and
-                             x["attributes"]["tenancy"] == "Shared", products.values())
+                             x["attributes"]["tenancy"] == "Shared",
+                             products.values())
 
         if len(productList) <= 0:
             # print "region {} doesn't has current generation shared insType: {}".format(region, insType)

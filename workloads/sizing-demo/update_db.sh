@@ -1,7 +1,13 @@
 #!/bin/bash
 
-MONGO_URL=internal-mongo-elb-624130134.us-east-1.elb.amazonaws.com:27017
-MONGO_USER=profiler
+if [ -z "$1" ]
+then
+    MONGO_URL=localhost:27017
+else
+    MONGO_URL=$1:27017
+fi
+
+MONGO_USER=analyzer
 MONGO_PWD=hyperpilot
 
 echo create node types collection in configdb

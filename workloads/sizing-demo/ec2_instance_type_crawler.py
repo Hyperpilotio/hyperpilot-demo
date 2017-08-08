@@ -117,9 +117,15 @@ def compose(region):
     ec2Instances.region = region
     # for each insTypes find Linux / Windows pricing
     for insType in insTypes:
-        product = filter(lambda x:
-                         x["attributes"]["instanceType"] == insType and
-                         x["attributes"]["tenancy"] == "Shared", products.values())[0]
+        productList = filter(lambda x:
+                             x["attributes"]["instanceType"] == insType and
+                             x["attributes"]["tenancy"] == "Shared", products.values())
+
+        if len(productList) <= 0:
+            # print "region {} doesn't has current generation shared insType: {}".format(region, insType)
+            continue
+        product = productList[0]
+
         result = ObjDict()
         result.name = insType
         result.instanceFamily = product["attributes"].get("instanceFamily", insType.split(".")[0])
@@ -197,7 +203,7 @@ def grab(region):
         for key, value in item.items():
             if key == "products":
                 for objKey, objValue in value.items():
-                    if ( objValue["productFamily"] == "Compute Instance" and "vcpu" in objValue["attributes"] ):
+                    if (objValue["productFamily"] == "Compute Instance" and "vcpu" in objValue["attributes"] and "currentGeneration" in objValue["attributes"] and objValue["attributes"]["currentGeneration"] == "Yes"):
                         # insert each products into products collection, if it has at least the vcpu attribute
                         products[objKey] = objValue
 

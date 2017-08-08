@@ -7,7 +7,7 @@
             "id": 1
         },
         {
-            "task": "influxsrv",
+            "task": "influxdb",
             "id": 1
         },
         {
@@ -301,7 +301,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-alpha.s3.amazonaws.com\/snap-mongo-init.json"
+                                            "https:\/\/s3.amazonaws.com/hyperpilot-snap-alpha\/snap-mongo-init.json"
                                         ],
                                         "resources": {},
                                         "imagePullPolicy": "Always",
@@ -396,20 +396,20 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "influxsrv"
+                            "app": "influxdb"
                         },
-                        "name": "influxsrv"
+                        "name": "influxdb"
                     },
                     "spec": {
                         "replicas": 1,
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "influxsrv"
+                                    "app": "influxdb"
                                 }
                             },
                             "spec": {
-                                "hostname": "influxsrv",
+                                "hostname": "influxdb",
                                 "volumes": [
                                     {
                                         "hostPath": {
@@ -420,53 +420,53 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/benchmark-controller:dev",
-                                        "name": "benchmark-controller",
-                                        "imagePullPolicy": "Always",
+                                        "env": [
+                                            {
+                                                "name": "ADMIN_USER",
+                                                "value": "root"
+                                            },
+                                            {
+                                                "name": "PRE_CREATE_DB",
+                                                "value": "snap;spark"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_INIT_PWD",
+                                                "value": "default"
+                                            }
+                                        ],
+                                        "image": "hyperpilot\/influx:1.2.2",
+                                        "name": "influxdb",
                                         "ports": [
                                             {
-                                                "containerPort": 6001,
-                                                "hostPort": 6001,
+                                                "containerPort": 8083,
+                                                "hostPort": 8083,
                                                 "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8086,
+                                                "hostPort": 8086,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/lib\/influxdb",
+                                                "name": "influx-data"
                                             }
                                         ],
                                         "resources": {
                                             "requests": {
                                                 "cpu": "512.0m",
-                                                "memory": "350Mi"
+                                                "memory": "1024Mi"
                                             }
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "/var/run/docker.sock",
-                                                "name": "docker-sock"
-                                            },
-                                            {
-                                                "mountPath": "/usr/bin/docker",
-                                                "name": "usr-bin-docker"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "/var/run/docker.sock"
-                                        },
-                                        "name": "docker-sock"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "/usr/bin/docker"
-                                        },
-                                        "name": "usr-bin-docker"
+                                        }
                                     }
                                 ]
                             }
                         }
                     }
                 },
-                "family": "influxsrv",
+                "family": "influxdb",
                 "portTypes": [
                     1,
                     1

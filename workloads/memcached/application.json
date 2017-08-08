@@ -46,7 +46,7 @@
         "type": "latency"
     },
     "budget": {
-        "value": 150,
+        "value": 300,
         "unit": "dollar"
     },
     "deploymentTemplate": "analysis-base",

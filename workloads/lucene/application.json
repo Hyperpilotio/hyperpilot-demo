@@ -4,6 +4,7 @@
     "loadTester": {
         "name": "benchmark-controller",
         "benchmarkController": {
+            "runsPerIntensity": 1,
             "command": {
                 "image": "hyperpilot/load-tester:lucene",
                 "args": [
@@ -29,8 +30,8 @@
                     {
                         "name": "Number of connections",
                         "arg": "-c",
-                        "startingValue": 10,
-                        "step": 5
+                        "startingValue": 50,
+                        "step": 100
                     }
                 ]
             }
@@ -39,7 +40,7 @@
     "type": "long-running",
     "slo": {
         "metric": "ops/sec",
-        "value": 6,
+        "value": 20,
         "type": "throughput"
     },
     "deploymentTemplate": "analysis-base",
@@ -105,6 +106,9 @@
                                             "1"
                                         ],
                                         "resources": {
+                                            "requests": {
+                                                "memory": "13Gi"
+                                            }
                                         }
                                     }
                                 ]

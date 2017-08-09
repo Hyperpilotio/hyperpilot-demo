@@ -10,7 +10,6 @@ describe('Parser', function() {
           const parser = new Parser({});
           const lines = PARSER_DATASET.lucene[i].input.split('\n');
           const benchmarkObj = parser.processLines(lines);
-
           assert.equal(benchmarkObj['ops/sec'], PARSER_DATASET.lucene[i].expect['ops/sec']);
         }
       });

@@ -6,7 +6,7 @@
         "slowCookerController": {
             "appLoad": {
                 "qps": 5,
-                "url": "http://nginx.default/index.html",
+                "url": "http://nginx/index.html",
                 "method": "GET",
                 "totalRequests": 10000000
             },
@@ -25,7 +25,126 @@
         "type": "latency"
     },
     "budget": {
-	"value": 300,
-	"unit": "dollar"
-    }
+        "value": 300,
+        "unit": "dollar"
+    },
+    "deploymentTemplate": "analysis-base",
+    "taskDefinitions": [
+        {
+            "nodeMapping": {
+                "task": "slow-cooker",
+                "id": 1
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "slow-cooker"
+                        },
+                        "name": "slow-cooker"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "slow-cooker"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "slow-cooker"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "slow-cooker",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/slow_cooker",
+                                        "name": "slow-cooker",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8081,
+                                                "hostPort": 8081,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "args": [
+                                            "-mode", "server", "-v", "1", "-logtostderr"
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "500.0m",
+                                                "memory": "100Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "slow-cooker"
+            }
+        },
+        {
+            "nodeMapping": {
+                "task": "nginx",
+                "id": 2
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "nginx"
+                        },
+                        "name": "nginx"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "nginx"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "nginx"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "nginx",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/nginx-test",
+                                        "name": "nginx",
+                                        "ports": [
+                                            {
+                                                "containerPort": 80,
+                                                "hostPort": 80,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "500.0m",
+                                                "memory": "100Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "nginx"
+            }
+        }
+    ]
 }

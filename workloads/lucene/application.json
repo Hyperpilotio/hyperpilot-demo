@@ -43,7 +43,7 @@
         "value": 20,
         "type": "throughput"
     },
-    "deploymentTemplate": "analysis-base",
+    "deploymentTemplate": "memory-optimize",
     "taskDefinitions": [
         {
             "nodeMapping": {

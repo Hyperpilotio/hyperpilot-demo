@@ -1,5 +1,5 @@
 {
-  "appId": "59306145e3fd9e5094db04e5",
+  "sessionId": "59306145e3fd9e5094db04e5",
   "appName": "redis",
   "sloType": "throughput",
   "sloValue": 57085,

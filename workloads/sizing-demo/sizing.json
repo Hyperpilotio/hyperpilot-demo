@@ -1,71 +1,160 @@
 {
-  "sessionId": "59306145e3fd9e5094db04e5",
-  "appName": "redis",
-  "sloType": "throughput",
-  "sloValue": 57085,
-  "budget": 300,
-  "sizingRuns": [
-    {
-      "run": 1,
-      "samples": 3,
-      "results": [
-        {
-          "nodetype": "c3.4xlarge",
-          "status": "done",
-          "qosValue": 480000.0,
-          "cost": 420.48,
-          "perfOverCost": 1141.553
-        },
-        {
-          "nodetype": "m3.large",
-          "status": "done",
-          "qosValue": 60000.0,
-          "cost": 68.40,
-          "perfOverCost": 877.193
-        },
-        {
-          "nodetype": "r4.xlarge",
-          "status": "done",
-          "qosValue": 120000.0,
-          "cost": 120.96,
-          "perfOverCost": 992.063
-        }
-      ]
-    },
-    {
-      "run": 2,
-      "samples": 2,
-      "results": [
-        {
-          "nodetype": "p2.16xlarge",
-          "status": "done",
-          "qosValue": 1920000.0,
-          "cost": 7076.16,
-          "perfOverCost": 271.334 
-        },
-        {
-          "nodetype": "c4.4xlarge",
-          "status": "done",
-          "qosValue": 480000.0,
-          "cost": 362.88,
-          "perfOverCost": 1322.751 
-        }
-      ]
-    }
-  ],
-  "status": "complete",
-  "recommendations": [
-    {
-      "nodetype": "c4.4xlarge",
-      "objective": "MaxPerfOverCost"
-    },
-    {
-      "nodetype": "m3.large",
-      "objective": "MinCostWithPerfLimit"
-    },
-    {
-      "nodetype": "r4.xlarge",
-      "objective": "MaxPerfWithCostLimit"
-    }
-  ]
+	"_id" : ObjectId("598ce792b88e775263ead59c"),
+	"sessionId" : "hyperpilot-sizing-demo-3-horray",
+	"appName" : "redis",
+	"sloType" : "throughput",
+	"sloValue" : 50000,
+	"budget" : 300,
+	"sizingRuns" : [
+		{
+			"run" : 1,
+			"samples" : 3,
+			"results" : [
+				{
+					"nodetype" : "r4.2xlarge",
+					"status" : "done",
+					"qosValue" : 480000,
+					"cost" : 241.92000000000002,
+					"perfOverCost" : 1984.126984126984
+				},
+				{
+					"nodetype" : "d2.xlarge",
+					"status" : "done",
+					"qosValue" : 240000,
+					"cost" : 289.44,
+					"perfOverCost" : 829.1873963515754
+				},
+				{
+					"nodetype" : "m3.2xlarge",
+					"status" : "done",
+					"qosValue" : 480000,
+					"cost" : 273.6,
+					"perfOverCost" : 1754.3859649122805
+				}
+			]
+		},
+		{
+			"run" : 2,
+			"samples" : 3,
+			"results" : [
+				{
+					"nodetype" : "c4.8xlarge",
+					"status" : "done",
+					"qosValue" : 2160000,
+					"cost" : 725.76,
+					"perfOverCost" : 2976.190476190476
+				},
+				{
+					"nodetype" : "x1.16xlarge",
+					"status" : "done",
+					"qosValue" : 3840000,
+					"cost" : 2959.2000000000003,
+					"perfOverCost" : 1297.64801297648
+				},
+				{
+					"nodetype" : "m4.10xlarge",
+					"status" : "done",
+					"qosValue" : 2400000,
+					"cost" : 892.0800000000002,
+					"perfOverCost" : 2690.3416733925205
+				}
+			]
+		},
+		{
+			"run" : 3,
+			"samples" : 3,
+			"results" : [
+				{
+					"nodetype" : "c4.4xlarge",
+					"status" : "done",
+					"qosValue" : 960000,
+					"cost" : 362.88,
+					"perfOverCost" : 2645.5026455026455
+				},
+				{
+					"nodetype" : "g3.8xlarge",
+					"status" : "done",
+					"qosValue" : 1920000,
+					"cost" : 1120.392,
+					"perfOverCost" : 1713.68592421224
+				},
+				{
+					"nodetype" : "cr1.8xlarge",
+					"status" : "done",
+					"qosValue" : 1920000,
+					"cost" : 1216.08,
+					"perfOverCost" : 1578.8434971383463
+				}
+			]
+		},
+		{
+			"run" : 4,
+			"samples" : 3,
+			"results" : [
+				{
+					"nodetype" : "m4.4xlarge",
+					"status" : "done",
+					"qosValue" : 960000,
+					"cost" : 356.832,
+					"perfOverCost" : 2690.341673392521
+				},
+				{
+					"nodetype" : "r4.8xlarge",
+					"status" : "done",
+					"qosValue" : 1920000,
+					"cost" : 967.6800000000001,
+					"perfOverCost" : 1984.126984126984
+				},
+				{
+					"nodetype" : "d2.8xlarge",
+					"status" : "done",
+					"qosValue" : 2160000,
+					"cost" : 2315.52,
+					"perfOverCost" : 932.8358208955224
+				}
+			]
+		},
+		{
+			"run" : 5,
+			"samples" : 3,
+			"results" : [
+				{
+					"nodetype" : "i3.8xlarge",
+					"status" : "done",
+					"qosValue" : 1920000,
+					"cost" : 1234.08,
+					"perfOverCost" : 1555.8148580318943
+				},
+				{
+					"nodetype" : "p2.8xlarge",
+					"status" : "done",
+					"qosValue" : 1920000,
+					"cost" : 3538.08,
+					"perfOverCost" : 542.667209333876
+				},
+				{
+					"nodetype" : "i2.8xlarge",
+					"status" : "done",
+					"qosValue" : 1920000,
+					"cost" : 2442.2400000000002,
+					"perfOverCost" : 786.1635220125786
+				}
+			]
+		}
+	],
+	"status" : "complete",
+	"recommendations" : [
+		{
+			"nodetype" : "c4.8xlarge",
+			"objective" : "MaxPerfOverCost"
+		},
+		{
+			"nodetype" : "r4.2xlarge",
+			"objective" : "MinCostWithPerfLimit"
+		},
+		{
+			"nodetype" : "m3.2xlarge",
+			"objective" : "MaxPerfWithCostLimit"
+		}
+	]
 }

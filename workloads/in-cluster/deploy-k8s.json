@@ -26,7 +26,7 @@
     "clusterDefinition": {
         "nodes": [
             {
-                "instanceType": "t2.medium",
+                "instanceType": "t2.large",
                 "id": 1
             }
         ]
@@ -295,8 +295,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "1024Mi"
+                                                "cpu": "1024.0m",
+                                                "memory": "2048Mi"
                                             }
                                         }
                                     }

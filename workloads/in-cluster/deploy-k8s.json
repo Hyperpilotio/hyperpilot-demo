@@ -79,7 +79,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/deployer",
+                                        "image": "hyperpilot\/deployer:in-cluster",
                                         "name": "deployer",
                                         "ports": [
                                             {

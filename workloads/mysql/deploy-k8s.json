@@ -15,7 +15,7 @@
             "id": 2
         },
         {
-            "task": "tpcc-bench",
+            "task": "benchmark-controller",
             "id": 1
         }
     ],

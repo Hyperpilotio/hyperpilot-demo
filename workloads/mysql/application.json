@@ -19,11 +19,19 @@
             },
             "command": {
                 "path": "\/opt\/tpcc-mysql\/tpcc_start",
+                "parserUrl": "https:\/\/s3.amazonaws.com\/hyperpilot-benchmark-parsers\/mysql\/parser.js",
+                "serviceConfigs": [
+                    {
+                        "name": "tpcc_start",
+                        "hostConfig": {
+                            "arg": "-h",
+                            "description": "host of the service"
+                        }
+                    }
+                ],
                 "args": [
                     "-d",
                     "tpcc",
-                    "-h",
-                    "mysql-server",
                     "-u",
                     "root",
                     "-w",
@@ -48,12 +56,163 @@
     },
     "type": "long-running",
     "slo": {
-        "metric": "95th_percentile",
-        "value": 2.5,
-        "type": "latency"
+        "metric": "TpmC",
+        "value": 1000,
+        "type": "throughput"
     },
     "budget": {
         "value": 300,
         "unit": "dollar"
-    }
+    },
+    "deploymentTemplate": "analysis-base",
+    "taskDefinitions": [
+        {
+            "nodeMapping": {
+                "task": "mysql-server",
+                "id": 2
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "mysql-server"
+                        },
+                        "name": "mysql-server"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "mysql-server"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "mysql-server"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "mysql-server",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/tpcc-mysl",
+                                        "name": "mysql-server",
+                                        "ports": [
+                                            {
+                                                "containerPort": 3306,
+                                                "hostPort": 3306,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "1024.0m",
+                                                "memory": "2048Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    0
+                ],
+                "family": "mysql-server"
+            }
+        },
+        {
+            "nodeMapping": {
+                "task": "benchmark-controller",
+                "id": 1
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "benchmark-controller"
+                        },
+                        "name": "benchmark-controller"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "benchmark-controller"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "benchmark-controller"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/benchmark-controller:dev",
+                                        "name": "benchmark-controller",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 6001,
+                                                "hostPort": 6001,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "350Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
+                                            },
+                                            {
+                                                "mountPath": "\/usr\/bin\/docker",
+                                                "name": "usr-bin-docker"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/usr\/bin\/docker"
+                                        },
+                                        "name": "usr-bin-docker"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "benchmark-controller"
+            }
+        }
+    ]
 }

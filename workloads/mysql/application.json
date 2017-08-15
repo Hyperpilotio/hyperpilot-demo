@@ -10,16 +10,24 @@
             "initialize": {
                 "path": "\/opt\/tpcc-mysql\/run.sh",
                 "args": [
-                    "mysql-server",
                     "tpcc",
                     "root",
                     "",
                     "3"
+                ],
+                "serviceConfigs": [
+                    {
+                        "name": "redis-serve",
+                        "hostConfig": {
+                            "pos": 0,
+                            "description": "host of the service"
+                        }
+                    }
                 ]
             },
+            "parserUrl": "https:\/\/s3.amazonaws.com\/hyperpilot-benchmark-parsers\/mysql\/parser.js",
             "command": {
                 "path": "\/opt\/tpcc-mysql\/tpcc_start",
-                "parserUrl": "https:\/\/s3.amazonaws.com\/hyperpilot-benchmark-parsers\/mysql\/parser.js",
                 "serviceConfigs": [
                     {
                         "name": "tpcc_start",

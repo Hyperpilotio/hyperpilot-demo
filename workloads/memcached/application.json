@@ -6,6 +6,7 @@
     "loadTester": {
         "name": "benchmark-controller",
         "benchmarkController": {
+            "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/memcached/parser.js",
             "command": {
                 "image": "hyperpilot/load-tester:memcached",
                 "path": "mutilate",
@@ -18,7 +19,6 @@
                     "-Q",
                     "1000"
                 ],
-                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/memcached/parser.js",
                 "intensityArgs": [
                     {
                         "name": "Number of connections",

@@ -6,9 +6,9 @@
     "loadTester": {
         "name": "benchmark-controller",
         "benchmarkController": {
+            "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/kafka/parser.js",
             "command": {
                 "image": "hyperpilot/load-tester:kafka",
-                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/kafka/parser.js",
                 "path": "kafka-run-class-wrapper.sh",
                 "args": [
                     "org.apache.kafka.tools.ProducerPerformance",

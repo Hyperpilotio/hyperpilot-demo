@@ -6,9 +6,9 @@
     "loadTester": {
         "name": "benchmark-controller",
         "benchmarkController": {
+            "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/mongo/parser.js",
             "command": {
                 "image": "hyperpilot/load-tester:mongo",
-                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/mongo/parser.js",
                 "path": "/mongo-perf/benchrun.py",
                 "args": [
                     "-f",

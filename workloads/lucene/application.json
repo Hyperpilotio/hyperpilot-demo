@@ -4,7 +4,7 @@
     "loadTester": {
         "name": "benchmark-controller",
         "benchmarkController": {
-            "runsPerIntensity": 1,
+            "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/lucene/parser.js",
             "command": {
                 "image": "hyperpilot/load-tester:lucene",
                 "args": [
@@ -16,7 +16,6 @@
                     "60"
                 ],
                 "path": "-l",
-                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/lucene/parser.js",
                 "serviceConfigs": [
                     {
                         "name": "lucene-serve",

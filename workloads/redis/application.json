@@ -26,6 +26,7 @@
                     }
                 ]
             },
+            "parserUrl": "https:\/\/s3.amazonaws.com\/hyperpilot-benchmark-parsers\/redis\/parser.js",
             "command": {
                 "image": "redis:3-alpine",
                 "path": "redis-benchmark",
@@ -36,7 +37,6 @@
                     "-t",
                     "GET"
                 ],
-                "parserUrl": "https:\/\/s3.amazonaws.com\/hyperpilot-benchmark-parsers\/redis\/parser.js",
                 "serviceConfigs": [
                     {
                         "name": "redis-serve",

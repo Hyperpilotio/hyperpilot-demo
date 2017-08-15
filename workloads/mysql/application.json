@@ -4,7 +4,7 @@
         "mysql-server"
     ],
     "loadTester": {
-        "name": "tpcc-bench",
+        "name": "benchmark-controller",
         "benchmarkController": {
             "initializeType": "stage",
             "initialize": {

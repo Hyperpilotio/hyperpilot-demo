@@ -295,7 +295,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "512.0m",
                                                 "memory": "2048Mi"
                                             }
                                         }

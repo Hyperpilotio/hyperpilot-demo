@@ -62,7 +62,8 @@ const PARSER_DATASET = {
                 1106.400 TpmC`,
             'expect': {
                 '95th_percentile': 3.666,
-                '99th_percentile': 4.247
+                '99th_percentile': 4.247,
+                'TpmC': 1106.4
             }
         }
     ]

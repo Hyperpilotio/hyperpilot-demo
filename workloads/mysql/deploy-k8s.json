@@ -201,7 +201,7 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/benchmark-controller:tpcc-mysql",
+                                        "image": "hyperpilot\/benchmark-controller",
                                         "name": "mysql-bench",
                                         "imagePullPolicy": "Always",
                                         "ports": [

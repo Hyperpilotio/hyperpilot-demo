@@ -159,7 +159,7 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/benchmark-controller:dev",
+                                        "image": "hyperpilot\/benchmark-controller",
                                         "name": "benchmark-controller",
                                         "imagePullPolicy": "Always",
                                         "ports": [

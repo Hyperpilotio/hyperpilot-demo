@@ -299,8 +299,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1536.0m",
-                                                "memory": "2048Mi"
+                                                "cpu": "1024.0m",
+                                                "memory": "3072Mi"
                                             }
                                         }
                                     }
@@ -380,7 +380,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1536m",
+                                                "cpu": "1024m",
                                                 "memory": "4096Mi"
                                             }
                                         }

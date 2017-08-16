@@ -8,6 +8,7 @@
         "benchmarkController": {
             "initializeType": "stage",
             "initialize": {
+                "image": "hyperpilot\/load-tester:tpcc-mysql",
                 "path": "\/opt\/tpcc-mysql\/run.sh",
                 "args": [
                     "tpcc",
@@ -27,6 +28,7 @@
             },
             "parserUrl": "https:\/\/s3.amazonaws.com\/hyperpilot-benchmark-parsers\/mysql\/parser.js",
             "command": {
+                "image": "hyperpilot\/load-tester:tpcc-mysql",
                 "path": "\/opt\/tpcc-mysql\/tpcc_start",
                 "serviceConfigs": [
                     {

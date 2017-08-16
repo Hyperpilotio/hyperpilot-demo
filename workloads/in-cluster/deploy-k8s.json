@@ -12,7 +12,7 @@
         },
         {
             "task": "analyzer",
-            "id": 1
+            "id": 2
         },
         {
             "task": "mongo-serve",
@@ -20,7 +20,7 @@
         },
         {
             "task": "influxdb",
-            "id": 1
+            "id": 2
         }
     ],
     "clusterDefinition": {
@@ -28,6 +28,10 @@
             {
                 "instanceType": "t2.large",
                 "id": 1
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 2
             }
         ]
     },
@@ -295,7 +299,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
+                                                "cpu": "1536.0m",
                                                 "memory": "2048Mi"
                                             }
                                         }
@@ -318,8 +322,7 @@
                         "labels": {
                             "app": "influxdb"
                         },
-                        "name": "influxdb",
-                        "namespace": "hyperpilot"
+                        "name": "influxdb"
                     },
                     "spec": {
                         "replicas": 1,
@@ -377,7 +380,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "2048m",
+                                                "cpu": "1536m",
                                                 "memory": "4096Mi"
                                             }
                                         }

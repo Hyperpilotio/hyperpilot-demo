@@ -1,0 +1,134 @@
+{
+    "benchmarks": [
+        {
+            "name": "cpu",
+            "resourceType": "CPUCapacity",
+            "image": "hyperpilot\/hyperbench",
+            "intensity": 10,
+            "configs": [
+                {
+                    "name": "cpu",
+                    "cgroupConfig": {
+                        "setCpuQuota": true
+                    },
+                    "durationConfig": {
+                        "maxDuration": 3600
+                    },
+                    "command": {
+                        "path": ".\/cpu"
+                    },
+                    "placementHost": "service"
+                }
+            ]
+        },
+        {
+            "name": "memCap",
+            "resourceType": "MemoryCapacity",
+            "image": "hyperpilot\/hyperbench",
+            "intensity": 10,
+            "configs": [
+                {
+                    "name": "memCap",
+                    "placementHost": "service",
+                    "durationConfig": {
+                        "maxDuration": 3600
+                    },
+                    "command": {
+                        "path": ".\/memCap"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "memBw",
+            "resourceType": "MemorBandwidth",
+            "image": "hyperpilot\/hyperbench",
+            "intensity": 10,
+            "configs": [
+                {
+                    "name": "memBw",
+                    "placementHost": "service",
+                    "durationConfig": {
+                        "maxDuration": 3600
+                    },
+                    "command": {
+                        "path": ".\/memBw"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "l2",
+            "resourceType": "L2CacheCapacity",
+            "image": "hyperpilot\/hyperbench",
+            "intensity": 10,
+            "configs": [
+                {
+                    "name": "l2",
+                    "placementHost": "service",
+                    "durationConfig": {
+                        "maxDuration": 3600
+                    },
+                    "command": {
+                        "path": ".\/l2"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "l3",
+            "resourceType": "L3CacheCapacity",
+            "image": "hyperpilot\/hyperbench",
+            "intensity": 10,
+            "configs": [
+                {
+                    "name": "l3",
+                    "placementHost": "service",
+                    "durationConfig": {
+                        "maxDuration": 3600
+                    },
+                    "command": {
+                        "path": ".\/l3"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "iperf",
+            "resourceType": "NetworkBandwidth",
+            "image": "networkstatic\/iperf3",
+            "intensity": 10,
+            "configs": [
+                {
+                    "name": "iperf-server",
+                    "command": {
+                        "path": "",
+                        "args": [
+                            "-s"
+                        ]
+                    },
+                    "placementHost": "loadtester"
+                },
+                {
+                    "name": "iperf-client",
+                    "durationConfig": {
+                        "maxDuration": 3600,
+                        "arg": "-t"
+                    },
+                    "netConfig": {
+                        "maxBw": 1000,
+                        "arg": "-b"
+                    },
+                    "hostConfig": {
+                        "targetHost": "loadtester",
+                        "arg": "-c"
+                    },
+                    "command": {
+                        "path": ""
+                    },
+                    "placementHost": "service"
+                }
+            ]
+        }
+    ]
+}

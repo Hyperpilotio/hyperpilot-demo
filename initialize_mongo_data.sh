@@ -17,6 +17,8 @@ mongo $MONGO_URL:27017/admin -u analyzer -p hyperpilot benchmarks/create-dbuser.
 pwd
 (cd benchmarks && python collect_benchmarks.py $MONGO_URL) || cd ..
 
+(cd workloads && python collect_applications.py $MONGO_URL) || cd ..
+
 (cd workloads/common/ && ./upload.sh $DEPLOYER_URL) || cd ../../
 
 echo "Workload profiler is available at: $PROFILER_URL"

@@ -42,7 +42,7 @@ def getPreviousGenerationTypes():
     # the pricing API json currentGeneration attribute is not always correct.
     previousGenerationTypes = []
     mp = soup(urllib2.urlopen("https://aws.amazon.com/ec2/previous-generation/"), "html.parser")
-    table = mp.find(id="element-bbb1ae82-351a-4027-870d-ab82a58d9d91")
+    table = mp.find(id="Previous_Generation_Instance_Details").parent.parent.parent.find_next_sibling("div")
     trs = table.find_all("tr")
     firstRow = True
     for row in trs:
@@ -126,17 +126,19 @@ def makeValueWithUnit(value, unit):
     data.unit = unit
     return data
 
+
 def compose(region, previousGenerationTypes):
+    """Compose data."""
     # search for insTypes
     insTypes = list(set(map(lambda x: x["attributes"]["instanceType"], products.values())))
     ec2Instances = ObjDict()
     ec2Instances.data = []
     ec2Instances.region = region
+    previousGenerationInstances = ObjDict()
+    previousGenerationInstances.data = []
+    previousGenerationInstances.region = region
     # for each insTypes find Linux / Windows pricing
     for insType in insTypes:
-        if insType in previousGenerationTypes:
-            print("Skipping {} as it's previous generation instance type".format(insType))
-            continue
 
         productList = filter(lambda x:
                              x["attributes"]["instanceType"] == insType and
@@ -208,8 +210,11 @@ def compose(region, previousGenerationTypes):
             result.storageConfig.expectedThroughput = makeValueWithUnit(float(ebsItem[KEY_NETWORK_BANDWIDTH_EXPECTED_THROUGHPUT].replace(",", "")), "MB/s")
             result.storageConfig.maxIOPS = makeValueWithUnit(int(ebsItem[KEY_NETWORK_BANDWIDTH_MAX_IOPS].replace(",", "")), "16KB I/O size")
 
-        ec2Instances.data.append(result)
-    return ec2Instances
+        if insType in previousGenerationTypes:
+            previousGenerationInstances.data.append(result)
+        else:
+            ec2Instances.data.append(result)
+    return ec2Instances, previousGenerationInstances
 
 
 def grab(region):
@@ -300,15 +305,17 @@ def findPrice(instanceType):
     return hourlyCost
 
 
-def updateDB(mongoUrl, region, postData):
-    """update mongo db."""
+def updateNodeTypes(mongoUrl, currentGeneration, region, postData):
+    """Update mongo db."""
     client = MongoClient(mongoUrl)
     db = client.configdb
     # search for record
     post = postData
-    result = db.nodetypes.update({"region": region}, post, upsert=True)
+    if (currentGeneration):
+        result = db.nodetypes.update({"region": region}, post, upsert=True)
+    else:
+        result = db.previousGeneration.update({"region": region}, post, upsert=True)
     print result
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -339,17 +346,18 @@ if __name__ == '__main__':
     else:
         regions.append(args.region)
 
-    print regions
-
     previousGenerationTypes = getPreviousGenerationTypes()
 
     for region in regions:
         grab(region)
-        result = compose(region, previousGenerationTypes)
+        resultCurrentGeneration, resultPreviousGeneration = compose(region, previousGenerationTypes)
         try:
-            updateDB(args.conn, region, result)
+            updateNodeTypes(args.conn, True, region, resultCurrentGeneration)
+            updateNodeTypes(args.conn, False, region, resultPreviousGeneration)
         except Exception as e:
             print "Error: {}".format(e)
             sys.exit()
         with open("{}-{}".format(region, args.output), "w") as dumpFile:
-            dumpFile.write(json.dumps(json.loads(result.__str__()), indent=4))
+            dumpFile.write(json.dumps(json.loads(resultCurrentGeneration.__str__()), indent=4))
+        with open("pre-{}-{}".format(region, args.output), "w") as dumpFile:
+            dumpFile.write(json.dumps(json.loads(resultPreviousGeneration.__str__()), indent=4))

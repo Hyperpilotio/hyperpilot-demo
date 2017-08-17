@@ -109,7 +109,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/tpcc-mysl",
+                                        "image": "hyperpilot\/tpcc-mysql",
                                         "name": "mysql-server",
                                         "ports": [
                                             {

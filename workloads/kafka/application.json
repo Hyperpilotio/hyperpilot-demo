@@ -211,7 +211,11 @@
                             }
                         }
                     }
-                }
+                },
+                "portTypes": [
+                    0
+                ],
+                "family": "zookeeper"
             }
         },
         {

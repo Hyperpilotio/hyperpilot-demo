@@ -10,8 +10,8 @@ POST_ARG=-XPOST -H "Content-Type: application/json"
 CURL_ARGS=-d "{\"startingIntensity\":10, \"step\": 10}"
 
 # URL
-DEPLOYER_URL=localhost:7777
-PROFILER_URL=localhost:7779
+DEPLOYER_URL=a7ed96f5e83ab11e7b0eb12f752fb7c5-691310979.us-east-1.elb.amazonaws.com:7777
+PROFILER_URL=a7efee56283ab11e7b0eb12f752fb7c5-2044973536.us-east-1.elb.amazonaws.com:7779
 
 help: ## This help message
 	@echo "             COMMAND"

@@ -8,7 +8,7 @@ import os
 import json
 from pymongo import MongoClient
 
-MONGO_URL = "internal-mongo-elb-624130134.us-east-1.elb.amazonaws.com:27017"
+MONGO_URL = "ds129593.mlab.com:29593"
 MONGO_USER = "analyzer"
 MONGO_PASSWORD = "hyperpilot"
 CONFIGDB_NAME = "configdb"

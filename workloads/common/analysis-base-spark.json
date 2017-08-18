@@ -1,7 +1,24 @@
 {
-    "name": "analysis-base",
+    "UserId": "david",
+    "name": "analysis-base-spark",
     "region": "us-east-1",
     "nodeMapping": [
+        {
+            "task": "benchmark-agent",
+            "id": 2
+        },
+        {
+            "task": "benchmark-agent",
+            "id": 3
+        },
+        {
+            "task": "snap-agent",
+            "id": 2
+        },
+        {
+            "task": "snap-agent",
+            "id": 3
+        }
     ],
     "clusterDefinition": {
         "nodes": [
@@ -12,6 +29,10 @@
             {
                 "instanceType": "t2.large",
                 "id": 2
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 3
             }
         ]
     },
@@ -68,9 +89,9 @@
                                             }
                                         ],
                                         "resources": {
-                                            "requests": {
-                                                "cpu": "64.0m",
-                                                "memory": "64Mi"
+                                            "limits": {
+                                                "cpu": "1024.0m",
+                                                "memory": "500Mi"
                                             }
                                         },
                                         "volumeMounts": [

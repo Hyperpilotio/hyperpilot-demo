@@ -101,11 +101,11 @@
                                         "env": [
                                             {
                                                 "name": "AWS_ACCESS_KEY_ID",
-                                                "value": "AKIAIB2YMXXKLRAKQE6Q"
+                                                "value": "AKIAJF232NDCBRBESZAA"
                                             },
                                             {
                                                 "name": "AWS_SECRET_ACCESS_KEY",
-                                                "value": "0Hlr6bdj2a3XF7YpEaPUTcGUckmY6Tq1mvj+\/TCL"
+                                                "value": "6WCSJzthddGHDBQqsWAxrKTVqwgSQWN9TLPQWcVa"
                                             }
                                         ]
                                     }
@@ -152,7 +152,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/workload-profiler",
+                                        "image": "hyperpilot\/workload-profiler:swh",
                                         "name": "deployer",
                                         "ports": [
                                             {
@@ -170,11 +170,11 @@
                                         "env": [
                                             {
                                                 "name": "AWS_ACCESS_KEY_ID",
-                                                "value": "AKIAIB2YMXXKLRAKQE6Q"
+                                                "value": "AKIAJF232NDCBRBESZAA"
                                             },
                                             {
                                                 "name": "AWS_SECRET_ACCESS_KEY",
-                                                "value": "0Hlr6bdj2a3XF7YpEaPUTcGUckmY6Tq1mvj+\/TCL"
+                                                "value": "6WCSJzthddGHDBQqsWAxrKTVqwgSQWN9TLPQWcVa"
                                             }
                                         ]
                                     }

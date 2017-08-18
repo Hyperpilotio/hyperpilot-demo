@@ -1,14 +1,16 @@
 {
     "name": "spark",
     "serviceNames": [
-        "spark-master"
+        "spark-master",
+        "spark-worker-1",
+        "spark-worker-2"
     ],
     "loadTester": {
         "name": "benchmark-controller",
         "benchmarkController": {
             "command": {
                 "image": "hyperpilot/spark-load-controller:latest",
-                "path": ".\/run_jobs.sh",
+                "path": ".\/run.py",
                 "args": [],
                 "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/spark/parser.js",
                 "intensityArgs": []
@@ -18,14 +20,14 @@
     "type": "long-running",
     "slo": {
         "metric": "time",
-        "value": 1000,
+        "value": 300.0,
         "type": "latency"
     },
     "budget": {
         "value": 300,
         "unit": "dollar"
     },
-    "deploymentTemplate": "analysis-base",
+    "deploymentTemplate": "analysis-base-spark",
     "taskDefinitions": [
         {
             "nodeMapping": {
@@ -115,7 +117,7 @@
         },
         {
             "nodeMapping": {
-                "task": "spark-worker",
+                "task": "spark-worker-1",
                 "id": 2
             },
             "taskDefinition": {
@@ -124,25 +126,21 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "spark-worker"
+                            "app": "spark-worker-1"
                         },
-                        "name": "spark-worker"
+                        "name": "spark-worker-1"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "spark-worker"
+                                "app": "spark-worker-1"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "spark-worker",
-                                    "hyperpilot.io/wclass": "BE"
-                                },
-                                "annotations": {
-                                    "scheduler.alpha.kubernetes.io/affinity": "{\n                                        \"nodeAffinity\": {\n                                            \"requiredDuringSchedulingIgnoredDuringExecution\": {\n                                                \"nodeSelectorTerms\": [\n                                                    {\n                                                        \"matchExpressions\": [\n                                                            {\n                                                                \"key\": \"hyperpilot.io\/be-enabled\",\n                                                                \"operator\": \"In\",\n                                                                \"values\": [\n                                                                    \"true\"\n                                                                ]\n                                                            }\n                                                        ]\n                                                    }\n                                                ]\n                                            }\n                                        }\n                                    }"
+                                    "app": "spark-worker-1"
                                 }
                             },
                             "spec": {
@@ -163,7 +161,7 @@
                                             }
                                         ],
                                         "image": "hyperpilot/spark:2.1.0-hadoop-2.7",
-                                        "name": "spark-worker",
+                                        "name": "spark-worker-1",
                                         "env": [
                                             {
                                                 "name": "SPARK_WORKER_PORT",
@@ -178,9 +176,9 @@
                                             "bin\/spark-class",
                                             "org.apache.spark.deploy.worker.Worker",
                                             "--cores",
-                                            "9",
+                                            "1",
                                             "--memory",
-                                            "15360M",
+                                            "6144M",
                                             "spark:\/\/spark-master:7077"
                                         ],
                                         "ports": [
@@ -197,7 +195,90 @@
                         }
                     }
                 },
-                "family": "spark-worker"
+                "family": "spark-worker-1"
+            }
+        },
+        {
+            "nodeMapping": {
+                "task": "spark-worker-2",
+                "id": 3
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "spark-worker-2"
+                        },
+                        "name": "spark-worke-2"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "spark-worker-2"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "spark-worker-2"
+                                }
+                            },
+                            "spec": {
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/spark-local-dir"
+                                        },
+                                        "name": "spark-local-dir"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/tmp\/spark",
+                                                "name": "spark-local-dir"
+                                            }
+                                        ],
+                                        "image": "hyperpilot/spark:2.1.0-hadoop-2.7",
+                                        "name": "spark-worker-2",
+                                        "env": [
+                                            {
+                                                "name": "SPARK_WORKER_PORT",
+                                                "value": "0"
+                                            },
+                                            {
+                                                "name": "SPARK_LOCAL_DIRS",
+                                                "value": "\/tmp\/spark"
+                                            }
+                                        ],
+                                        "command": [
+                                            "bin\/spark-class",
+                                            "org.apache.spark.deploy.worker.Worker",
+                                            "--cores",
+                                            "2",
+                                            "--memory",
+                                            "8192M",
+                                            "spark:\/\/spark-master:7077"
+                                        ],
+                                        "ports": [
+                                            {
+                                                "containerPort": 8081,
+                                                "hostPort": 8081,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {}
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "spark-worker-2"
             }
         },
         {
@@ -207,7 +288,7 @@
             },
             "taskDefinition": {
                 "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
+                    "apiVersion": "extensions/v1beta1",
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
@@ -286,58 +367,6 @@
                     1
                 ],
                 "family": "benchmark-controller"
-            }
-        },
-        {
-            "nodeMapping": {
-                "task": "spark-load-controller",
-                "id": 1
-            },
-            "taskDefinition": {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "spark-load-controller",
-                            "version": "latest"
-                        },
-                        "name": "spark-load-controller",
-                        "namespace": "hyperpilot"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "spark-load-controller",
-                                "version": "latest"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "spark-load-controller",
-                                    "version": "latest"
-                                }
-                            },
-                            "spec": {
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/spark-load-controller:multiple_terasort",
-                                        "name": "spark-load-controller",
-                                        "imagePullPolicy": "Always",
-                                        "command": [
-                                            ".\/run_jobs.sh",
-                                            "6"
-                                        ],
-                                        "resources": {}
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "spark-load-controller"
             }
         }
     ]

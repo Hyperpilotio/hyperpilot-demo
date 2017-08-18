@@ -36,6 +36,7 @@ cpuCredits = []
 bandwidth = []
 clusterNetworking = ["r4", "x1", "m4", "c4", "c3", "i2", "cr1", "hs1", "p2", "g3", "d2"]
 
+
 def getPreviousGenerationTypes():
     """Get previous generation instance type."""
     # We need to grab the previous generation types from the amazon website because
@@ -210,7 +211,8 @@ def compose(region, previousGenerationTypes):
             result.storageConfig.expectedThroughput = makeValueWithUnit(float(ebsItem[KEY_NETWORK_BANDWIDTH_EXPECTED_THROUGHPUT].replace(",", "")), "MB/s")
             result.storageConfig.maxIOPS = makeValueWithUnit(int(ebsItem[KEY_NETWORK_BANDWIDTH_MAX_IOPS].replace(",", "")), "16KB I/O size")
 
-        if insType in previousGenerationTypes:
+        if insType in previousGenerationTypes or \
+                product["attributes"].get("currentGeneration", "") == "No":
             previousGenerationInstances.data.append(result)
         else:
             ec2Instances.data.append(result)
@@ -230,7 +232,7 @@ def grab(region):
         for key, value in item.items():
             if key == "products":
                 for objKey, objValue in value.items():
-                    if (objValue["productFamily"] == "Compute Instance" and "vcpu" in objValue["attributes"] and "currentGeneration" in objValue["attributes"] and objValue["attributes"]["currentGeneration"] == "Yes"):
+                    if (objValue["productFamily"] == "Compute Instance" and "vcpu" in objValue["attributes"] and "currentGeneration" in objValue["attributes"]):
                         # insert each products into products collection, if it has at least the vcpu attribute
                         products[objKey] = objValue
 
@@ -314,7 +316,7 @@ def updateNodeTypes(mongoUrl, currentGeneration, region, postData):
     if (currentGeneration):
         result = db.nodetypes.update({"region": region}, post, upsert=True)
     else:
-        result = db.previousGeneration.update({"region": region}, post, upsert=True)
+        result = db.previousgenerations.update({"region": region}, post, upsert=True)
     print result
 
 if __name__ == '__main__':

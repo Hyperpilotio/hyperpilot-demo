@@ -155,7 +155,7 @@
                 "portTypes": [
                     0, 0
                 ],
-                "family": "mysql-server"
+                "family": "kafka-serve"
             }
         },
         {

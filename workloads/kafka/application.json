@@ -1,7 +1,7 @@
 {
     "name": "kafka",
     "serviceNames": [
-        "kafka-serve", "zookeeper"
+        "kafka-serve"
     ],
     "loadTester": {
         "name": "benchmark-controller",
@@ -90,5 +90,217 @@
     "budget": {
         "value": 300,
         "unit": "dollar"
-    }
+    },
+    "deploymentTemplate": "analysis-base-3-nodes",
+    "taskDefinitions": [
+        {
+            "nodeMapping": {
+                "task": "kafka-serve",
+                "id": 2
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "kafka-serve"
+                        },
+                        "name": "kafka-serve"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "kafka-serve"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "kafka-serve"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "kafka-serve",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/kafka",
+                                        "name": "kafka-serve",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 9092,
+                                                "hostPort": 9092,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8082,
+                                                "hostPort": 8082,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "1024.0m",
+                                                "memory": "1536Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    0, 0
+                ],
+                "family": "mysql-server"
+            }
+        },
+        {
+            "nodeMapping": {
+                "task": "zookeeper",
+                "id": 3
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "zookeeper"
+                        },
+                        "name": "zookeeper"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "zookeeper"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "zookeeper"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "zookeeper",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/zookeeper",
+                                        "name": "zookeeper",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 2181,
+                                                "hostPort": 2181,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "1024.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "nodeMapping": {
+                "task": "benchmark-controller",
+                "id": 1
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "benchmark-controller"
+                        },
+                        "name": "benchmark-controller"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "benchmark-controller"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "benchmark-controller"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/benchmark-controller",
+                                        "name": "benchmark-controller",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 6001,
+                                                "hostPort": 6001,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "350Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
+                                            },
+                                            {
+                                                "mountPath": "\/usr\/bin\/docker",
+                                                "name": "usr-bin-docker"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/usr\/bin\/docker"
+                                        },
+                                        "name": "usr-bin-docker"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "benchmark-controller"
+            }
+        }
+    ]
 }

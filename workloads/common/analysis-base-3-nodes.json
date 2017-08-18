@@ -1,5 +1,5 @@
 {
-    "name": "analysis-base",
+    "name": "analysis-base-3-nodes",
     "region": "us-east-1",
     "nodeMapping": [
     ],
@@ -12,6 +12,10 @@
             {
                 "instanceType": "t2.large",
                 "id": 2
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 3
             }
         ]
     },

@@ -2,14 +2,6 @@
     "name": "analysis-base",
     "region": "us-east-1",
     "nodeMapping": [
-        {
-            "task": "benchmark-agent",
-            "id": 1
-        },
-        {
-            "task": "benchmark-agent",
-            "id": 2
-        }
     ],
     "clusterDefinition": {
         "nodes": [

@@ -16,14 +16,14 @@ ARGS=$@
 
 if [ "X$KAFKA_PORT" != "X" ]; then
 			KAFKA_ADDRESS="$KAFKA_HOST:$KAFKA_PORT"
-else 
+else
 			KAFKA_ADDRESS="$KAFKA_HOST"
 fi
 
 
 if [ "X$ZOOKEEPER_PORT" != "X" ]; then
 			ZOOKEEPER_ADDRESS="$ZOOKEEPER_HOST:$ZOOKEEPER_PORT"
-else 
+else
 			ZOOKEEPER_ADDRESS="$ZOOKEEPER_HOST"
 fi
 
@@ -36,11 +36,11 @@ fi
 echo "Generating config files ..."
 
 # Generate config folder and files according to the arguments
-# echo "generate_consumer_properties.sh $ZOOKEEPER_ADDRESS > ${KAFKA_HOME}/config/consumer.properties"
-# generate_consumer_properties.sh $ZOOKEEPER_ADDRESS > ${KAFKA_HOME}/config/consumer.properties
+echo "generate_consumer_properties.sh $ZOOKEEPER_ADDRESS > ${KAFKA_HOME}/config/consumer.properties"
+generate_consumer_properties.sh $ZOOKEEPER_ADDRESS > ${KAFKA_HOME}/config/consumer.properties
 
-# echo "generate_producer_properties.sh $KAFKA_ADDRESS > ${KAFKA_HOME}/config/producer.properties"
-# generate_producer_properties.sh $KAFKA_ADDRESS > ${KAFKA_HOME}/config/producer.properties
+echo "generate_producer_properties.sh $KAFKA_ADDRESS > ${KAFKA_HOME}/config/producer.properties"
+generate_producer_properties.sh $KAFKA_ADDRESS > ${KAFKA_HOME}/config/producer.properties
 
 # Call kafka-run-class.sh
 echo "kafka-run-class.sh $ARGS"

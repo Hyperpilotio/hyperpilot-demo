@@ -1,4 +1,4 @@
-FROM java:8u111-jdk 
+FROM java:8u111-jdk
 
 # Install Kafka
 ARG kafka_version=0.10.2.1
@@ -24,4 +24,4 @@ COPY config/consumer.properties ${KAFKA_HOME}/config/consumer.properties
 COPY config/producer.properties ${KAFKA_HOME}/config/producer.properties
 
 # A wrapper for kafka-run-class.sh
-ADD bin/kafka-run-class-wrapper.sh ${KAFKA_HOME}/bin/kafka-run-class-wrapper.sh
+ADD bin/ ${KAFKA_HOME}/bin/

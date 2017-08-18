@@ -4,7 +4,7 @@ if [ -z "$1" ]
 then
     MONGO_URL=localhost:27017
 else
-    MONGO_URL=$1:27017
+    MONGO_URL=$1
 fi
 
 MONGO_USER=analyzer

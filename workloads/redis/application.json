@@ -54,8 +54,8 @@
                     {
                         "name": "Number of connections",
                         "arg": "-c",
-                        "startingValue": 5,
-                        "step": 3
+                        "startingValue": 10,
+                        "step": 20
                     }
                 ]
             }

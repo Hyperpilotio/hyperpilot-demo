@@ -1,0 +1,344 @@
+{
+    "name": "test-ci",
+    "userId": "william",
+    "region": "us-east-1",
+    "files":[
+        {
+            "fileId": "mongo_users",
+            "path": "\/home\/ubuntu\/bootstrap\/create-dbusers.js"
+        },
+        {
+            "fileId": "configdb",
+            "path": "\/home\/ubuntu\/bootstrap\/update_db.sh"
+        },
+        {
+            "fileId": "benchmarks_settings",
+            "path": "\/home\/ubuntu\/bootstrap\/collect_benchmarks.py"
+        },
+        {
+            "fileId": "collect_applications",
+            "path": "\/home\/ubuntu\/bootstrap\/collect_applications.py"
+        },
+        {
+            "fileId": "analysis_base",
+            "path": "\/home\/ubuntu\/bootstrap\/upload.sh"
+        },
+        {
+            "fileId": "benchmarks_json",
+            "path": "\/home\/ubuntu\/bootstrap\/benchmarks.json"
+        }
+    ],
+    "nodeMapping": [
+        {
+            "task": "deployer",
+            "id": 1
+        },
+        {
+            "task": "workload-profiler",
+            "id": 1
+        },
+        {
+            "task": "analyzer",
+            "id": 1
+        },
+        {
+            "task": "mongo",
+            "id": 1
+        }
+    ],
+    "clusterDefinition": {
+        "nodes": [
+            {
+                "instanceType": "t2.large",
+                "id": 1
+            }
+        ]
+    },
+    "kubernetes": {
+        "secrets": [
+            {
+                "apiVersion": "v1",
+                "kind": "Secret",
+                "metadata": {
+                    "name": "myregistrykey"
+                },
+                "type": "kubernetes.io\/dockerconfigjson",
+                "data": {
+                    ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmRIVnpaWEk2YUhsd1pYSXhNak09IgoJCX0KCX0KfQ=="
+                }
+            }
+        ],
+        "taskDefinitions": [
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "mongo"
+                        },
+                        "name": "mongo"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "mongo"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "mongo"
+                                }
+                            },
+                            "spec": {
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/mongo_data"
+                                        },
+                                        "name": "mongo-data"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/data\/db",
+                                                "name": "mongo-data"
+                                            }
+                                        ],
+                                        "image": "mongo",
+                                        "name": "mongo",
+                                        "ports": [
+                                            {
+                                                "containerPort": 27017,
+                                                "hostPort": 27017,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512m",
+                                                "memory": "512Mi"
+                                            }
+                                        },
+                                        "env": [
+                                            {
+                                                "name": "MONGO_INITDB_ROOT_USERNAME",
+                                                "value": "analyzer"
+                                            },
+                                            {
+                                                "name": "MONGO_INITDB_ROOT_PASSWORD",
+                                                "value": "hyperpilot"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "mongo"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "deployer"
+                        },
+                        "name": "deployer"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "deployer"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "deployer"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "hostname": "deployer",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/deployer:alan",
+                                        "name": "deployer",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7777,
+                                                "hostPort": 7777,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "256.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        },
+                                        "env": [
+                                            {
+                                                "name": "AWS_ACCESS_KEY_ID",
+                                                "value": "AKIAIZ6UPMWK3A7HGPBQ"
+                                            },
+                                            {
+                                                "name": "AWS_SECRET_ACCESS_KEY",
+                                                "value": "ee4wtJc6O+z3nDOH+limT1aXTBA/G4HiSOm8uQ/g"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "deployer"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "workload-profiler"
+                        },
+                        "name": "workload-profiler"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "workload-profiler"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "workload-profiler"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "hostname": "deployer",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/workload-profiler:william",
+                                        "name": "deployer",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7779,
+                                                "hostPort": 7779,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        },
+                                        "env": [
+                                            {
+                                                "name": "AWS_ACCESS_KEY_ID",
+                                                "value": "AKIAIZ6UPMWK3A7HGPBQ"
+                                            },
+                                            {
+                                                "name": "AWS_SECRET_ACCESS_KEY",
+                                                "value": "ee4wtJc6O+z3nDOH+limT1aXTBA/G4HiSOm8uQ/g"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "workload-profiler"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "analyzer"
+                        },
+                        "name": "analyzer"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "analyzer"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "analyzer"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "hostname": "analyzer",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/analyzer:tim",
+                                        "name": "analyzer",
+                                        "ports": [
+                                            {
+                                                "containerPort": 5000,
+                                                "hostPort": 5000,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "analyzer"
+            }
+        ]
+    }
+}

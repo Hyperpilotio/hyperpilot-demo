@@ -1,0 +1,14 @@
+version: '3'
+services:
+    deployer:
+        image: hyperpilot/deployer:test
+        ports:
+            - "7777:7777"
+        environment:
+            - AWS_ACCESS_KEY_ID=AKIAIZ6UPMWK3A7HGPBQ
+            - AWS_SECRET_ACCESS_KEY=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
+
+    bootstrap:
+        build: .
+        links:
+            - deployer:deployer

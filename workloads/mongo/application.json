@@ -118,7 +118,7 @@
                     }
                 },
                 "portTypes": [
-                    1
+                    0
                 ],
                 "family": "mongo-serve"
             }

@@ -58,7 +58,7 @@
                         "name": "Number of connections",
                         "arg": "-c",
                         "startingValue": 150,
-                        "step": 15
+                        "step": 10
                     }
                 ]
             }
@@ -67,7 +67,7 @@
     "type": "long-running",
     "slo": {
         "metric": "TpmC",
-        "value": 1000,
+        "value": 8000,
         "type": "throughput"
     },
     "budget": {
@@ -120,7 +120,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "900.0m",
+                                                "cpu": "900m",
                                                 "memory": "2048Mi"
                                             }
                                         }
@@ -184,8 +184,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "350Mi"
+                                                "cpu": "500m",
+                                                "memory": "350M"
                                             }
                                         },
                                         "volumeMounts": [

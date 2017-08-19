@@ -84,7 +84,7 @@
     "type": "long-running",
     "slo": {
         "metric": "99thLatency",
-        "value": 500,
+        "value": 450,
         "type": "latency"
     },
     "budget": {
@@ -142,7 +142,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "1000m",
                                                 "memory": "1536Mi"
                                             }
                                         }
@@ -202,7 +202,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "1000m",
                                                 "memory": "1024Mi"
                                             }
                                         }
@@ -266,8 +266,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "350Mi"
+                                                "cpu": "500m",
+                                                "memory": "350M"
                                             }
                                         },
                                         "volumeMounts": [

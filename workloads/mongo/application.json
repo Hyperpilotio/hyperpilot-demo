@@ -41,7 +41,7 @@
     "type": "long-running",
     "slo": {
         "metric": "Update.SetWithMultiIndex.Random",
-        "value": 11112,
+        "value": 11000,
         "type": "throughput"
     },
     "budget": {
@@ -107,7 +107,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
+                                                "cpu": "500m",
                                                 "memory": "1024Mi"
                                             }
                                         }
@@ -171,8 +171,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "350Mi"
+                                                "cpu": "500m",
+                                                "memory": "350M"
                                             }
                                         },
                                         "volumeMounts": [

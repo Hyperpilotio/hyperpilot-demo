@@ -117,8 +117,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "500.0m",
-                                                "memory": "100Mi"
+                                                "cpu": "500m",
+                                                "memory": "128Mi"
                                             }
                                         }
                                     }
@@ -181,8 +181,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "350Mi"
+                                                "cpu": "500m",
+                                                "memory": "350M"
                                             }
                                         },
                                         "volumeMounts": [

@@ -57,8 +57,8 @@
                     {
                         "name": "Number of connections",
                         "arg": "-c",
-                        "startingValue": 150,
-                        "step": 10
+                        "startingValue": 155,
+                        "step": 15
                     }
                 ]
             }
@@ -120,8 +120,8 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "900m",
-                                                "memory": "2048Mi"
+                                                "cpu": "900.0m",
+                                                "memory": "1500Mi"
                                             }
                                         }
                                     }

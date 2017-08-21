@@ -1,4 +1,4 @@
-DEPLOYER_URL=a7ed96f5e83ab11e7b0eb12f752fb7c5-691310979.us-east-1.elb.amazonaws.com:7777
+DEPLOYER_URL=ac3c0e2b286a711e7a976121637a557b-365227458.us-east-1.elb.amazonaws.com:7777
 #DEPLOYER_URL=localhost:7777
 
 upload-analysis-base-file:

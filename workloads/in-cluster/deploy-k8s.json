@@ -17,10 +17,6 @@
         {
             "task": "mongo-serve",
             "id": 1
-        },
-        {
-            "task": "influxdb",
-            "id": 2
         }
     ],
     "clusterDefinition": {
@@ -93,7 +89,7 @@
                                             }
                                         ],
                                         "resources": {
-                                            "limits": {
+                                            "requests": {
                                                 "cpu": "512.0m",
                                                 "memory": "1024Mi"
                                             }
@@ -162,9 +158,9 @@
                                             }
                                         ],
                                         "resources": {
-                                            "limits": {
+                                            "requests": {
                                                 "cpu": "512.0m",
-                                                "memory": "1024Mi"
+                                                "memory": "2048Mi"
                                             }
                                         },
                                         "env": [

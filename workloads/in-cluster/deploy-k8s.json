@@ -15,6 +15,10 @@
             "id": 2
         },
         {
+            "task": "analyzer-ui",
+            "id": 2
+        },
+        {
             "task": "mongo-serve",
             "id": 1
         }
@@ -144,7 +148,7 @@
                                         "name": "myregistrykey"
                                     }
                                 ],
-                                "hostname": "deployer",
+                                "hostname": "workload-profiler",
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
@@ -280,7 +284,7 @@
                                         "name": "myregistrykey"
                                     }
                                 ],
-                                "hostname": "deployer",
+                                "hostname": "analyzer",
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
@@ -309,6 +313,65 @@
                     0
                 ],
                 "family": "analyzer"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "analyzer-ui"
+                        },
+                        "name": "analyzer-ui"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "analyzer-ui"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "analyzer-ui"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "hostname": "analyzer-ui",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/analyzer-ui",
+                                        "name": "analyzer-ui",
+                                        "ports": [
+                                            {
+                                                "containerPort": 3000,
+                                                "hostPort": 3000,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "512Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "analyzer-ui"
             },
             {
                 "deployment": {

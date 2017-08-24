@@ -1,4 +1,6 @@
-DEPLOYER_URL=ac3c0e2b286a711e7a976121637a557b-365227458.us-east-1.elb.amazonaws.com:7777
+# URL
+DEPLOYER_URL=`(kubectl describe services deployer-publicport | grep elb | cut -d ":" -f2 | xargs)`:7777
+
 #DEPLOYER_URL=localhost:7777
 
 upload-analysis-base-file:

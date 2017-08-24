@@ -10,14 +10,6 @@
         {
             "task": "benchmark-agent",
             "id": 3
-        },
-        {
-            "task": "snap-agent",
-            "id": 2
-        },
-        {
-            "task": "snap-agent",
-            "id": 3
         }
     ],
     "clusterDefinition": {

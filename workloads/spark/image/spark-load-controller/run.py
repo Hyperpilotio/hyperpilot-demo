@@ -55,7 +55,6 @@ def submit_job():
             'job_id': ""
             }))
         sys.exit(1)
-
     return job, start
 
 
@@ -66,10 +65,17 @@ while True:
     # Query status
     state = job_status(job_id)
     if state in [ "SUBMITTED", "RUNNING"]:
+        sys.stderr.write(json.dumps({
+            'status': state,
+            'error': '',
+            'time': time.time() - start,
+            'job_id': job_id
+            }))
         continue
     if state in ["FINISHED", "FAILED", "KILLED", "ERROR"]:
         res = {
             'status': state,
+            'error': '',
             'time': time.time() - start,
             'job_id': job_id
         }
@@ -78,7 +84,8 @@ while True:
     else:
         sys.stderr.write(json.dumps({
             'status': state,
-            'time': -1,
+            'error': '',
+            'time': time.time() - start,
             'job_id': job_id
             }))
         sys.exit(1)

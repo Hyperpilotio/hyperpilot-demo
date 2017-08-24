@@ -1,18 +1,16 @@
 {
     "name": "spark",
     "serviceNames": [
-        "spark-master",
-        "spark-worker-1",
-        "spark-worker-2"
+        "spark-master"
     ],
     "loadTester": {
         "name": "benchmark-controller",
         "benchmarkController": {
+            "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/spark/parser.js",
             "command": {
                 "image": "hyperpilot/spark-load-controller:latest",
                 "path": ".\/run.py",
                 "args": [],
-                "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/spark/parser.js",
                 "intensityArgs": []
             }
         }
@@ -111,7 +109,8 @@
                 "portTypes": [
                     0,
                     1,
-                    0
+                    0,
+                    1
                 ]
             }
         },
@@ -317,7 +316,7 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/benchmark-controller",
+                                        "image": "hyperpilot\/benchmark-controller:swh",
                                         "name": "benchmark-controller",
                                         "imagePullPolicy": "Always",
                                         "ports": [

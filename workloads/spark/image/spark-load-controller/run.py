@@ -4,13 +4,29 @@ import time
 import json
 import sys
 import subprocess
-from pprint import pprint
 from urllib import request
 from pick_spark_job import get_command
+from optparse import OptionParser
+
+parser = OptionParser()
+parser.add_option("--host", "--master-host", dest="master_host",
+        help="Address points to spark master node", metavar="HOST")
+
+parser.add_option("--port", "--master-port", dest="master_port",
+        help="Address points to spark master node", metavar="PORT")
+(options, args) = parser.parse_args()
+
+if not options.master_host or not options.master_port:
+        print(json.dumps({
+            'status': 'UNEXPECTED_ERROR',
+            'error': "master_host: {} master_port: {}".format(options.master_host, options.master_port),
+            'time': 0,
+            'job_id': ''
+            }, indent=4))
+        sys.exit(1)
 
 
-SPARK_MASTER = 'spark-master.default:6066'
-SPARK_WORKER = 'spark-worker.default:8081'
+SPARK_MASTER = '{}:{}'.format(options.master_host, options.master_port)
 
 
 def job_status(job_id=""):
@@ -19,58 +35,62 @@ def job_status(job_id=""):
     )
     data = json.loads(str(res.read(), 'utf-8'))
     if 'driverState' not in data:
-        sys.stderr.write(json.dumps({
+        print(json.dumps({
             'status': 'UNEXPECTED_ERROR',
             'error': data,
             'time': -1,
             'job_id': job_id
-            }))
+            }, indent=4))
         sys.exit(1)
 
     return data['driverState']
 
 
-def submit_job():
+def submit_job(master_address=''):
     """Submit job"""
-    start = time.time()
+    cmd_arr = get_command().split()
+    cmd_arr.insert(1, '--master')
+    cmd_arr.insert(2, master_address)
+    begin = time.time()
+
     s = subprocess.Popen(
-        get_command().split(),
+        cmd_arr,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
     )
+    stdout, stderr = s.communicate()
+    s.wait()
 
-    string = s.stderr.read().decode('utf-8').split('\n')
-    # pprint(string, sys.stderr)
-    sys.stderr
+    string = stderr.decode('utf-8').split('\n')
     for line in string:
         if 'submissionId' in line:
             response = line.split(':')
             job = response[1].split('"')[1]
             break
     else:
-        sys.stderr.write(json.dumps({
+        print(json.dumps({
             'status': 'UNEXPECTED_ERROR',
-            'time': -1,
+            'time': time.time() - begin,
             'error': "Job submission not found:{}".format(string),
             'job_id': ""
-            }))
+            }, indent=4))
         sys.exit(1)
-    return job, start
+    return job, begin
 
 
-job_id, start = submit_job()
+job_id, start = submit_job('spark://{}'.format(SPARK_MASTER))
 
 while True:
     time.sleep(1)
     # Query status
     state = job_status(job_id)
-    if state in [ "SUBMITTED", "RUNNING"]:
-        sys.stderr.write(json.dumps({
+    if state in ['SUBMITTED', 'RUNNING']:
+        print(json.dumps({
             'status': state,
             'error': '',
             'time': time.time() - start,
             'job_id': job_id
-            }))
+            }, indent=4))
         continue
     if state in ["FINISHED", "FAILED", "KILLED", "ERROR"]:
         res = {
@@ -82,10 +102,10 @@ while True:
         print(json.dumps(res, indent=4))
         sys.exit(0)
     else:
-        sys.stderr.write(json.dumps({
+        print(json.dumps({
             'status': state,
             'error': '',
             'time': time.time() - start,
             'job_id': job_id
-            }))
+            }, indent=4))
         sys.exit(1)

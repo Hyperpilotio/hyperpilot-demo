@@ -1,372 +1,384 @@
 {
-    "name": "spark",
-    "serviceNames": [
-        "spark-master"
-    ],
-    "loadTester": {
-        "name": "benchmark-controller",
-        "benchmarkController": {
-            "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/spark/parser.js",
-            "command": {
-                "image": "hyperpilot/spark-load-controller:latest",
-                "path": ".\/run.py",
-                "args": [],
-                "intensityArgs": []
+  "name": "spark",
+  "serviceNames": [
+    "spark-master"
+  ],
+  "loadTester": {
+    "name": "benchmark-controller",
+    "benchmarkController": {
+      "parserUrl": "https://s3.amazonaws.com/hyperpilot-benchmark-parsers/spark/parser.js",
+      "command": {
+        "image": "hyperpilot/spark-load-controller:latest",
+        "path": "./run.py",
+        "args": [
+          "--master-port",
+          "6066"
+        ],
+        "intensityArgs": [],
+        "serviceConfigs": [
+          {
+            "name": "spark-master",
+            "hostConfig": {
+              "arg": "--master-host",
+              "description": "host of the service"
             }
-        }
-    },
-    "type": "long-running",
-    "slo": {
-        "metric": "time",
-        "value": 300.0,
-        "type": "latency"
-    },
-    "budget": {
-        "value": 300,
-        "unit": "dollar"
-    },
-    "deploymentTemplate": "analysis-base-spark",
-    "taskDefinitions": [
-        {
-            "nodeMapping": {
-                "task": "spark-master",
-                "id": 2
+          }
+        ]
+      }
+    }
+  },
+  "type": "long-running",
+  "slo": {
+    "metric": "time",
+    "value": 300,
+    "type": "latency"
+  },
+  "budget": {
+    "value": 300,
+    "unit": "dollar"
+  },
+  "deploymentTemplate": "analysis-base-spark",
+  "taskDefinitions": [
+    {
+      "nodeMapping": {
+        "task": "spark-master",
+        "id": 2
+      },
+      "taskDefinition": {
+        "deployment": {
+          "apiVersion": "extensions/v1beta1",
+          "kind": "Deployment",
+          "metadata": {
+            "labels": {
+              "app": "spark-master"
             },
-            "taskDefinition": {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "spark-master"
-                        },
-                        "name": "spark-master"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "spark-master"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "spark-master"
-                                }
-                            },
-                            "spec": {
-                                "volumes": [],
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot/spark:2.1.0-hadoop-2.7",
-                                        "name": "spark-master",
-                                        "env": [
-                                            {
-                                                "name": "SPARK_MASTER_PORT",
-                                                "value": "7077"
-                                            },
-                                            {
-                                                "name": "SPARK_MASTER_WEBUI_PORT",
-                                                "value": "8088"
-                                            }
-                                        ],
-                                        "volumeMounts": [],
-                                        "ports": [
-                                            {
-                                                "containerPort": 4040,
-                                                "hostPort": 4040,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 6066,
-                                                "hostPort": 6066,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 7077,
-                                                "hostPort": 7077,
-                                                "protocol": "TCP"
-                                            },
-                                            {
-                                                "containerPort": 8088,
-                                                "hostPort": 8088,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "limits": {
-                                                "cpu": "500.0m"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
+            "name": "spark-master"
+          },
+          "spec": {
+            "replicas": 1,
+            "selector": {
+              "matchLabels": {
+                "app": "spark-master"
+              }
+            },
+            "template": {
+              "metadata": {
+                "labels": {
+                  "app": "spark-master"
+                }
+              },
+              "spec": {
+                "volumes": [],
+                "containers": [
+                  {
+                    "image": "hyperpilot/spark:2.1.0-hadoop-2.7",
+                    "name": "spark-master",
+                    "env": [
+                      {
+                        "name": "SPARK_MASTER_PORT",
+                        "value": "7077"
+                      },
+                      {
+                        "name": "SPARK_MASTER_WEBUI_PORT",
+                        "value": "8088"
+                      }
+                    ],
+                    "volumeMounts": [],
+                    "ports": [
+                      {
+                        "containerPort": 4040,
+                        "hostPort": 4040,
+                        "protocol": "TCP"
+                      },
+                      {
+                        "containerPort": 6066,
+                        "hostPort": 6066,
+                        "protocol": "TCP"
+                      },
+                      {
+                        "containerPort": 7077,
+                        "hostPort": 7077,
+                        "protocol": "TCP"
+                      },
+                      {
+                        "containerPort": 8088,
+                        "hostPort": 8088,
+                        "protocol": "TCP"
+                      }
+                    ],
+                    "resources": {
+                      "limits": {
+                        "cpu": "500.0m"
+                      }
                     }
-                },
-                "family": "spark-master",
-                "portTypes": [
-                    0,
-                    1,
-                    0,
-                    1
+                  }
                 ]
+              }
             }
+          }
         },
-        {
-            "nodeMapping": {
-                "task": "spark-worker-1",
-                "id": 2
+        "family": "spark-master",
+        "portTypes": [
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "nodeMapping": {
+        "task": "spark-worker-1",
+        "id": 2
+      },
+      "taskDefinition": {
+        "deployment": {
+          "apiVersion": "extensions/v1beta1",
+          "kind": "Deployment",
+          "metadata": {
+            "labels": {
+              "app": "spark-worker-1"
             },
-            "taskDefinition": {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "spark-worker-1"
-                        },
-                        "name": "spark-worker-1"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "spark-worker-1"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "spark-worker-1"
-                                }
-                            },
-                            "spec": {
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/spark-local-dir"
-                                        },
-                                        "name": "spark-local-dir"
-                                    }
-                                ],
-                                "containers": [
-                                    {
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/tmp\/spark",
-                                                "name": "spark-local-dir"
-                                            }
-                                        ],
-                                        "image": "hyperpilot/spark:2.1.0-hadoop-2.7",
-                                        "name": "spark-worker-1",
-                                        "env": [
-                                            {
-                                                "name": "SPARK_WORKER_PORT",
-                                                "value": "0"
-                                            },
-                                            {
-                                                "name": "SPARK_LOCAL_DIRS",
-                                                "value": "\/tmp\/spark"
-                                            }
-                                        ],
-                                        "command": [
-                                            "bin\/spark-class",
-                                            "org.apache.spark.deploy.worker.Worker",
-                                            "--cores",
-                                            "1",
-                                            "--memory",
-                                            "6144M",
-                                            "spark:\/\/spark-master:7077"
-                                        ],
-                                        "ports": [
-                                            {
-                                                "containerPort": 8081,
-                                                "hostPort": 8081,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {}
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "spark-worker-1"
-            }
-        },
-        {
-            "nodeMapping": {
-                "task": "spark-worker-2",
-                "id": 3
+            "name": "spark-worker-1"
+          },
+          "spec": {
+            "replicas": 1,
+            "selector": {
+              "matchLabels": {
+                "app": "spark-worker-1"
+              }
             },
-            "taskDefinition": {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "spark-worker-2"
-                        },
-                        "name": "spark-worke-2"
+            "template": {
+              "metadata": {
+                "labels": {
+                  "app": "spark-worker-1"
+                }
+              },
+              "spec": {
+                "volumes": [
+                  {
+                    "hostPath": {
+                      "path": "/home/ubuntu/spark-local-dir"
                     },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "spark-worker-2"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "spark-worker-2"
-                                }
-                            },
-                            "spec": {
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/home\/ubuntu\/spark-local-dir"
-                                        },
-                                        "name": "spark-local-dir"
-                                    }
-                                ],
-                                "containers": [
-                                    {
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/tmp\/spark",
-                                                "name": "spark-local-dir"
-                                            }
-                                        ],
-                                        "image": "hyperpilot/spark:2.1.0-hadoop-2.7",
-                                        "name": "spark-worker-2",
-                                        "env": [
-                                            {
-                                                "name": "SPARK_WORKER_PORT",
-                                                "value": "0"
-                                            },
-                                            {
-                                                "name": "SPARK_LOCAL_DIRS",
-                                                "value": "\/tmp\/spark"
-                                            }
-                                        ],
-                                        "command": [
-                                            "bin\/spark-class",
-                                            "org.apache.spark.deploy.worker.Worker",
-                                            "--cores",
-                                            "2",
-                                            "--memory",
-                                            "8192M",
-                                            "spark:\/\/spark-master:7077"
-                                        ],
-                                        "ports": [
-                                            {
-                                                "containerPort": 8081,
-                                                "hostPort": 8081,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {}
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "family": "spark-worker-2"
-            }
-        },
-        {
-            "nodeMapping": {
-                "task": "benchmark-controller",
-                "id": 1
-            },
-            "taskDefinition": {
-                "deployment": {
-                    "apiVersion": "extensions/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "benchmark-controller"
-                        },
-                        "name": "benchmark-controller"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "benchmark-controller"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "benchmark-controller"
-                                }
-                            },
-                            "spec": {
-                                "imagePullSecrets": [
-                                    {
-                                        "name": "myregistrykey"
-                                    }
-                                ],
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/benchmark-controller:swh",
-                                        "name": "benchmark-controller",
-                                        "imagePullPolicy": "Always",
-                                        "ports": [
-                                            {
-                                                "containerPort": 6001,
-                                                "hostPort": 6001,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "512.0m",
-                                                "memory": "350Mi"
-                                            }
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "/var/run/docker.sock",
-                                                "name": "docker-sock"
-                                            },
-                                            {
-                                                "mountPath": "/usr/bin/docker",
-                                                "name": "usr-bin-docker"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "/var/run/docker.sock"
-                                        },
-                                        "name": "docker-sock"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "/usr/bin/docker"
-                                        },
-                                        "name": "usr-bin-docker"
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "portTypes": [
-                    1
+                    "name": "spark-local-dir"
+                  }
                 ],
-                "family": "benchmark-controller"
+                "containers": [
+                  {
+                    "volumeMounts": [
+                      {
+                        "mountPath": "/tmp/spark",
+                        "name": "spark-local-dir"
+                      }
+                    ],
+                    "image": "hyperpilot/spark:2.1.0-hadoop-2.7",
+                    "name": "spark-worker-1",
+                    "env": [
+                      {
+                        "name": "SPARK_WORKER_PORT",
+                        "value": "0"
+                      },
+                      {
+                        "name": "SPARK_LOCAL_DIRS",
+                        "value": "/tmp/spark"
+                      }
+                    ],
+                    "command": [
+                      "bin/spark-class",
+                      "org.apache.spark.deploy.worker.Worker",
+                      "--cores",
+                      "1",
+                      "--memory",
+                      "6144M",
+                      "spark://spark-master:7077"
+                    ],
+                    "ports": [
+                      {
+                        "containerPort": 8081,
+                        "hostPort": 8081,
+                        "protocol": "TCP"
+                      }
+                    ],
+                    "resources": {}
+                  }
+                ]
+              }
             }
-        }
-    ]
+          }
+        },
+        "family": "spark-worker-1"
+      }
+    },
+    {
+      "nodeMapping": {
+        "task": "spark-worker-2",
+        "id": 3
+      },
+      "taskDefinition": {
+        "deployment": {
+          "apiVersion": "extensions/v1beta1",
+          "kind": "Deployment",
+          "metadata": {
+            "labels": {
+              "app": "spark-worker-2"
+            },
+            "name": "spark-worke-2"
+          },
+          "spec": {
+            "replicas": 1,
+            "selector": {
+              "matchLabels": {
+                "app": "spark-worker-2"
+              }
+            },
+            "template": {
+              "metadata": {
+                "labels": {
+                  "app": "spark-worker-2"
+                }
+              },
+              "spec": {
+                "volumes": [
+                  {
+                    "hostPath": {
+                      "path": "/home/ubuntu/spark-local-dir"
+                    },
+                    "name": "spark-local-dir"
+                  }
+                ],
+                "containers": [
+                  {
+                    "volumeMounts": [
+                      {
+                        "mountPath": "/tmp/spark",
+                        "name": "spark-local-dir"
+                      }
+                    ],
+                    "image": "hyperpilot/spark:2.1.0-hadoop-2.7",
+                    "name": "spark-worker-2",
+                    "env": [
+                      {
+                        "name": "SPARK_WORKER_PORT",
+                        "value": "0"
+                      },
+                      {
+                        "name": "SPARK_LOCAL_DIRS",
+                        "value": "/tmp/spark"
+                      }
+                    ],
+                    "command": [
+                      "bin/spark-class",
+                      "org.apache.spark.deploy.worker.Worker",
+                      "--cores",
+                      "1",
+                      "--memory",
+                      "7168M",
+                      "spark://spark-master:7077"
+                    ],
+                    "ports": [
+                      {
+                        "containerPort": 8081,
+                        "hostPort": 8081,
+                        "protocol": "TCP"
+                      }
+                    ],
+                    "resources": {}
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "family": "spark-worker-2"
+      }
+    },
+    {
+      "nodeMapping": {
+        "task": "benchmark-controller",
+        "id": 1
+      },
+      "taskDefinition": {
+        "deployment": {
+          "apiVersion": "extensions/v1beta1",
+          "kind": "Deployment",
+          "metadata": {
+            "labels": {
+              "app": "benchmark-controller"
+            },
+            "name": "benchmark-controller"
+          },
+          "spec": {
+            "replicas": 1,
+            "selector": {
+              "matchLabels": {
+                "app": "benchmark-controller"
+              }
+            },
+            "template": {
+              "metadata": {
+                "labels": {
+                  "app": "benchmark-controller"
+                }
+              },
+              "spec": {
+                "imagePullSecrets": [
+                  {
+                    "name": "myregistrykey"
+                  }
+                ],
+                "containers": [
+                  {
+                    "image": "hyperpilot/benchmark-controller",
+                    "name": "benchmark-controller",
+                    "imagePullPolicy": "Always",
+                    "ports": [
+                      {
+                        "containerPort": 6001,
+                        "hostPort": 6001,
+                        "protocol": "TCP"
+                      }
+                    ],
+                    "resources": {
+                      "requests": {
+                        "cpu": "512.0m",
+                        "memory": "350Mi"
+                      }
+                    },
+                    "volumeMounts": [
+                      {
+                        "mountPath": "/var/run/docker.sock",
+                        "name": "docker-sock"
+                      },
+                      {
+                        "mountPath": "/usr/bin/docker",
+                        "name": "usr-bin-docker"
+                      }
+                    ]
+                  }
+                ],
+                "volumes": [
+                  {
+                    "hostPath": {
+                      "path": "/var/run/docker.sock"
+                    },
+                    "name": "docker-sock"
+                  },
+                  {
+                    "hostPath": {
+                      "path": "/usr/bin/docker"
+                    },
+                    "name": "usr-bin-docker"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "portTypes": [
+          1
+        ],
+        "family": "benchmark-controller"
+      }
+    }
+  ]
 }

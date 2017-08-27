@@ -3,7 +3,7 @@ SHELL := /bin/bash
 
 # ARGUMENTS
 POST_ARG=-XPOST -H "Content-Type: application/json"
-CURL_ARGS="-d \"{\"startingIntensity\":10, \"step\": 10}\""
+CURL_ARGS=-d "{\"startingIntensity\":10, \"step\": 10}"
 
 # Variable
 WORKLOAD=redis

@@ -1,16 +1,7 @@
 {
     "name": "analysis-base-spark",
     "region": "us-east-1",
-    "nodeMapping": [
-        {
-            "task": "benchmark-agent",
-            "id": 2
-        },
-        {
-            "task": "benchmark-agent",
-            "id": 3
-        }
-    ],
+    "nodeMapping": [],
     "clusterDefinition": {
         "nodes": [
             {

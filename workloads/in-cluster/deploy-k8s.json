@@ -347,7 +347,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/analyzer-ui",
+                                        "image": "hyperpilot\/analyzer-ui:wip",
                                         "name": "analyzer-ui",
                                         "ports": [
                                             {
@@ -361,7 +361,33 @@
                                                 "cpu": "512.0m",
                                                 "memory": "512Mi"
                                             }
-                                        }
+                                        },
+                                        "env": [
+                                            {
+                                                "name": "ANALYZER_HOST",
+                                                "value": "analyzer"
+                                            },
+                                            {
+                                                "name": "ANALYZER_PORT",
+                                                "value": "5000"
+                                            },
+                                            {
+                                                "name": "WORKLOAD_PROFILER_HOST",
+                                                "value": "workload-profiler"
+                                            },
+                                            {
+                                                "name": "MONGO_HOST",
+                                                "value": "mongo-serve"
+                                            },
+                                            {
+                                                "name": "MONGO_USERNAME",
+                                                "value": "analyzer"
+                                            },
+                                            {
+                                                "name": "MONGO_PASSWORD",
+                                                "value": "hyperpilot"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -403,20 +429,6 @@
                                 ],
                                 "containers": [
                                     {
-                                        "env": [
-                                            {
-                                                "name": "ADMIN_USER",
-                                                "value": "root"
-                                            },
-                                            {
-                                                "name": "PRE_CREATE_DB",
-                                                "value": "snap"
-                                            },
-                                            {
-                                                "name": "INFLUXDB_INIT_PWD",
-                                                "value": "default"
-                                            }
-                                        ],
                                         "image": "hyperpilot\/influx:1.2.2.a",
                                         "name": "influxdb",
                                         "ports": [

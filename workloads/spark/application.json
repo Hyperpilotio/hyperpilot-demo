@@ -108,7 +108,8 @@
                     ],
                     "resources": {
                       "limits": {
-                        "cpu": "500.0m"
+                        "cpu": "500.0m",
+                        "memory": "1024mi"
                       }
                     }
                   }
@@ -186,10 +187,6 @@
                     "command": [
                       "bin/spark-class",
                       "org.apache.spark.deploy.worker.Worker",
-                      "--cores",
-                      "1",
-                      "--memory",
-                      "6144M",
                       "spark://spark-master:7077"
                     ],
                     "ports": [
@@ -199,7 +196,12 @@
                         "protocol": "TCP"
                       }
                     ],
-                    "resources": {}
+                    "resources": {
+                        "requests": {
+                            "memory": "4096mi",
+                            "cpu": "1024m"
+                        }
+                    }
                   }
                 ]
               }
@@ -222,7 +224,7 @@
             "labels": {
               "app": "spark-worker-2"
             },
-            "name": "spark-worke-2"
+            "name": "spark-worker-2"
           },
           "spec": {
             "replicas": 1,
@@ -269,10 +271,6 @@
                     "command": [
                       "bin/spark-class",
                       "org.apache.spark.deploy.worker.Worker",
-                      "--cores",
-                      "1",
-                      "--memory",
-                      "7168M",
                       "spark://spark-master:7077"
                     ],
                     "ports": [
@@ -282,7 +280,12 @@
                         "protocol": "TCP"
                       }
                     ],
-                    "resources": {}
+                    "resources": {
+                        "requests": {
+                            "memory": "4096mi",
+                            "cpu": "1024m"
+                        }
+                    }
                   }
                 ]
               }

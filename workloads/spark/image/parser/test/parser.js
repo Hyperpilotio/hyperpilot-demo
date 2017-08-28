@@ -8,9 +8,13 @@ describe('Parser', function () {
     for (let i = 0; i < PARSER_DATASET.spark.length; i++) {
       it(`${PARSER_DATASET.spark[i].description} should successfully parse the result of spark-benchmark`,
         function () {
-          const lines = PARSER_DATASET.spark[i].input.split('\n');
-          const benchmarkObj = parser.processLines(lines);
-          assert.deepEqual(benchmarkObj, PARSER_DATASET.spark[i].expect)
+          try {
+            const lines = PARSER_DATASET.spark[i].input.split('\n');
+            const benchmarkObj = parser.processLines(lines);
+            assert.deepEqual(benchmarkObj, PARSER_DATASET.spark[i].expect);
+          } catch (e) {
+            assert.deepEqual(e, PARSER_DATASET.spark[i].expect);
+          }
         });
     }
   });

@@ -20,10 +20,8 @@ if not options.master_host or not options.master_port:
         print(json.dumps({
             'status': 'UNEXPECTED_ERROR',
             'error': "master_host: {} master_port: {}".format(options.master_host, options.master_port),
-            'time': 0,
-            'job_id': ''
             }, indent=4))
-        sys.exit(1)
+        sys.exit(0)
 
 
 SPARK_MASTER = '{}:{}'.format(options.master_host, options.master_port)
@@ -38,10 +36,9 @@ def job_status(job_id=""):
         print(json.dumps({
             'status': 'UNEXPECTED_ERROR',
             'error': data,
-            'time': -1,
             'job_id': job_id
             }, indent=4))
-        sys.exit(1)
+        sys.exit(0)
 
     return data['driverState']
 
@@ -71,10 +68,9 @@ def submit_job(master_address=''):
         print(json.dumps({
             'status': 'UNEXPECTED_ERROR',
             'time': time.time() - begin,
-            'error': "Job submission not found:{}".format(string),
-            'job_id': ""
+            'error': "Job submission not found:{}".format(string)
             }, indent=4))
-        sys.exit(1)
+        sys.exit(0)
     return job, begin
 
 
@@ -87,7 +83,6 @@ while True:
     if state in ['SUBMITTED', 'RUNNING']:
         print(json.dumps({
             'status': state,
-            'error': '',
             'time': time.time() - start,
             'job_id': job_id
             }, indent=4))
@@ -95,7 +90,6 @@ while True:
     if state in ["FINISHED", "FAILED", "KILLED", "ERROR"]:
         res = {
             'status': state,
-            'error': '',
             'time': time.time() - start,
             'job_id': job_id
         }
@@ -104,7 +98,6 @@ while True:
     else:
         print(json.dumps({
             'status': state,
-            'error': '',
             'time': time.time() - start,
             'job_id': job_id
             }, indent=4))

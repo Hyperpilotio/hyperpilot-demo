@@ -99,6 +99,21 @@ const PARSER_DATASET = {
                 "error": "Network problem",
                 "time": 281.93565130233765
             }
+        },
+        {
+            'description': 'Case WEIRD_STATUS',
+            'input': `{
+                "status": "WEIRD_STATUS",
+                "job_id": "driver-20170826001258-0000",
+                "error": "Status WEIRD_STATUS that wasn't expected before",
+                "time": 277.91427183151245
+            }`,
+            'expect': {
+                "status": "WEIRD_STATUS",
+                "job_id": "driver-20170826001258-0000",
+                "error": "Status WEIRD_STATUS that wasn't expected before",
+                "time": 277.91427183151245
+            }
         }
     ]
 };

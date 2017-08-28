@@ -99,6 +99,7 @@ while True:
         print(json.dumps({
             'status': state,
             'time': time.time() - start,
+            'error': 'Status {} that wasn\'t expected before'.format(state),
             'job_id': job_id
             }, indent=4))
         sys.exit(1)

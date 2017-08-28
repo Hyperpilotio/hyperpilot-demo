@@ -13,18 +13,15 @@ class Parser {
       }
     }
 
-    if (indexLine > 0) {
-      let benchmarkObj = JSON.parse(lines.slice(indexLine, lines.length).join(' '));
-      if (!!benchmarkObj['error']) {
-        throw benchmarkObj;
-      }
-      return {
-        'status': benchmarkObj['status'],
-        'time': benchmarkObj['time']
-      };
+    let benchmarkObj = JSON.parse(lines.slice(indexLine, lines.length).join(' '));
+    if (!!benchmarkObj['error']) {
+      throw benchmarkObj;
     }
+    return {
+      'status': benchmarkObj['status'],
+      'time': benchmarkObj['time']
+    };
 
-    throw `The data ended in a wrong format ${lines}`
   }
 }
 

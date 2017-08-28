@@ -108,7 +108,7 @@
                     ],
                     "resources": {
                       "limits": {
-                        "cpu": "500.0m",
+                        "cpu": "500m",
                         "memory": "1024mi"
                       }
                     }
@@ -343,7 +343,7 @@
                     ],
                     "resources": {
                       "requests": {
-                        "cpu": "512.0m",
+                        "cpu": "500m",
                         "memory": "350Mi"
                       }
                     },

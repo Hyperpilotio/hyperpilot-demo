@@ -101,11 +101,11 @@
                                         "env": [
                                             {
                                                 "name": "AWS_ACCESS_KEY_ID",
-                                                "value": "AKIAJF232NDCBRBESZAA"
+                                                "value": ""
                                             },
                                             {
                                                 "name": "AWS_SECRET_ACCESS_KEY",
-                                                "value": "6WCSJzthddGHDBQqsWAxrKTVqwgSQWN9TLPQWcVa"
+                                                "value": ""
                                             }
                                         ]
                                     }
@@ -152,7 +152,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/workload-profiler:swh",
+                                        "image": "hyperpilot\/workload-profiler",
                                         "name": "deployer",
                                         "ports": [
                                             {
@@ -170,11 +170,11 @@
                                         "env": [
                                             {
                                                 "name": "AWS_ACCESS_KEY_ID",
-                                                "value": "AKIAJF232NDCBRBESZAA"
+                                                "value": ""
                                             },
                                             {
                                                 "name": "AWS_SECRET_ACCESS_KEY",
-                                                "value": "6WCSJzthddGHDBQqsWAxrKTVqwgSQWN9TLPQWcVa"
+                                                "value": ""
                                             }
                                         ]
                                     }

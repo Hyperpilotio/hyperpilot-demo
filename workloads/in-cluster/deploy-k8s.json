@@ -101,11 +101,11 @@
                                         "env": [
                                             {
                                                 "name": "AWS_ACCESS_KEY_ID",
-                                                "value": "AKIAIB2YMXXKLRAKQE6Q"
+                                                "value": ""
                                             },
                                             {
                                                 "name": "AWS_SECRET_ACCESS_KEY",
-                                                "value": "0Hlr6bdj2a3XF7YpEaPUTcGUckmY6Tq1mvj+\/TCL"
+                                                "value": ""
                                             }
                                         ]
                                     }
@@ -170,11 +170,11 @@
                                         "env": [
                                             {
                                                 "name": "AWS_ACCESS_KEY_ID",
-                                                "value": "AKIAIB2YMXXKLRAKQE6Q"
+                                                "value": ""
                                             },
                                             {
                                                 "name": "AWS_SECRET_ACCESS_KEY",
-                                                "value": "0Hlr6bdj2a3XF7YpEaPUTcGUckmY6Tq1mvj+\/TCL"
+                                                "value": ""
                                             }
                                         ]
                                     }

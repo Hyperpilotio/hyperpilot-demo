@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <property>
+    <name>fs.s3.impl</name>
+    <value>org.apache.hadoop.fs.s3native.NativeS3FileSystem</value>
+  </property>
+     <property>
+             <name>fs.s3.awsAccessKeyId</name>
+                   <value>AKIAIB2YMXXKLRAKQE6Q</value>
+     </property>
+        <property>
+                <name>fs.s3.awsSecretAccessKey</name>
+                      <value>0Hlr6bdj2a3XF7YpEaPUTcGUckmY6Tq1mvj+/TCL</value>
+        </property>
+</configuration>

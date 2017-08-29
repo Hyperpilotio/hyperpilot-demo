@@ -1,8 +1,7 @@
 {
-    "name": "analysis-base",
+    "name": "analysis-base-spark",
     "region": "us-east-1",
-    "nodeMapping": [
-    ],
+    "nodeMapping": [],
     "clusterDefinition": {
         "nodes": [
             {
@@ -12,6 +11,10 @@
             {
                 "instanceType": "t2.large",
                 "id": 2
+            },
+            {
+                "instanceType": "t2.large",
+                "id": 3
             }
         ]
     },
@@ -68,9 +71,9 @@
                                             }
                                         ],
                                         "resources": {
-                                            "requests": {
-                                                "cpu": "64.0m",
-                                                "memory": "64Mi"
+                                            "limits": {
+                                                "cpu": "1000m",
+                                                "memory": "500Mi"
                                             }
                                         },
                                         "volumeMounts": [

@@ -1,0 +1,68 @@
+{
+    "deployment": {
+        "apiVersion": "extensions\/v1beta1",
+        "kind": "Deployment",
+        "metadata": {
+            "labels": {
+                "app": "benchmark-agent"
+            },
+            "name": "benchmark-agent"
+        },
+        "spec": {
+            "replicas": 1,
+            "selector": {
+                "matchLabels": {
+                    "app": "benchmark-agent"
+                }
+            },
+            "template": {
+                "metadata": {
+                    "labels": {
+                        "app": "benchmark-agent"
+                    }
+                },
+                "spec": {
+                    "hostname": "benchmark-agent",
+                    "containers": [
+                        {
+                            "imagePullPolicy": "Always",
+                            "image": "hyperpilot\/benchmark-agent",
+                            "name": "benchmark-agent",
+                            "ports": [
+                                {
+                                    "containerPort": 7778,
+                                    "hostPort": 7778,
+                                    "protocol": "TCP"
+                                }
+                            ],
+                            "resources": {
+                                "requests": {
+                                    "cpu": "64.0m",
+                                    "memory": "64Mi"
+                                }
+                            },
+                            "volumeMounts": [
+                                {
+                                    "mountPath": "\/var\/run\/docker.sock",
+                                    "name": "docker-sock"
+                                }
+                            ]
+                        }
+                    ],
+                    "volumes": [
+                        {
+                            "hostPath": {
+                                "path": "\/var\/run\/docker.sock"
+                            },
+                            "name": "docker-sock"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "portTypes": [
+        1
+    ],
+    "family": "benchmark-agent"
+}

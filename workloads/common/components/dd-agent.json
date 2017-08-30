@@ -1,0 +1,101 @@
+{
+  "daemonset": {
+    "apiVersion": "extensions/v1beta1",
+    "kind": "DaemonSet",
+    "metadata": {
+      "name": "dd-agent"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "labels": {
+            "app": "dd-agent"
+          },
+          "name": "dd-agent"
+        },
+        "spec": {
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "API_KEY",
+                  "value": ""
+                },
+                {
+                  "name": "KUBERNETES",
+                  "value": "yes"
+                },
+                {
+                  "name": "SD_BACKEND",
+                  "value": "docker"
+                }
+              ],
+              "image": "datadog/docker-dd-agent:latest",
+              "imagePullPolicy": "Always",
+              "name": "dd-agent",
+              "ports": [
+                {
+                  "containerPort": 8125,
+                  "name": "dogstatsdport",
+                  "protocol": "UDP"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "250m",
+                  "memory": "512Mi"
+                },
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "128Mi"
+                }
+              },
+              "volumeMounts": [
+                {
+                  "mountPath": "/var/run/docker.sock",
+                  "name": "dockersocket"
+                },
+                {
+                  "mountPath": "/host/proc",
+                  "name": "procdir",
+                  "readOnly": true
+                },
+                {
+                  "mountPath": "/host/sys/fs/cgroup",
+                  "name": "cgroups",
+                  "readOnly": true
+                }
+              ]
+
+
+            }
+          ],
+          "volumes": [
+            {
+              "hostPath": {
+                "path": "/var/run/docker.sock"
+              },
+              "name": "dockersocket"
+            },
+            {
+              "hostPath": {
+                "path": "/proc"
+              },
+              "name": "procdir"
+            },
+            {
+              "hostPath": {
+                "path": "/sys/fs/cgroup"
+              },
+              "name": "cgroups"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "portTypes": [
+    0
+  ],
+  "family": "dd-agent"
+}

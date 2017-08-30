@@ -8,3 +8,7 @@ upload-analysis-base-file:
 
 upload-analysis-base-spark-file:
 	@curl -XPOST ${DEPLOYER_URL}/v1/templates/analysis-base-spark --data-binary @analysis-base-spark.json
+
+generate-analysis-base-file:
+	@echo "Generate analysis-base-file.json with  benchmark-agent, snap-agent, dd-agent"
+	@./add-components.py --template analysis-base.json --snap true --dd true --benchmark true

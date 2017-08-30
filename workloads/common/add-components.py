@@ -15,12 +15,22 @@ import os
 import sys
 
 DEFAULT_COMPONENT_DIR = 'components'
-FILE_NAME_PREFIX='modified-'
+FILE_NAME_PREFIX = 'modified-'
+
 # NOTE Make sure the name of container is consistent in the components/[AGENT].json and here
 AGENT_MAP = {
-    'dd': 'daemonset',
-    'benchmark': 'deployment',
-    'snap': 'deployment'
+    'dd': {
+        'name': 'dd',
+        'type': 'daemonset'
+    },
+    'benchmark': {
+        'name': 'benchmark',
+        'type': 'deployment'
+    },
+    'snap': {
+        'name': 'snap',
+        'type': 'deployment'
+    }
 }
 
 parser = argparse.ArgumentParser(description='Generate a template for deployment with additional components.')
@@ -92,29 +102,21 @@ def main():
     args = parser.parse_args()
 
     template_path = os.path.join(args.template)
-    targeting_template_path = os.path.join('{}{}'.format(FILE_NAME_PREFIX, args.template))
+    targeting_template = os.path.basename(args.template)
+    targeting_template_path = os.path.join('{}{}'.format(FILE_NAME_PREFIX, os.path.basename(args.template)))
     if os.path.isfile(template_path):
         components = []
         if args.dd:
-            components.append({
-                'name': 'dd',
-                'type': 'daemonset'
-            })
+            components.append(AGENT_MAP['dd'])
         if args.snap:
-            components.append({
-                'name': 'snap',
-                'type': 'deployment'
-            })
+            components.append(AGENT_MAP['snap'])
         if args.benchmark:
-            components.append({
-                'name': 'benchmark',
-                'type': 'deployment'
-            })
+            components.append(AGENT_MAP['benchmark'])
         add_component(
             template_path=template_path,
             targeting_template_path=targeting_template_path,
             components=components)
-        print('{}{}'.format(FILE_NAME_PREFIX, args.template))
+        print(targeting_template_path)
     else:
         print('--template is missing or the value is invalid')
         sys.exit(1)

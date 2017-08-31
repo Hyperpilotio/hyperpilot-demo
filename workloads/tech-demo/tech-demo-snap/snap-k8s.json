@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "schedule": {
+    "type": "simple",
+    "interval": "10s"
+  },
+  "workflow": {
+    "collect": {
+      "metrics": {
+        "/grafanalabs/kubestate/*": {}
+    },
+      "tags": {
+        "/intel": {
+          "nodename": "<%= NODE_NAME =>",
+          "deploymentId": "<%= DEPLOYMENT_ID =>"
+        }
+      },
+      "publish": [
+        {
+            "plugin_name": "kafka",
+            "config": {
+                "topic": "test",
+                "brokers": "kafka-serve:9092"
+            }
+        }
+
+      ]
+    }
+  }
+}

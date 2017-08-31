@@ -1,0 +1,225 @@
+{
+    "name": "redis",
+    "serviceNames": [
+        "redis-serve"
+    ],
+    "loadTester": {
+        "name": "benchmark-controller",
+        "benchmarkController": {
+            "initialize": {
+                "image": "redis:3-alpine",
+                "path": "redis-cli",
+                "args": [
+                    "flushall"
+                ],
+                "serviceConfigs": [
+                    {
+                        "name": "redis-serve",
+                        "hostConfig": {
+                            "arg": "-h",
+                            "description": "host of the service"
+                        },
+                        "portConfig": {
+                            "arg": "-p",
+                            "description": "port of the service"
+                        }
+                    }
+                ]
+            },
+            "parserUrl": "https:\/\/s3.amazonaws.com\/hyperpilot-benchmark-parsers\/redis\/parser.js",
+            "command": {
+                "image": "redis:3-alpine",
+                "path": "redis-benchmark",
+                "args": [
+                    "--csv",
+                    "-n",
+                    "1000000",
+                    "-t",
+                    "GET"
+                ],
+                "serviceConfigs": [
+                    {
+                        "name": "redis-serve",
+                        "hostConfig": {
+                            "arg": "-h",
+                            "description": "host of the service"
+                        },
+                        "portConfig": {
+                            "arg": "-p",
+                            "description": "port of the service"
+                        }
+                    }
+                ],
+                "intensityArgs": [
+                    {
+                        "name": "Number of connections",
+                        "arg": "-c",
+                        "startingValue": 5,
+                        "step": 3
+                    }
+                ]
+            }
+        }
+    },
+    "type": "long-running",
+    "slo": {
+        "metric": "GET",
+        "value": 50000,
+        "type": "throughput"
+    },
+    "budget": {
+        "value": 300,
+        "unit": "dollar"
+    },
+    "deploymentTemplate": "analysis-base",
+    "taskDefinitions": [
+        {
+            "nodeMapping": {
+                "task": "redis-serve",
+                "id": 2
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "redis-serve"
+                        },
+                        "name": "redis-serve"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "redis-serve"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "redis-serve"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "redis-serve",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "redis:3.2.6",
+                                        "name": "redis-serve",
+                                        "ports": [
+                                            {
+                                                "containerPort": 6379,
+                                                "hostPort": 6379,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "500.0m",
+                                                "memory": "100Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "redis-serve"
+            }
+        },
+        {
+            "nodeMapping": {
+                "task": "benchmark-controller",
+                "id": 1
+            },
+            "taskDefinition": {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "benchmark-controller"
+                        },
+                        "name": "benchmark-controller"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "benchmark-controller"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "benchmark-controller"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/benchmark-controller",
+                                        "name": "benchmark-controller",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 6001,
+                                                "hostPort": 6001,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "350Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
+                                            },
+                                            {
+                                                "mountPath": "\/usr\/bin\/docker",
+                                                "name": "usr-bin-docker"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    },
+                                    {
+                                        "hostPath": {
+                                            "path": "\/usr\/bin\/docker"
+                                        },
+                                        "name": "usr-bin-docker"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "benchmark-controller"
+            }
+        }
+    ]
+}

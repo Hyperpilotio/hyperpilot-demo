@@ -1,0 +1,103 @@
+{
+    "name": "rubis",
+    "region": "us-east-1",
+    "nodeMapping": [
+        {
+            "task": "rubis",
+            "id": 1
+        }
+    ],
+    "clusterDefinition": {
+        "nodes": [
+            {
+                "instanceType": "t2.micro",
+                "id": 1
+            }
+        ]
+    },
+    "kubernetes": {
+        "secrets": [
+            {
+                "apiVersion": "v1",
+                "kind": "Secret",
+                "metadata": {
+                    "name": "myregistrykey"
+                },
+                "type": "kubernetes.io\/dockerconfigjson",
+                "data": {
+                    ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmRIVnpaWEk2YUhsd1pYSXhNak09IgoJCX0KCX0KfQ=="
+                }
+            }
+        ],
+        "taskDefinitions": [
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "rubis"
+                        },
+                        "name": "rubis"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "rubis"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "rubis"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "rubis",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/rubis",
+                                        "name": "rubis",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8080,
+                                                "hostPort": 8080,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "1024.0m",
+                                                "memory": "500Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "benchmark-agent"
+            }
+        ]
+    }
+}

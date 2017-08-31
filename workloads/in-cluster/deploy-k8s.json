@@ -83,7 +83,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/deployer:in-cluster",
+                                        "image": "hyperpilot\/deployer:alan",
                                         "name": "deployer",
                                         "ports": [
                                             {
@@ -152,7 +152,7 @@
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot\/workload-profiler",
+                                        "image": "hyperpilot\/workload-profiler:thor",
                                         "name": "deployer",
                                         "ports": [
                                             {

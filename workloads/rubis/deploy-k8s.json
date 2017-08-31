@@ -69,7 +69,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "512.0m",
                                                 "memory": "500Mi"
                                             }
                                         },
@@ -96,7 +96,7 @@
                 "portTypes": [
                     1
                 ],
-                "family": "benchmark-agent"
+                "family": "rubis"
             }
         ]
     }

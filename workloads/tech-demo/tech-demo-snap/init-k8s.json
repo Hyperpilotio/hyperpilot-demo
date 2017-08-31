@@ -1,0 +1,11 @@
+{
+  "plugins": {
+    "kubestate": "https://s3.amazonaws.com/hyperpilot-snap-collectors/snap-plugin-collector-kubestate",
+    "kafka": "https://s3.amazonaws.com/hyperpilot-snap-collectors/snap-plugin-publisher-kafka"
+  },
+  "tasks": [
+    "https://s3.amazonaws.com/hyperpilot-snap-collectors/snap-k8s.json"
+  ],
+  "pluginsPath": "/opt/snap/plugins",
+  "tasksPath": "/opt/snap/tasks"
+}

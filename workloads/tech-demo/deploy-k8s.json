@@ -388,7 +388,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-collectors.s3.amazonaws.com\/init-goddd.json"
+                                            "https:\/\/hyperpilot-snap-alpha.s3.amazonaws.com\/init-goddd-alpha.json"
                                         ],
                                         "resources": {
                                             "limits": {

@@ -11,4 +11,4 @@ upload-analysis-base-spark-file:
 
 generate-analysis-base-file:
 	@echo "Generate analysis-base-file.json with  benchmark-agent, snap-agent, dd-agent"
-	@./add-components.py --template templates/analysis-base.json --snap true --dd true --benchmark true
+	@./add-components.py --template templates/analysis-base.json --components snap dd benchmark

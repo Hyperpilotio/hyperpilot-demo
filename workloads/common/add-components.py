@@ -37,13 +37,8 @@ parser = argparse.ArgumentParser(description='Generate a template for deployment
 
 # FIXME not an optional parameter
 parser.add_argument('--template', dest='template',
-                    type=str, help='The template')
-parser.add_argument('--benchmark', dest='benchmark', nargs='?',
-                    type=bool, help='Add benchmark-agent')
-parser.add_argument('--snap', dest='snap', nargs='?',
-                    type=bool, help='Add snap-agent')
-parser.add_argument('--dd', dest='dd', nargs='?',
-                    type=bool, help='Add datadog\'s agent: dd-agent')
+                    type=str, help='The template', required=True)
+parser.add_argument('--components', nargs='+', type=str, dest='components', help='Add components')
 
 
 
@@ -102,20 +97,16 @@ def main():
     args = parser.parse_args()
 
     template_path = os.path.join(args.template)
-    targeting_template = os.path.basename(args.template)
     targeting_template_path = os.path.join('{}{}'.format(FILE_NAME_PREFIX, os.path.basename(args.template)))
     if os.path.isfile(template_path):
-        components = []
-        if args.dd:
-            components.append(AGENT_MAP['dd'])
-        if args.snap:
-            components.append(AGENT_MAP['snap'])
-        if args.benchmark:
-            components.append(AGENT_MAP['benchmark'])
+        component_list = []
+        if args.components:
+            for component in args.components:
+                component_list.append(AGENT_MAP[component])
         add_component(
             template_path=template_path,
             targeting_template_path=targeting_template_path,
-            components=components)
+            components=component_list)
         print(targeting_template_path)
     else:
         print('--template is missing or the value is invalid')

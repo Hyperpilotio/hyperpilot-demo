@@ -6,8 +6,8 @@ then
     exit 1
 fi
 
-#DEPLOYER_URL="localhost"
-DEPLOYER_URL="internal-deployer-605796188.us-east-1.elb.amazonaws.com"
+DEPLOYER_URL="localhost"
+#DEPLOYER_URL="internal-deployer-605796188.us-east-1.elb.amazonaws.com"
 
 curl -XPOST $DEPLOYER_URL:7777/v1/users/$1/files/tech_demo_load_test -F upload=@load-test/locustfile.py
 curl -XPOST $DEPLOYER_URL:7777/v1/users/$1/files/tech_demo_core_site_xml -F upload=@core-site.xml

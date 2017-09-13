@@ -2,7 +2,7 @@
 
 # Deploy the Tech demo environment, this sets up a kubernetes deployment and runs
 # a microservice environment (goddd + mongo + pathfinder)
-./deploy-k8s.sh
+./deploy-k8s.sh <user>
 
 # See Demo UI & Watch utilization and latency stats with Grafana
 ```

@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7315a61-0f36-44c6-b677-6b95870e765e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workloads/rubis/Makefile" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workloads/rubis/README.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workloads/rubis/application.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workloads/rubis/deploy-ecs.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workloads/rubis/deploy-k8s.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workloads/rubis/image/parser/config.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workloads/rubis/image/parser/parser.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workloads/rubis/reset_deployment.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workloads/analysis-base.sh" afterPath="$PROJECT_DIR$/workloads/analysis-base.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workloads/in-cluster/deploy-k8s.json" afterPath="$PROJECT_DIR$/workloads/in-cluster/deploy-k8s.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workloads/in-cluster/deploy-k8s.sh" afterPath="$PROJECT_DIR$/workloads/in-cluster/deploy-k8s.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workloads/rubis/deploy-k8s.json" afterPath="$PROJECT_DIR$/workloads/rubis/deploy-k8s.json" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,26 +15,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="analysis-base.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="analysis-base.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workloads/analysis-base.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="parser.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/workloads/rubis/image/parser/parser.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -54,28 +25,38 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workloads/rubis/application.json">
+      <file leaf-file-name="deploy-k8s.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workloads/mysql/deploy-k8s.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="-393">
+              <caret line="178" column="46" lean-forward="false" selection-start-line="178" selection-start-column="41" selection-end-line="178" selection-end-column="46" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="deploy-k8s.json" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/workloads/rubis/deploy-k8s.json">
+        <entry file="file://$PROJECT_DIR$/workloads/redis/deploy-k8s.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="31" column="28" lean-forward="false" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
+            <state relative-caret-position="524">
+              <caret line="201" column="82" lean-forward="false" selection-start-line="201" selection-start-column="50" selection-end-line="201" selection-end-column="82" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_parser.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/test_parser.js">
+      <file leaf-file-name="Dockerfile" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workloads/mysql/images/mysql/Dockerfile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="30" lean-forward="false" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workloads/mysql/images/mysql/run.sh">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -84,11 +65,57 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="parser.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/parser.js">
+      <file leaf-file-name="application.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workloads/redis/application.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="4" lean-forward="false" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+            <state relative-caret-position="38">
+              <caret line="36" column="25" lean-forward="true" selection-start-line="36" selection-start-column="25" selection-end-line="36" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="application.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workloads/mysql/application.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="27" column="14" lean-forward="true" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="100" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="parser.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workloads/mysql/images/parser/parser.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-9">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test-data.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workloads/mysql/images/parser/test/test-data.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-666">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1504168816000" expanded="true" signature="529:2134" ph="..." />
+                <marker date="1504168816000" expanded="true" signature="1081:2134" ph="..." />
+                <marker date="1504168816000" expanded="true" signature="1362:2134" ph="..." />
+                <marker date="1504168816000" expanded="true" signature="1609:2134" ph="..." />
+                <marker date="1504168816000" expanded="true" signature="2104:2134" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="slow_cooker.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workloads/nginx/slow_cooker.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="32">
+              <caret line="9" column="29" lean-forward="true" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -99,7 +126,17 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>alan</find>
+      <find>rubis</find>
+      <find>rubis_client</find>
+      <find>mysql</find>
+      <find>controller</find>
+      <find>bench</find>
+      <find>benchmark-controller</find>
     </findStrings>
+    <replaceStrings>
+      <replace>rubis_client</replace>
+      <replace>rubis-client</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -164,6 +201,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="workloads" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hyperpilot-demo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hyperpilot-demo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="workloads" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="redis" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -256,17 +311,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="2" y="24" width="1438" height="792" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2496523" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2496523" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -287,7 +343,7 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json">
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -295,6 +351,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/rubis/image/parser/parser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="24" lean-forward="false" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/rubis/application.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json" />
     <entry file="file://$PROJECT_DIR$/workloads/analysis-base.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -319,22 +392,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/test_parser.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/parser.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="4" lean-forward="true" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/test_parser.js" />
+    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/parser.js" />
     <entry file="file://$PROJECT_DIR$/workloads/rubis/deploy-k8s.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
@@ -343,14 +402,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json" />
     <entry file="file://$PROJECT_DIR$/workloads/analysis-base.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -359,14 +411,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json" />
     <entry file="file://$PROJECT_DIR$/workloads/analysis-base.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -375,14 +420,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json" />
     <entry file="file://$PROJECT_DIR$/workloads/in-cluster/deploy-k8s.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="21">
@@ -414,7 +452,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/test_parser.js">
+    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/test_parser.js" />
+    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/parser.js" />
+    <entry file="file://$PROJECT_DIR$/workloads/rubis/deploy-k8s.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="71" column="59" lean-forward="false" selection-start-line="71" selection-start-column="59" selection-end-line="71" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json" />
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/rubis/image/parser/parser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="24" lean-forward="true" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/rubis/application.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -422,18 +487,158 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/parser.js">
+    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/test_parser.js" />
+    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/parser.js" />
+    <entry file="file://$PROJECT_DIR$/workloads/rubis/deploy-k8s.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="4" lean-forward="false" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+        <state relative-caret-position="527">
+          <caret line="31" column="28" lean-forward="true" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json" />
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json" />
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.json" />
+    <entry file="file://$PROJECT_DIR$/workloads/in-cluster/deploy-k8s.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="142" column="84" lean-forward="false" selection-start-line="142" selection-start-column="80" selection-end-line="142" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/analysis-base.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/rubis/application.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/test_parser.js" />
+    <entry file="file://$PROJECT_DIR$/workloads/kafka/image/parser/parser.js" />
     <entry file="file://$PROJECT_DIR$/workloads/rubis/deploy-k8s.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="28" lean-forward="false" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
+        <state relative-caret-position="193">
+          <caret line="20" column="42" lean-forward="false" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/nginx/slow_cooker.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="9" column="29" lean-forward="true" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/redis/application.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="36" column="25" lean-forward="true" selection-start-line="36" selection-start-column="25" selection-end-line="36" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/mysql/application.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="14" lean-forward="true" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="100" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/mysql/images/parser/parser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-9">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/mysql/images/parser/test/test-data.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-666">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1504168816000" expanded="true" signature="529:2134" ph="..." />
+            <marker date="1504168816000" expanded="true" signature="1081:2134" ph="..." />
+            <marker date="1504168816000" expanded="true" signature="1362:2134" ph="..." />
+            <marker date="1504168816000" expanded="true" signature="1609:2134" ph="..." />
+            <marker date="1504168816000" expanded="true" signature="2104:2134" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/rubis/image/parser/parser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="24" lean-forward="false" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/mysql/images/mysql/run.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/memcached/deploy-k8s.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1338">
+          <caret line="184" column="60" lean-forward="false" selection-start-line="184" selection-start-column="50" selection-end-line="184" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/mysql/images/mysql/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="30" lean-forward="false" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/mysql/deploy-k8s.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-393">
+          <caret line="178" column="46" lean-forward="false" selection-start-line="178" selection-start-column="41" selection-end-line="178" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workloads/redis/deploy-k8s.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="524">
+          <caret line="201" column="82" lean-forward="false" selection-start-line="201" selection-start-column="50" selection-end-line="201" selection-end-column="82" />
           <folding />
         </state>
       </provider>

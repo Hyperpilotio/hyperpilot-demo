@@ -1,30 +1,50 @@
 {
-  "version": 1,
-  "schedule": {
-    "type": "simple",
-    "interval": "10s"
-  },
-  "workflow": {
-    "collect": {
-      "metrics": {
-        "/grafanalabs/kubestate/*": {}
+    "version": 1,
+    "schedule": {
+        "type": "simple",
+        "interval": "10s"
     },
-      "tags": {
-        "/intel": {
-          "nodename": "<%= NODE_NAME =>",
-          "deploymentId": "<%= DEPLOYMENT_ID =>"
-        }
-      },
-      "publish": [
-        {
-            "plugin_name": "kafka",
+    "workflow": {
+        "collect": {
+            "metrics": {
+                "/intel/docker/*": {},
+                "/intel/procfs/meminfo/*": {},
+                "/intel/procfs/disk/*": {},
+                "/intel/procfs/cpu/*": {}
+            },
             "config": {
-                "topic": "test",
-                "brokers": "kafka-serve:9092"
-            }
+                "/intel/procfs": {
+                    "proc_path": "/proc_host"
+                },
+                "/intel/docker": {
+                    "procfs": "/proc_host"
+                }
+            },
+            "tags": {
+                "/intel": {
+                    "nodename": "<%= NODE_NAME =>",
+                    "deploymentId": "<%= DEPLOYMENT_ID =>"
+                }
+            },
+            "process": [
+                {
+                    "plugin_name": "snap-average-counter-processor",
+                    "config": {
+                        "namespaces": "default,",
+                        "exclude_metrics": "*percentage, *perc, intel/docker/spec/*, intel/docker/stats/cgroups/cpuset_stats/*, intel/docker/stats/filesystem/device_name, intel/docker/stats/filesystem/type"
+                    },
+                    "publish": [
+                        {
+                            "plugin_name": "kafka",
+                            "config": {
+                                "topic": "test",
+                                "brokers": "kafka-serve:9092",
+                                "splitNumber": 500
+                            }
+                        }
+                    ]
+                }
+            ]
         }
-
-      ]
     }
-  }
 }

@@ -1,23 +1,23 @@
 ---
 kafka:
-  host: "kafka"
+  host: "kafka-serve"
   port: 9092
   topic: "test"
   group: "kafka-influxdb"
   reader: "kafka_influxdb.reader.confluent"
-  #reader: "kafka_influxdb.reader.kafka_python" # Legacy consumer
+  # reader: "kafka_influxdb.reader.kafka_python" # Legacy consumer
 influxdb:
   host: "influxsrv"
   port: 8086
   user: "root"
-  password: "root"
-  dbname: "snap-k8s"
+  password: "default"
+  dbname: "snapaverage"
   use_ssl: false
   verify_ssl: False
   timeout: 5
   use_udp: False
   retention_policy: "autogen"
   time_precision: "s"
-encoder: "kafka_influxdb.encoder.echo_encoder"
-buffer_size: 1000
+encoder: "kafka_influxdb.encoder.snap_kafka_publisher_encoder"
+buffer_size: 10
 statistics: true

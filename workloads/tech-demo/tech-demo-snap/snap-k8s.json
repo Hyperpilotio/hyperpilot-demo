@@ -30,8 +30,11 @@
                 {
                     "plugin_name": "snap-average-counter-processor",
                     "config": {
-                        "namespaces": "default,",
-                        "exclude_metrics": "*percentage, *perc, intel/docker/spec/*, intel/docker/stats/cgroups/cpuset_stats/*, intel/docker/stats/filesystem/device_name, intel/docker/stats/filesystem/type"
+                        "collect.namespaces": "default",
+                        "collect.include_empty_namespace": true,
+                        "collect.exclude_metrics": "intel/procfs/cpu/*, intel/procfs/meminfo/*, intel/docker/spec/*, intel/docker/stats/cgroups/cpuset_stats/*, intel/docker/stats/filesystem/device_name, intel/docker/stats/filesystem/type",
+                        "collect.except": "*percentage, *perc",
+                        "average.exclude_metrics": "*percentage, *perc"
                     },
                     "publish": [
                         {
@@ -41,10 +44,21 @@
                                 "brokers": "kafka-serve:9092",
                                 "splitNumber": 500
                             }
-                        }
-                    ]
-                }
-            ]
-        }
+                        },
+                        {
+                          "plugin_name": "influxdb",
+                          "config": {
+                            "host": "influxsrv",
+                            "port": 8086,
+                            "database": "snapaverage",
+                            "user": "root",
+                            "password": "default",
+                            "https": false,
+                            "skip-verify": false
+                          }
+                      }
+                  ]
+              }
+          ]
     }
 }

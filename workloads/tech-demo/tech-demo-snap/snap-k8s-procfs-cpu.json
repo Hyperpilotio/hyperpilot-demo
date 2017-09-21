@@ -2,22 +2,17 @@
     "version": 1,
     "schedule": {
         "type": "simple",
-        "interval": "10s"
+        "interval": "5s"
     },
+    "max-failures": -1,
     "workflow": {
         "collect": {
             "metrics": {
-                "/intel/docker/*": {},
-                "/intel/procfs/meminfo/*": {},
-                "/intel/procfs/disk/*": {},
                 "/intel/procfs/cpu/*": {}
             },
             "config": {
                 "/intel/procfs": {
                     "proc_path": "/proc_host"
-                },
-                "/intel/docker": {
-                    "procfs": "/proc_host"
                 }
             },
             "tags": {
@@ -32,9 +27,9 @@
                     "config": {
                         "collect.namespaces": "default",
                         "collect.include_empty_namespace": true,
-                        "collect.exclude_metrics": "intel/procfs/cpu/*, intel/procfs/meminfo/*, intel/docker/spec/*, intel/docker/stats/cgroups/cpuset_stats/*, intel/docker/stats/filesystem/device_name, intel/docker/stats/filesystem/type",
-                        "collect.except": "*percentage, *perc",
-                        "average.exclude_metrics": "*percentage, *perc"
+                        "collect.exclude_metrics": "*",
+                        "collect.exclude_metrics.except": "*/all/*_percentage",
+                        "average": ""
                     },
                     "publish": [
                         {
@@ -46,19 +41,20 @@
                             }
                         },
                         {
-                          "plugin_name": "influxdb",
-                          "config": {
-                            "host": "influxsrv",
-                            "port": 8086,
-                            "database": "snapaverage",
-                            "user": "root",
-                            "password": "default",
-                            "https": false,
-                            "skip-verify": false
-                          }
-                      }
-                  ]
-              }
-          ]
+                            "plugin_name": "influxdb",
+                            "config": {
+                                "host": "influxsrv",
+                                "port": 8086,
+                                "database": "snapaverage",
+                                "user": "root",
+                                "password": "default",
+                                "https": false,
+                                "skip-verify": false
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
     }
 }

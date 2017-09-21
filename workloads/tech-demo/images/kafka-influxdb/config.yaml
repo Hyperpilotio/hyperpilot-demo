@@ -11,12 +11,12 @@ influxdb:
   port: 8086
   user: "root"
   password: "default"
-  dbname: "snapaverage"
+  dbname: "snapaverage_test"
   use_ssl: false
   verify_ssl: False
   timeout: 5
   use_udp: False
-  retention_policy: "autogen"
+  retention_policy: ""
   time_precision: "s"
 encoder: "kafka_influxdb.encoder.snap_kafka_publisher_encoder"
 buffer_size: 10

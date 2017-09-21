@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "schedule": {
+        "type": "simple",
+        "interval": "5s"
+    },
+    "max-failures": -1,
+    "workflow": {
+        "collect": {
+            "metrics": {
+                "/intel/docker/*/stats/cgroups/*": {}
+            },
+            "config": {
+                "/intel/docker": {
+                    "procfs": "/proc_host"
+                }
+            },
+            "tags": {
+                "/intel": {
+                    "nodename": "<%= NODE_NAME =>",
+                    "deploymentId": "<%= DEPLOYMENT_ID =>"
+                }
+            },
+            "process": [
+                {
+                    "plugin_name": "snap-average-counter-processor",
+                    "config": {
+                        "collect.namespaces": "default",
+                        "collect.include_empty_namespace": true,
+                        "collect.exclude_metrics": "*cpu_stats/cpu_shares, */cpuset_stats/*, */pids_stats/*, */cpu_usage/per_cpu/*",
+                        "collect.exclude_metrics.except": "",
+                        "average": "*/blkio_stats/*, */cpu_usage/*, */cpu_stats/throttling_data/*, intel/docker/stats/cgroups/memory_stats/usage/failcnt, intel/docker/stats/cgroups/memory_stats/usage/pgfault, intel/docker/stats/cgroups/memory_stats/usage/pgmajfault, intel/docker/stats/cgroups/memory_stats/usage/pgpgin, intel/docker/stats/cgroups/memory_stats/usage/pgpgout, intel/docker/stats/cgroups/memory_stats/usage/total_pgfault, intel/docker/stats/cgroups/memory_stats/usage/total_pgmajfault, intel/docker/stats/cgroups/memory_stats/usage/total_pgppin, intel/docker/stats/cgroups/memory_stats/usage/total_pgpgout, intel/docker/stats/cgroups/hugetlb_stats/usage/failcnt"
+                    },
+                    "publish": [
+                        {
+                            "plugin_name": "kafka",
+                            "config": {
+                                "topic": "test",
+                                "brokers": "kafka-serve:9092",
+                                "splitNumber": 500
+                            }
+                        },
+                        {
+                            "plugin_name": "influxdb",
+                            "config": {
+                                "host": "influxsrv",
+                                "port": 8086,
+                                "database": "snapaverage",
+                                "user": "root",
+                                "password": "default",
+                                "https": false,
+                                "skip-verify": false
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -9,7 +9,13 @@
     "kafka": "https://s3.amazonaws.com/hyperpilot-snap-collectors/snap-plugin-publisher-kafka"
   },
   "tasks": [
-    "https://s3.amazonaws.com/snap-tech-demo-files/snap-k8s.json"
+    "https://s3.amazonaws.com/snap-tech-demo-files/snap-k8s-docker-cgroups.json",
+    "https://s3.amazonaws.com/snap-tech-demo-files/snap-k8s-docker-connection.json",
+    "https://s3.amazonaws.com/snap-tech-demo-files/snap-k8s-docker-filesystem.json",
+    "https://s3.amazonaws.com/snap-tech-demo-files/snap-k8s-docker-network.json",
+    "https://s3.amazonaws.com/snap-tech-demo-files/snap-k8s-procfs-cpu.json",
+    "https://s3.amazonaws.com/snap-tech-demo-files/snap-k8s-procfs-disk.json",
+    "https://s3.amazonaws.com/snap-tech-demo-files/snap-k8s-procfs-meminfo.json"
   ],
   "pluginsPath": "/opt/snap/plugins",
   "tasksPath": "/opt/snap/tasks"

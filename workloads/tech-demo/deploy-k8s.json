@@ -298,7 +298,7 @@
                                 ],
                                 "containers": [
                                     {
-                                        "image": "aasssddd\/kafka-influxdb",
+                                        "image": "aasssddd\/kafka-influxdb:latest",
                                         "name": "kafka-influxdb",
                                         "imagePullPolicy": "Always",
                                         "volumeMounts":[
@@ -694,7 +694,7 @@
                                             },
                                             {
                                                 "name": "PRE_CREATE_DB",
-                                                "value": "snap;spark;snapaverage"
+                                                "value": "snap;spark;snapaverage;snapaverage_test"
                                             },
                                             {
                                                 "name": "INFLUXDB_INIT_PWD",

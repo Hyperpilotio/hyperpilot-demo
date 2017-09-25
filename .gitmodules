@@ -16,3 +16,6 @@
 [submodule "workloads/memcached/images/loadTester/mutilate"]
 	path = workloads/memcached/images/loadTester/mutilate
 	url = git@github.com:leverich/mutilate.git
+[submodule "workloads/common/components/prometheus-operator"]
+	path = workloads/common/components/prometheus-operator
+	url = git@github.com:coreos/prometheus-operator.git

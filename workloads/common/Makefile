@@ -12,3 +12,10 @@ upload-analysis-base-spark-file:
 generate-analysis-base-file:
 	@echo "Generate analysis-base-file.json with  benchmark-agent, snap-agent, dd-agent"
 	@./add-components.py --template templates/analysis-base.json --components snap dd benchmark
+
+deploy-prometheus:
+ifneq ($(wildcard components/prometheus-operator/.*),)
+	@./components/prometheus-operator/contrib/kube-prometheus//hack/cluster-monitoring/deploy
+else
+	@echo "Please update git submodule ..."
+endif

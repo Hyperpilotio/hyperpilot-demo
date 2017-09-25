@@ -694,7 +694,7 @@
                                             },
                                             {
                                                 "name": "PRE_CREATE_DB",
-                                                "value": "snap;spark;snapaverage;snapaverage_test"
+                                                "value": "snap;spark;snapaverage"
                                             },
                                             {
                                                 "name": "INFLUXDB_INIT_PWD",

@@ -9,6 +9,10 @@
         {
             "fileId": "tech_demo_core_site_xml",
             "path": "\/home\/ubuntu\/core-site.xml"
+        },
+        {
+            "fileId": "tech_demo_kafka_influxdb",
+            "path": "\/home\/ubuntu\/config.yaml"
         }
     ],
     "nodeMapping": [
@@ -23,6 +27,10 @@
         {
             "task": "snap",
             "id": 4
+        },
+        {
+            "task": "kafka-influxdb",
+            "id": 5
         },
         {
             "task": "influxsrv",
@@ -153,7 +161,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-collectors.s3.amazonaws.com\/init.json"
+                                            "https:\/\/s3.amazonaws.com\/snap-tech-demo-files\/init-k8s.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -283,7 +291,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/hyperpilot-snap-alpha.s3.amazonaws.com\/init-goddd-alpha-only.json"
+                                            "https:\/\/s3.amazonaws.com\/snap-tech-demo-files\/init-snap-goddd.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -415,7 +423,7 @@
                                             },
                                             {
                                                 "name": "PRE_CREATE_DB",
-                                                "value": "snap;spark"
+                                                "value": "snap;spark;snapaverage"
                                             },
                                             {
                                                 "name": "INFLUXDB_INIT_PWD",
@@ -1411,6 +1419,61 @@
                     }
                 },
                 "family": "qos-data-store"
+            },
+            {
+                "deployment":{
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "kafka-influxdb",
+                            "version": "latest"
+                        },
+                        "name": "kafka-influxdb",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "kafka-influxdb",
+                                "version": "latest"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "kafka-influxdb",
+                                    "version": "latest"
+                                }
+                            },
+                            "spec":{
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/config.yaml"
+                                        },
+                                        "name": "home-ubuntu-kafka-influxdb-config"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "image": "aasssddd\/kafka-influxdb:latest",
+                                        "name": "kafka-influxdb",
+                                        "imagePullPolicy": "Always",
+                                        "volumeMounts":[
+                                            {
+                                                "mountPath": "/config/config.yaml",
+                                                "name": "home-ubuntu-kafka-influxdb-config"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "kafka-influxdb"
             }
         ]
     }

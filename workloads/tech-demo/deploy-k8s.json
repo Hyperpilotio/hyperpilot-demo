@@ -303,7 +303,7 @@
                                         "imagePullPolicy": "Always",
                                         "volumeMounts":[
                                             {
-                                                "mountPath": "/etc/config.yaml",
+                                                "mountPath": "/config/config.yaml",
                                                 "name": "home-ubuntu-kafka-influxdb-config"
                                             }
                                         ]

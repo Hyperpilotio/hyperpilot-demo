@@ -8,11 +8,11 @@
     "workflow": {
         "collect": {
             "metrics": {
-                "/intel/docker/*/stats/network/*": {}
+                "/intel/procfs/disk/*": {}
             },
             "config": {
-                "/intel/docker": {
-                    "procfs": "/proc_host"
+                "/intel/procfs": {
+                    "proc_path": "/proc_host"
                 }
             },
             "tags": {
@@ -27,11 +27,39 @@
                     "config": {
                         "collect.namespaces": "default",
                         "collect.include_empty_namespace": true,
-                        "collect.exclude_metrics": "",
+                        "collect.exclude_metrics": "*",
+                        "collect.exclude_metrics.except": "*/pending_ops",
+                        "average": ""
+                    },
+                    "publish": [
+                        {
+                            "plugin_name": "kafka",
+                            "config": {
+                                "topic": "test",
+                                "brokers": "kafka-serve:9092",
+                                "splitNumber": 500
+                            }
+                        }
+                    ]
+                },
+                {
+                    "plugin_name": "snap-average-counter-processor",
+                    "config": {
+                        "collect.namespaces": "default",
+                        "collect.include_empty_namespace": true,
+                        "collect.exclude_metrics": "*/pending_ops",
                         "collect.exclude_metrics.except": "",
                         "average": "*"
                     },
                     "publish": [
+                        {
+                            "plugin_name": "kafka",
+                            "config": {
+                                "topic": "test",
+                                "brokers": "kafka-serve:9092",
+                                "splitNumber": 500
+                            }
+                        },
                         {
                             "plugin_name": "influxdb",
                             "config": {

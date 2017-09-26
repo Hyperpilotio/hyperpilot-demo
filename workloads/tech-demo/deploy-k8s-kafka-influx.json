@@ -99,6 +99,18 @@
         {
             "task": "spark-worker3",
             "id": 4
+        },
+        {
+            "task": "zookeeper",
+            "id": 5
+        },
+        {
+            "task": "kafka-serve",
+            "id": 5
+        },
+        {
+            "task": "kafka-influxdb",
+            "id": 5
         }
     ],
     "clusterDefinition": {
@@ -145,6 +157,164 @@
             }
         ],
         "taskDefinitions": [
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "zookeeper"
+                        },
+                        "name": "zookeeper",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "zookeeper"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "zookeeper"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "zookeeper",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/zookeeper",
+                                        "name": "zookeeper",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 2181,
+                                                "hostPort": 2181,
+                                                "protocol": "TCP"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "zookeeper"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "kafka-serve"
+                        },
+                        "name": "kafka-serve",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "kafka-serve"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "kafka-serve"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "kafka-serve",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/kafka",
+                                        "name": "kafka-serve",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 9092,
+                                                "hostPort": 9092,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8082,
+                                                "hostPort": 8082,
+                                                "protocol": "TCP"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    0, 0
+                ],
+                "family": "kafka-serve"
+            },
+            {
+                "deployment":{
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "kafka-influxdb",
+                            "version": "latest"
+                        },
+                        "name": "kafka-influxdb",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "kafka-influxdb",
+                                "version": "latest"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "kafka-influxdb",
+                                    "version": "latest"
+                                }
+                            },
+                            "spec":{
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/config.yaml"
+                                        },
+                                        "name": "home-ubuntu-kafka-influxdb-config"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "image": "aasssddd\/kafka-influxdb:latest",
+                                        "name": "kafka-influxdb",
+                                        "imagePullPolicy": "Always",
+                                        "volumeMounts":[
+                                            {
+                                                "mountPath": "/config/config.yaml",
+                                                "name": "home-ubuntu-kafka-influxdb-config"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "kafka-influxdb"
+            },
             {
                 "daemonset": {
                     "apiVersion": "extensions\/v1beta1",
@@ -262,7 +432,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/s3.amazonaws.com\/hyperpilot-tech-demo-snap\/init-k8s.json"
+                                            "https:\/\/s3.amazonaws.com\/hyperpilot-tech-demo-snap-kafka\/init-k8s.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -392,7 +562,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/s3.amazonaws.com\/hyperpilot-tech-demo-snap\/init-snap-goddd.json"
+                                            "https:\/\/s3.amazonaws.com\/hyperpilot-tech-demo-snap-kafka\/init-snap-goddd.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -524,7 +694,7 @@
                                             },
                                             {
                                                 "name": "PRE_CREATE_DB",
-                                                "value": "snap;spark;snapaverage"
+                                                "value": "snap;spark;snapaverage;snapaverage_test"
                                             },
                                             {
                                                 "name": "INFLUXDB_INIT_PWD",

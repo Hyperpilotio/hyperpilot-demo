@@ -8,7 +8,7 @@
     "workflow": {
         "collect": {
             "metrics": {
-                "/intel/docker/*/stats/network/*": {}
+                "/intel/docker/*/stats/filesystem/*": {}
             },
             "config": {
                 "/intel/docker": {
@@ -27,21 +27,17 @@
                     "config": {
                         "collect.namespaces": "default",
                         "collect.include_empty_namespace": true,
-                        "collect.exclude_metrics": "",
+                        "collect.exclude_metrics": "*/device_name, */type",
                         "collect.exclude_metrics.except": "",
-                        "average": "*"
+                        "average": "*/io_time, */read_time, */reads_completed, */reads_merged, */sectors_read, */sectors_written, */weighted_io_time, */write_time, */writes_completed, */writes_merged"
                     },
                     "publish": [
                         {
-                            "plugin_name": "influxdb",
+                            "plugin_name": "kafka",
                             "config": {
-                                "host": "influxsrv",
-                                "port": 8086,
-                                "database": "snapaverage",
-                                "user": "root",
-                                "password": "default",
-                                "https": false,
-                                "skip-verify": false
+                                "topic": "test",
+                                "brokers": "kafka-serve:9092",
+                                "splitNumber": 500
                             }
                         }
                     ]

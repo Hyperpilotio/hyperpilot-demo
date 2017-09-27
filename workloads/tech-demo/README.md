@@ -23,3 +23,11 @@ kubectl create -f load-controller-deployment.json
 
 # To create BE workload, launch script to submit Spark jobs
 ./submit_spark_jobs.sh
+
+# Backup / Restore influxDB
+Create a snapshot of InfluxDB to S3 bucket, or restore from snapshot by name, execute
+```
+./hyperpilot_influx.sh help
+```
+
+to get more information

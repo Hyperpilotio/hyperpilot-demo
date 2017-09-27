@@ -543,6 +543,11 @@
                                                 "containerPort": 8086,
                                                 "hostPort": 8086,
                                                 "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8088,
+                                                "hostPort": 8088,
+                                                "protocol": "TCP"
                                             }
                                         ],
                                         "volumeMounts": [
@@ -565,6 +570,7 @@
                 },
                 "family": "influxsrv",
                 "portTypes": [
+                    1,
                     1,
                     1
                 ]

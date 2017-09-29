@@ -59,18 +59,6 @@
                                 "brokers": "kafka-serve:9092",
                                 "splitNumber": 500
                             }
-                        },
-                        {
-                            "plugin_name": "influxdb",
-                            "config": {
-                                "host": "influxsrv",
-                                "port": 8086,
-                                "database": "snapaverage",
-                                "user": "root",
-                                "password": "default",
-                                "https": false,
-                                "skip-verify": false
-                            }
                         }
                     ]
                 }

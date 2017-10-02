@@ -6,39 +6,11 @@ INFLUX_HOST="localhost"
 INFLUX_API_PORT="8086"
 API_URL="http://${INFLUX_HOST}:${INFLUX_API_PORT}"
 DATA_DIR="/var/lib/influxdb/data"
-META_DIR="/var/lib/influxdb/meta"
-
-# restore
-if [[ "restore" == $1 ]]; then
-    backup_url=$2
-    mkdir restore_file
-    echo "$1 from $2"
-    curl -sL "$backup_url" -o backup.tar.gz
-    tar zxvf backup.tar.gz -C restore_file
-    files=($(ls restore_file))
-    for db in "${files[@]}"; do
-        echo "restoring database $db"
-        # restore meta
-        influxd restore -metadir $META_DIR restore_file/$db
-        # restore database
-        if ls restore_file/$db/$db* 1> /dev/null 2>&1; then
-            echo "restoring data"
-            influxd restore -database $db -datadir $DATA_DIR restore_file/$db
-        else
-            echo "empty database $db"
-        fi
-
-    done
-    shift 2
-fi
 
 if [ "${1:0:1}" = '-' ]; then
     set -- influxd "$@"
-else
-    set -- influxd
 fi
 
-echo "$@"
 echo "=> Starting InfluxDB ..."
 exec "$@" &
 

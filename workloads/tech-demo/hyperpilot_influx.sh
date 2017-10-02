@@ -12,41 +12,41 @@
 #           --name <backup_name> \
 #           --aws-id <optional: awsId> \
 #           --aws-secret <optional: secret> \
-#           --kubeconfig-file <file_path>
+#           --no-cached
 #   aws flags can ignore if aws credential has set to environment variable:
 #       AWS_ACCESS_KEY_ID
 #       AWS_SECRET_ACCESS_KEY
 #   kubeconfig flag can ignore if KUBECONFIG has set to environment variable
 # set an initial value for the flag
 
-# requirement check
-# os_name=$(uname -a | awk '{print $1}')
-#
-# if [[ $os_name == "Darwin" ]]; then
-#     brew install gnu-getopt
-#     brew link --force gnu-getopt
-# fi
+backup_file_path="/tmp/influx/backups"
+bucket="influx_backup"
 
 # read the options
 if [[ -z "$1" ]]; then
     echo "please see 'help'"
     exit 1
 fi
-
 BACKUP=`getopt -q -l host:,port:,backup-host:,name:,aws-id::,aws-secret::,influx-username::,influx-password::  -- "$@"`
-RESTORE=`getopt -q -l name:,aws-id::,aws-secret::,kubeconfig-file::,influx-username::,influx-password:: -- "$@"`
+RESTORE=`getopt -q -l name:,aws-id::,aws-secret::,no-cache, -- "$@"`
 if [[ "$1" == "backup" ]]; then
     OPERATOR=$1
     eval set -- "$BACKUP"
 elif [[ "$1" == "restore" ]]; then
     OPERATOR=$1
     eval set -- "$RESTORE"
+elif [[ "$1" == "house-keeping" ]]; then
+    rm -rf $backup_file_path
+    echo "cache are all cleared."
+    echo "bye!"
+    exit 0
 elif [[ "$1" == "help" ]]; then
     printf "[hyperpilot_influx tool]
     Backup whole influxDB to AWS S3 bucket and restore
     Usage:
         hyperpilot_influx backup <options>
         hyperpilot_influx restore <options>
+        hyperpilot_influx house-keeping: clean all local cached snapshot files
     options:
         --host: influxDB host url (only backup operation needed)
         --port: influxDB server port (only backup operation needed)
@@ -56,7 +56,7 @@ elif [[ "$1" == "help" ]]; then
         --aws-secret(optional): aws secret access key or set to env AWS_SECRET_ACCESS_KEY
         --influx-username(optional): influxdb user, default is set to 'root' (only backup operation needed)
         --influx-password(optional): influxdb password, default is set to 'default' (only backup operation needed)
-        --kubeconfig-file(required by restore command): use for restore database, absolute path\n"
+        --no-cache(optinal): use local copy of snapshot if this flag is not provided, else it will pull from S3 \n"
     exit 1
 else
     echo "must be backup / restore"
@@ -111,6 +111,7 @@ while true ; do
                 "" ) echo "flag $1 show but contains no values" ; exit 1 ;;
                 *  ) INFLUX_PASSWORD=$2 ; shift 2 ;;
             esac ;;
+        --no-cache ) NO_CACHE=true ; shift 1 ;;
         -- ) shift ; break ;;
         *  ) echo "error parameter: $1" ; exit 1 ;;
     esac
@@ -119,7 +120,7 @@ done
 if [[ -z "$PORT" ]]; then
     PORT=8086
 fi
-if [[ -z "$AWSID" ]]; then
+if [[ -z "$AWSID" && "$OPERATOR" == "backup" ]]; then
     if [[ -z $AWS_ACCESS_KEY_ID ]]; then
         echo "aws credential not set properly"
         exit 1
@@ -127,20 +128,12 @@ if [[ -z "$AWSID" ]]; then
     AWSID=$AWS_ACCESS_KEY_ID
 fi
 
-if [[ -z "$AWS_SECRET" ]]; then
+if [[ -z "$AWS_SECRET" && "$OPERATOR" == "backup" ]]; then
     if [[ -z $AWS_SECRET_ACCESS_KEY ]]; then
         echo "aws credential not set properly"
         exit 1
     fi
     AWS_SECRET=$AWS_SECRET_ACCESS_KEY
-fi
-
-if [[ "$OPERATOR" == "restore" &&  -z "$KUBE_CONFIG" ]]; then
-    if [[ -z "$KUBECONFIG" ]]; then
-        echo "kube config file path not set properly"
-        exit 1
-    fi
-    KUBE_CONFIG=$KUBECONFIG
 fi
 
 # default username set to 'root'
@@ -159,12 +152,10 @@ echo "HOST = $HOST"
 echo "NAME = $NAME"
 echo "AWSID = $AWSID"
 echo "AWS_SECRET = $AWS_SECRET"
-echo "KUBE_CONFIG = $KUBE_CONFIG"
 echo "INFLUX_USERNAME = $INFLUX_USERNAME"
 echo "INFLUX_PASSWORD = $INFLUX_PASSWORD"
 
-backup_file_path="/tmp/influx/backups"
-bucket="influx_backup"
+
 file="$NAME.tar.gz"
 
 # add profile to aws config file
@@ -185,7 +176,8 @@ case "$OPERATOR" in
     backup  )
         mkdir -p $backup_file_path
         # backup metastore
-        # influxd backup $backup_file_path
+        influxd backup -host $BACKUP_HOST $backup_file_path
+
         # search for databases
         dbs=($(influx -host $HOST -port $PORT -username $INFLUX_USERNAME -password $INFLUX_PASSWORD -execute 'show databases' -format json | jq -c '.results[0].series[0].values[] | join([])'))
         # backup databases
@@ -217,15 +209,60 @@ bye!\n
 "
         ;;
     restore )
+
         # download file from s3 by specified name
-        presign_url=$(aws s3 presign s3://$bucket/$NAME.tar.gz --profile=share)
-        echo $presign_url
-        # create yaml
-        presign_url=$(echo $presign_url | sed 's/[_&$]/\\&/g')
-        sed "s~%URL~$presign_url~g" influx_restore.template.yaml > influx_restore.yaml
+        if [[ "$NO_CACHE" == "true" || ! -f $backup_file_path/$file ]]; then
+            aws s3 cp s3://$bucket/$NAME.tar.gz $backup_file_path/$file
+        fi
+        # untar zip file
+        mkdir -p $backup_file_path/cache/$NAME
+        tar zxvf $backup_file_path/$NAME.tar.gz -C $backup_file_path/cache/$NAME
+
+        sys_info=$(influx -execute 'show diagnostics' -format json)
+        # detect data dir
+        idx=$(echo $sys_info | jq '.results[0].series[] | select (.name=="config-data")' | jq '.columns | index("dir")')
+        DATA_DIR=$(echo $sys_info | jq '.results[0].series[] | select (.name=="config-data")' | jq --arg idx "$idx" '.values[0][$idx | tonumber]')
+
+        # detect meta dir
+        idx=$(echo $sys_info | jq '.results[0].series[] | select (.name=="config-meta")' | jq '.columns | index("dir")')
+        META_DIR=$(echo $sys_info | jq '.results[0].series[] | select (.name=="config-meta")' | jq --arg idx "$idx" '.values[0][$idx | tonumber]')
+
+        META_DIR=${META_DIR%\"}
+        META_DIR=${META_DIR#\"}
+        DATA_DIR=${DATA_DIR%\"}
+        DATA_DIR=${DATA_DIR#\"}
+        echo "meta dir: $META_DIR"
+        echo "data dir: $DATA_DIR"
+
+        ## start restoring
+        # restore meta
+        influxd restore -metadir $META_DIR $backup_file_path/cache/$NAME
+        # restore database
+        files=($(ls $backup_file_path/cache/$NAME))
+        for db in "${files[@]}"; do
+            echo "restoring database $db"
+            # restore database
+            if ls $backup_file_path/cache/$NAME/$db/$db* 1> /dev/null 2>&1; then
+                echo "restoring data"
+                influxd restore -database $db -datadir $DATA_DIR $backup_file_path/cache/$NAME/$db
+            else
+                echo "empty database $db"
+            fi
+        done
+
+        chown -R influx:influx $META_DIR
+        chown -R influx:influx $DATA_DIR
+
+        # kill process
+
+        process=$(ps aux | grep influxdb)
+        echo $process
+        pid=$(echo $process | grep bin/influxd | awk '{print $2}')
+        echo "killing Influxdb process: $pid"
+        kill -9 $pid
+
         # update influx deployment
-        kubectl --kubeconfig=$KUBE_CONFIG replace -f influx_restore.yaml
-        printf "ok, done.\n bye!\n"
+        printf "ok, done.\n please restart your influxd. \nbye!\n"
 esac
 
 # reset aws profile
@@ -234,5 +271,4 @@ rm -rf ~/.aws/credentials
 mv ~/.aws/config.bak ~/.aws/config
 mv ~/.aws/credentials.bak ~/.aws/credentials
 rm -rf influx_restore.yaml
-rm -rf $backup_file_path
 rm -rf $file

@@ -1,0 +1,25 @@
+{
+    "name": "tech-demo",
+    "serviceNames": [
+        "goddd",
+        "mongo-serve",
+        "pathfinder"
+    ],
+    "loadTester": {
+        "name": "demo-ui",
+        "demoUiController": {
+        }
+    },
+    "type": "long-running",
+    "slo": {
+        "metric": "Booking",
+        "value": 0,
+        "type": "90"
+    },
+    "budget": {
+        "value": 300,
+        "unit": "dollar"
+    },
+    "deploymentTemplate": "tech-demo-base",
+    "taskDefinitions": []
+}

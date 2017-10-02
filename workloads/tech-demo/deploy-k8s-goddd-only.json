@@ -161,7 +161,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/s3.amazonaws.com\/snap-tech-demo-files\/init-k8s.json"
+                                            "https:\/\/hyperpilot-tech-demo-snap.s3.amazonaws.com\/init-k8s.json"
                                         ],
                                         "resources": {
                                             "limits": {
@@ -291,7 +291,7 @@
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https:\/\/s3.amazonaws.com\/snap-tech-demo-files\/init-snap-goddd.json"
+                                            "https:\/\/hyperpilot-tech-demo-snap.s3.amazonaws.com\/init-snap-goddd.json"
                                         ],
                                         "resources": {
                                             "limits": {

@@ -5,8 +5,7 @@
     "cpu": "https://github.com/intelsdi-x/snap-plugin-collector-cpu/releases/download/6/snap-plugin-collector-cpu_linux_x86_64",
     "meminfo": "https://github.com/intelsdi-x/snap-plugin-collector-meminfo/releases/download/4/snap-plugin-collector-meminfo_linux_x86_64",
     "diskinfo": "https://github.com/intelsdi-x/snap-plugin-collector-disk/releases/download/5/snap-plugin-collector-disk_linux_x86_64",
-    "snap-average-counter-processor": "https://s3.amazonaws.com/snap-tech-demo-files/snap-average-counter-processor",
-    "kafka": "https://s3.amazonaws.com/hyperpilot-snap-collectors/snap-plugin-publisher-kafka"
+    "snap-average-counter-processor": "https://s3.amazonaws.com/snap-tech-demo-files/snap-average-counter-processor"
   },
   "tasks": [
     "https://s3.amazonaws.com/snap-tech-demo-files/snap-k8s-docker-cgroups.json",

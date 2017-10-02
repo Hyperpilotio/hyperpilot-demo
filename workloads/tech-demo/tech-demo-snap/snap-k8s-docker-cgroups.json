@@ -33,14 +33,6 @@
                     },
                     "publish": [
                         {
-                            "plugin_name": "kafka",
-                            "config": {
-                                "topic": "test",
-                                "brokers": "kafka-serve:9092",
-                                "splitNumber": 500
-                            }
-                        },
-                        {
                             "plugin_name": "influxdb",
                             "config": {
                                 "host": "influxsrv",

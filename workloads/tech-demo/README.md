@@ -2,7 +2,12 @@
 
 # Deploy the Tech demo environment, this sets up a kubernetes deployment and runs
 # a microservice environment (goddd + mongo + pathfinder)
-./deploy-k8s.sh <user>
+./deploy-k8s.sh <user> <mode:optional>
+
+available mode:
+- ``empty(default)``: deploy deploy-k8s.json to deployer, this mode runs classic tech-demo
+- ``kafka-influx``: deploy-k8s-kafka-influx.json to deployer, this mode will publish snap metrics to kafka, then consume kafka message by kafka-influx pod
+- ``goddd-only``: deploy-k8s-goddd-only.json to deployer, this mode contains goddd workload only
 
 # See Demo UI & Watch utilization and latency stats with Grafana
 ```

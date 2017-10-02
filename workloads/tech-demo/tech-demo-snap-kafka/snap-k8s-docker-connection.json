@@ -8,7 +8,7 @@
     "workflow": {
         "collect": {
             "metrics": {
-                "/intel/docker/*/stats/network/*": {}
+                "/intel/docker/*/stats/connection/*": {}
             },
             "config": {
                 "/intel/docker": {
@@ -29,19 +29,15 @@
                         "collect.include_empty_namespace": true,
                         "collect.exclude_metrics": "",
                         "collect.exclude_metrics.except": "",
-                        "average": "*"
+                        "average": ""
                     },
                     "publish": [
                         {
-                            "plugin_name": "influxdb",
+                            "plugin_name": "kafka",
                             "config": {
-                                "host": "influxsrv",
-                                "port": 8086,
-                                "database": "snapaverage",
-                                "user": "root",
-                                "password": "default",
-                                "https": false,
-                                "skip-verify": false
+                                "topic": "test",
+                                "brokers": "kafka-serve:9092",
+                                "splitNumber": 500
                             }
                         }
                     ]

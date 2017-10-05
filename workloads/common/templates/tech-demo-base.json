@@ -2,7 +2,7 @@
     "name": "tech-demo-base",
     "region": "us-east-1",
     "nodeMapping": [
-                {
+        {
             "task": "snap-goddd",
             "id": 2
         },
@@ -31,11 +31,27 @@
             "id": 4
         },
         {
+            "task": "benchmark-agent",
+            "id": 4
+        },
+        {
+            "task": "demo-ui",
+            "id": 1
+        },
+        {
             "task": "pathfinder",
             "id": 3
         },
         {
+            "task": "benchmark-agent",
+            "id": 3
+        },
+        {
             "task": "goddd",
+            "id": 2
+        },
+        {
+            "task": "benchmark-agent",
             "id": 2
         },
         {
@@ -1456,6 +1472,77 @@
                     }
                 },
                 "family": "kafka-influxdb"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "benchmark-agent"
+                        },
+                        "name": "benchmark-agent"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "benchmark-agent"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "benchmark-agent"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "benchmark-agent",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/benchmark-agent",
+                                        "name": "benchmark-agent",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7778,
+                                                "hostPort": 7778,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "request": {
+                                                "cpu": "512.0m",
+                                                "memory": "500Mi"
+                                            },
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "500Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/run\/docker.sock",
+                                                "name": "docker-sock"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/var\/run\/docker.sock"
+                                        },
+                                        "name": "docker-sock"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "benchmark-agent"
             }
         ]
     }

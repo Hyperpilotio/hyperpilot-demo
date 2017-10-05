@@ -1,4 +1,4 @@
-FROM influxdb:1.2.2
+FROM influxdb:1.3.6
 
 COPY influxdb.conf /etc/influxdb/influxdb.conf
 

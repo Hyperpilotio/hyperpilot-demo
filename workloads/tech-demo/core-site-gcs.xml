@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <property>
+    <name>fs.gs.impl</name>
+    <value>com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem</value>
+  </property>
+     <property>
+             <name>fs.gs.project.id</name>
+                   <value>hyperpilot-tim</value>
+     </property>
+        <property>
+                <name>fs.gs.system.bucket</name>
+                      <value>hyperpilot-tim-deployer</value>
+        </property>
+</configuration>

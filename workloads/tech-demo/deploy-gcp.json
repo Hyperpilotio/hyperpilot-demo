@@ -1,19 +1,19 @@
 {
     "name": "tech-demo",
-    "region": "us-east-1",
-    "clusterType": "K8S",
+    "region": "us-west1-a",
+    "clusterType": "GCP",
     "files": [
         {
             "fileId": "tech_demo_load_test",
-            "path": "\/home\/ubuntu\/locust_file\/locustfile.py"
+            "path": "~/locust_file/locustfile.py"
         },
         {
-            "fileId": "tech_demo_core_site_xml",
-            "path": "\/home\/ubuntu\/core-site.xml"
+            "fileId": "tech_demo_core_site_gcs_xml",
+            "path": "~/core-site.xml"
         },
         {
             "fileId": "tech_demo_kafka_influxdb",
-            "path": "\/home\/ubuntu\/config.yaml"
+            "path": "~/config.yaml"
         }
     ],
     "nodeMapping": [
@@ -105,27 +105,27 @@
     "clusterDefinition": {
         "nodes": [
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 1
             },
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 2
             },
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 3
             },
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 4
             },
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 5
             },
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 6
             }
         ]
@@ -511,7 +511,7 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/influx_data"
+                                            "path": "~/influx_data"
                                         },
                                         "name": "influx-data"
                                     }
@@ -687,7 +687,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/tech-demo-ui",
+                                        "image": "hyperpilot\/demo-ui:gcp",
                                         "imagePullPolicy": "Always",
                                         "name": "demo-ui",
                                         "ports": [
@@ -919,7 +919,7 @@
                                         ],
                                         "volumeMounts": [
                                             {
-                                                "mountPath": "\/locust_file",
+                                                "mountPath": "/locust_file",
                                                 "name": "home-ubuntu-locust-file"
                                             }
                                         ]
@@ -928,7 +928,7 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/locust_file\/"
+                                            "path": "~/locust_file/"
                                         },
                                         "name": "home-ubuntu-locust-file"
                                     }
@@ -999,7 +999,7 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/locust_file\/"
+                                            "path": "~/locust_file/"
                                         },
                                         "name": "home-ubuntu-locust-file"
                                     }
@@ -1037,7 +1037,7 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/core-site.xml"
+                                            "path": "~/core-site.xml"
                                         },
                                         "name": "core-site"
                                     }
@@ -1153,19 +1153,20 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/core-site.xml"
+                                            "path": "~/core-site.xml"
                                         },
                                         "name": "core-site"
                                     },
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/spark-local-dir"
+                                            "path": "~/spark-local-dir"
                                         },
                                         "name": "spark-local-dir"
                                     }
                                 ],
                                 "containers": [
                                     {
+                                        "imagePullPolicy": "Always",
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
@@ -1251,19 +1252,20 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/core-site.xml"
+                                            "path": "~/core-site.xml"
                                         },
                                         "name": "core-site"
                                     },
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/spark-local-dir"
+                                            "path": "~/spark-local-dir"
                                         },
                                         "name": "spark-local-dir"
                                     }
                                 ],
                                 "containers": [
                                     {
+                                        "imagePullPolicy": "Always",
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
@@ -1349,19 +1351,20 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/core-site.xml"
+                                            "path": "~/core-site.xml"
                                         },
                                         "name": "core-site"
                                     },
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/spark-local-dir"
+                                            "path": "~/spark-local-dir"
                                         },
                                         "name": "spark-local-dir"
                                     }
                                 ],
                                 "containers": [
                                     {
+                                        "imagePullPolicy": "Always",
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/usr\/hadoop-2.7.3\/etc\/hadoop\/core-site.xml",
@@ -1442,7 +1445,7 @@
                                 "volumes": [
                                     {
                                         "hostPath": {
-                                            "path": "\/home\/ubuntu\/mongo_data"
+                                            "path": "~/mongo_data"
                                         },
                                         "name": "mongo-data"
                                     }

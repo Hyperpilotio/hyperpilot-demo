@@ -1,6 +1,6 @@
 {
     "name": "tech-demo-goddd-only",
-    "region": "us-west1-a",
+    "region": "us-central1-b",
     "clusterType": "GCP",
     "files": [
         {
@@ -85,27 +85,27 @@
     "clusterDefinition": {
         "nodes": [
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 1
             },
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 2
             },
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 3
             },
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 4
             },
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 5
             },
             {
-                "instanceType": "c4.xlarge",
+                "instanceType": "n1-standard-4",
                 "id": 6
             }
         ]

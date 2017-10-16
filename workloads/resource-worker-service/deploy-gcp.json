@@ -1,0 +1,118 @@
+{
+    "name": "resource-worker-service",
+    "region": "us-west1-a",
+    "clusterType": "GCP",
+    "clusterDefinition": {
+        "nodes": [
+            {
+                "instanceType": "n1-standard-1",
+                "id": 1
+            },
+            {
+                "instanceType": "n1-standard-1",
+                "id": 2
+            },
+            {
+                "instanceType": "n1-standard-1",
+                "id": 3
+            }
+        ]
+    },
+    "nodeMapping": [
+    ],
+    "kubernetes": {
+        "taskDefinitions": [
+            {
+                "statefulSet": {
+                    "apiVersion": "apps/v1beta1",
+                    "kind": "StatefulSet",
+                    "metadata": {
+                        "name": "resource-worker"
+                    },
+                    "spec": {
+                        "serviceName": "resource-worker",
+                        "replicas": 3,
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "resource-worker"
+                                }
+                            },
+                            "spec": {
+                                "affinity": {
+                                    "podAntiAffinity": {
+                                        "requiredDuringSchedulingIgnoredDuringExecution": [
+                                            {
+                                                "labelSelector": {
+                                                    "matchExpressions": [
+                                                        {
+                                                            "key": "app",
+                                                            "operator": "In",
+                                                            "values": [
+                                                                "resource-worker"
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                "topologyKey": "kubernetes.io/hostname"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "initContainers": [
+                                    {
+                                        "name": "label-pods",
+                                        "command": [
+                                            "sh",
+                                            "-c",
+                                            "/usr/local/bin/kubectl label pods ${HOSTNAME} podId=${HOSTNAME}"
+                                        ],
+                                        "image": "wernight/kubectl"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "name": "resource-worker",
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot/resource-worker-service",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7998,
+                                                "hostPort": 7998,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "/host_proc",
+                                                "name": "procfs"
+                                            }
+                                        ],
+                                        "env": [
+                                            {
+                                                "name": "HOST_PROC",
+                                                "value": "/host_proc"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "name": "procfs",
+                                        "hostPath": {
+                                            "path": "/proc"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "resource-worker",
+                "portTypes": [
+                    1
+                ]
+            }
+        ]
+    }
+}

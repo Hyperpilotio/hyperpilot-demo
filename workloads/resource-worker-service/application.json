@@ -1,0 +1,33 @@
+{
+    "name": "resource-worker-service",
+    "serviceNames": ["resource-worker"],
+    "loadTester": {
+        "name": "slow-cooker",
+        "slowCookerController": {
+            "appLoad": {
+                "qps": 5,
+                "url": "http://resource-worker-0.default:7998/run",
+                "data": "@/etc/request_bodies",
+                "method": "POST",
+                "totalRequests": 100000
+            },
+            "calibrate": {
+                "initialConcurrency": 40,
+                "step": 5,
+                "runsPerIntensity": 3
+            },
+            "loadTime": "30s"
+        }
+    },
+    "type": "long-running",
+    "slo": {
+        "metric": "95",
+        "value": 400,
+        "type": "latency"
+    },
+    "budget": {
+        "value": 300,
+        "unit": "dollar"
+    },
+    "deploymentFile": "resource-worker-service-deploy-gcp"
+}

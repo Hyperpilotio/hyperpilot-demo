@@ -331,7 +331,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine-init",
+                                        "image": "hyperpilot\/snap:xenial",
                                         "name": "snap-goddd1",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
@@ -460,7 +460,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine-init",
+                                        "image": "hyperpilot\/snap:xenial",
                                         "name": "snap-goddd2",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
@@ -589,7 +589,7 @@
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:alpine-init",
+                                        "image": "hyperpilot\/snap:xenial",
                                         "name": "snap-goddd3",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"

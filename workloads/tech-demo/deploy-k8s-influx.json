@@ -1,0 +1,136 @@
+{
+    "name": "tech-demo",
+    "region": "us-west1-a",
+    "clusterType":"GCP",
+    "nodeMapping": [
+        {
+            "task": "influxsrv",
+            "id": 1
+        }
+    ],
+    "clusterDefinition": {
+        "nodes": [
+            {
+                "instanceType": "n1-standard-2",
+                "id": 1
+            },
+            {
+                "instanceType": "n1-standard-2",
+                "id": 2
+            },
+            {
+                "instanceType": "n1-standard-2",
+                "id": 3
+            }
+        ]
+    },
+    "kubernetes": {
+        "secrets": [
+            {
+                "apiVersion": "v1",
+                "kind": "Secret",
+                "metadata": {
+                    "name": "myregistrykey",
+                    "namespace": "hyperpilot"
+                },
+                "type": "kubernetes.io\/dockerconfigjson",
+                "data": {
+                    ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmRIVnpaWEk2YUhsd1pYSXhNak09IgoJCX0KCX0KfQ=="
+                }
+            }
+        ],
+        "taskDefinitions": [
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "influxsrv"
+                        },
+                        "name": "influxsrv",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "influxsrv"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "influxsrv",
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/influx_data"
+                                        },
+                                        "name": "influx-data"
+                                    }
+                                ],
+                                "containers": [
+                                    {
+                                        "env": [
+                                            {
+                                                "name": "ADMIN_USER",
+                                                "value": "root"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_INIT_PWD",
+                                                "value": "default"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_DATA_INDEX_VERSION",
+                                                "value": "tsi1"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_DATA_CACHE_SNAPSHOT_WRITE_COLD_DURATION",
+                                                "value": "1m"
+                                            },
+                                            {
+                                                "name": "INFLUXDB_DATA_COMPACT_FULL_WRITE_COLD_DURATION",
+                                                "value": "10m"
+                                            }
+                                        ],
+                                        "image": "hyperpilot\/influxdb:1.3.6",
+                                        "name": "influxsrv",
+                                        "ports": [
+                                            {
+                                                "containerPort": 8086,
+                                                "hostPort": 8086,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8088,
+                                                "hostPort": 8088,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/var\/lib\/influxdb",
+                                                "name": "influx-data"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "1",
+                                                "memory": "4096Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "influxsrv",
+                "portTypes": [
+                    1,
+                    1
+                ]
+            }
+        ]
+    }
+}

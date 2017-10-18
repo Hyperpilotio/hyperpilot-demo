@@ -3,16 +3,29 @@ set -e
 
 set -m
 INFLUX_HOST="localhost"
-INFLUX_API_PORT="8086"
-API_URL="http://${INFLUX_HOST}:${INFLUX_API_PORT}"
-DATA_DIR="/var/lib/influxdb/data"
 
+# Check if influxdb defined ENV INFLUXDB_HTTP_BIND_ADDRESS is given
+if [[ -z "$INFLUXDB_HTTP_BIND_ADDRESS" ]]
+then
+    # bind address is not set, use default 8086
+    INFLUX_API_PORT="8086"
+else
+    # bind address is set, remove prefix ":" char 
+    INFLUX_API_PORT=${INFLUXDB_HTTP_BIND_ADDRESS#":"}
+fi
+
+# check if influxdb defined ENV INFLUXDB_DATA_DIR is given
+DATA_DIR="${INFLUXDB_DATA_DIR:-/var/lib/influxdb/data}"
+
+
+API_URL="http://${INFLUX_HOST}:${INFLUX_API_PORT}"
 if [ "${1:0:1}" = '-' ]; then
     set -- influxd "$@"
 fi
 
 echo "=> Starting InfluxDB ..."
 exec "$@" &
+
 
 # Pre create database on the initiation of the container
 if [ -n "${PRE_CREATE_DB}" ]; then

@@ -81,7 +81,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "512.0m",
+                                                "cpu": "500m",
                                                 "memory": "1024Mi"
                                             }
                                         },

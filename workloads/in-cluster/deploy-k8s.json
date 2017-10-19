@@ -94,7 +94,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
+                                                "cpu": "500m",
                                                 "memory": "1024Mi"
                                             }
                                         },
@@ -163,7 +163,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
+                                                "cpu": "500m",
                                                 "memory": "2048Mi"
                                             }
                                         },
@@ -299,7 +299,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "1000m",
                                                 "memory": "3072Mi"
                                             }
                                         }
@@ -358,7 +358,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
+                                                "cpu": "500m",
                                                 "memory": "512Mi"
                                             }
                                         },
@@ -451,7 +451,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1024m",
+                                                "cpu": "1000m",
                                                 "memory": "4096Mi"
                                             }
                                         }

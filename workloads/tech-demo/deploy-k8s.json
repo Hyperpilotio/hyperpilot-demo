@@ -267,7 +267,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "1000m",
                                                 "memory": "2048Mi"
                                             }
                                         },
@@ -397,7 +397,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "1000m",
                                                 "memory": "2048Mi"
                                             }
                                         },
@@ -559,7 +559,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "2048m",
+                                                "cpu": "2000m",
                                                 "memory": "4096Mi"
                                             }
                                         }
@@ -645,7 +645,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "512.0m",
+                                                "cpu": "500m",
                                                 "memory": "600Mi"
                                             }
                                         }
@@ -699,7 +699,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "125.0m",
+                                                "cpu": "125m",
                                                 "memory": "150Mi"
                                             }
                                         }
@@ -767,7 +767,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "1000m",
                                                 "memory": "100Mi"
                                             }
                                         }
@@ -846,7 +846,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "256m",
+                                                "cpu": "250m",
                                                 "memory": "256Mi"
                                             }
                                         }
@@ -887,7 +887,7 @@
                                     {
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512.0m",
+                                                "cpu": "500m",
                                                 "memory": "512Mi"
                                             }
                                         },
@@ -984,7 +984,7 @@
                                         "name": "locust-slave",
                                         "resources": {
                                             "requests": {
-                                                "cpu": "256.0m",
+                                                "cpu": "250m",
                                                 "memory": "512Mi"
                                             }
                                         },
@@ -1105,7 +1105,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "500.0m"
+                                                "cpu": "500m"
                                             }
                                         }
                                     }
@@ -1466,7 +1466,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "512m",
+                                                "cpu": "500m",
                                                 "memory": "512Mi"
                                             }
                                         }

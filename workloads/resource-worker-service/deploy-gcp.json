@@ -77,9 +77,28 @@
                                 "labels": {
                                     "app": "resource-worker"
                                 }
-                            },
+			    },
                             "spec": {
                                 "affinity": {
+                                    "nodeAffinity": {
+                                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                                            "nodeSelectorTerms": [
+						{
+						    "matchExpressions": [
+                                                        {
+							    "key": "hyperpilot\/node-id",
+                                                            "operator": "In",
+                                                            "values": [
+                                                                "3",
+								"4",
+								"5"
+                                                            ]
+                                                        }
+                                                    ]
+						}
+                                            ]
+                                        }
+                                    },
                                     "podAntiAffinity": {
                                         "requiredDuringSchedulingIgnoredDuringExecution": [
                                             {
@@ -128,6 +147,12 @@
                                                 "name": "procfs"
                                             }
                                         ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "1000m",
+                                                "memory": "2048Mi"
+                                            }
+                                        },
                                         "env": [
                                             {
                                                 "name": "HOST_PROC",
@@ -224,7 +249,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "2048m",
+                                                "cpu": "2000m",
                                                 "memory": "4096Mi"
                                             }
                                         }
@@ -287,7 +312,7 @@
                                         ],
                                         "resources": {
                                             "requests": {
-                                                "cpu": "500.0m",
+                                                "cpu": "500m",
                                                 "memory": "100Mi"
                                             }
                                         }
@@ -341,7 +366,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "1000m",
                                                 "memory": "2048Mi"
                                             }
                                         },
@@ -470,7 +495,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "1000m",
                                                 "memory": "2048Mi"
                                             }
                                         },
@@ -599,7 +624,7 @@
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "1024.0m",
+                                                "cpu": "1000m",
                                                 "memory": "2048Mi"
                                             }
                                         },
@@ -726,15 +751,15 @@
                                             }
                                         ],
                                         "resources": {
-                                            "request": {
-                                                "cpu": "512.0m",
-                                                "memory": "500Mi"
+                                            "requests": {
+                                                "cpu": "500m",
+                                                "memory": "512Mi"
                                             },
                                             "limits": {
-                                                "cpu": "512.0m",
-                                                "memory": "500Mi"
+                                                "cpu": "500m",
+                                                "memory": "512Mi"
                                             }
-                                        },
+					},
                                         "volumeMounts": [
                                             {
                                                 "mountPath": "\/var\/run\/docker.sock",

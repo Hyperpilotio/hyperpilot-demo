@@ -93,7 +93,7 @@
                                                 "value": "10m"
                                             }
                                         ],
-                                        "image": "hyperpilot\/influxdb:1.3.6",
+                                        "image": "hyperpilot\/influx:1.3.6",
                                         "name": "influxsrv",
                                         "ports": [
                                             {

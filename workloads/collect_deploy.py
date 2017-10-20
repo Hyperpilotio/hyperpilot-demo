@@ -7,34 +7,22 @@ import sys
 import os
 import json
 import glob
+import boto3
 from pymongo import MongoClient
 
-MONGO_URL = "localhost:27017"
-MONGO_USER = "analyzer"
-MONGO_PASSWORD = "hyperpilot"
-CONFIGDB_NAME = "configdb"
 
-
-def replaceDotToUnderline(json):
-    if isinstance(json, dict):
-        iterator = json.iteritems()
-    else:
-        iterator = enumerate(json)
-    for k, v in iterator:
-        if isinstance(k, basestring) and "." in k:
-            json.pop(k)
-            k = k.replace(".", "_")
-            json[k] = v
-        if isinstance(v, (dict, list)):
-            replaceDotToUnderline(v)
+BUCKET_NAME = "workload-deploy-json"
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        MONGO_URL = sys.argv[1]
+        BUCKET_NAME = sys.argv[1]
 
-    configdb = MongoClient(MONGO_URL).get_database(CONFIGDB_NAME)
-    configdb.authenticate(MONGO_USER, MONGO_PASSWORD)
+    s3 = boto3.resource('s3')
+    bucket = s3.create_bucket(
+        ACL='private',
+        Bucket=BUCKET_NAME
+        )
 
     for path in os.listdir("."):
         if os.path.isdir(path):
@@ -46,8 +34,7 @@ if __name__ == "__main__":
                     with open(deploy_json_path) as f:
                         try:
                             deploy_json = json.load(f)
-                            replaceDotToUnderline(deploy_json)
-                            deploy_json["name"] = deploy_json_path.replace("/", "-").replace(".json", "")
+
                         except ValueError as e:
                             print("ERROR: Unable to decode {path}".format(path=deploy_json_path))
                             print("       JSON Decode Error: {error}".format(error=e))
@@ -56,8 +43,5 @@ if __name__ == "__main__":
                             name=deploy_json["name"],
                             path=deploy_json_path
                         ))
-                        configdb.deployments.replace_one(
-                            filter={"name": deploy_json["name"]},
-                            replacement=deploy_json,
-                            upsert=True
-                        )
+
+                        s3.Object(BUCKET_NAME, deploy_json_path.replace("/", "-").replace(".json", "")).upload_file(deploy_json_path)

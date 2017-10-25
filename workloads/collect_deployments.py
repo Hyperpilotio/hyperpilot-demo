@@ -13,7 +13,6 @@ from pymongo import MongoClient
 
 BUCKET_NAME = "workload-deploy-json"
 
-
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         BUCKET_NAME = sys.argv[1]
@@ -29,7 +28,7 @@ if __name__ == "__main__":
             files = glob.glob("{}/deploy-*.json".format(path))
             for deploy_json_path in files:
                 # deploy_json_path = os.path.join(path, f)
-                print deploy_json_path
+                print(deploy_json_path)
                 if os.path.isfile(deploy_json_path):
                     with open(deploy_json_path) as f:
                         try:
@@ -44,4 +43,4 @@ if __name__ == "__main__":
                             path=deploy_json_path
                         ))
 
-                        s3.Object(BUCKET_NAME, deploy_json_path.replace("/", "-").replace(".json", "")).upload_file(deploy_json_path)
+                        s3.Object(BUCKET_NAME, deploy_json_path.replace("/", "-")).upload_file(deploy_json_path)

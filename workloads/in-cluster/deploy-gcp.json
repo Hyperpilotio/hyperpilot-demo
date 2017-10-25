@@ -1,6 +1,6 @@
 {
     "name": "in-cluster",
-    "region": "us-east1-b",
+    "region": "us-west1-a",
     "clusterType": "GCP",
     "files": [
         {

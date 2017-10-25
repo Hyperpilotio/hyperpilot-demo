@@ -12,6 +12,14 @@
         {
             "task": "deployer",
             "id": 1
+        },
+        {
+            "task": "mongo-serve",
+            "id": 2
+        },
+        {
+            "task": "workload-profiler",
+            "id": 3
         }
     ],
     "clusterDefinition": {
@@ -19,6 +27,14 @@
             {
                 "instanceType": "n1-standard-2",
                 "id": 1
+            },
+            {
+                "instanceType": "n1-standard-2",
+                "id": 2
+            },
+            {
+                "instanceType": "n1-standard-2",
+                "id": 3
             }
         ]
     },
@@ -109,6 +125,166 @@
                     1
                 ],
                 "family": "deployer"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "workload-profiler"
+                        },
+                        "name": "workload-profiler"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "workload-profiler"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "workload-profiler"
+                                }
+                            },
+                            "spec": {
+                                "imagePullSecrets": [
+                                    {
+                                        "name": "myregistrykey"
+                                    }
+                                ],
+                                "hostname": "workload-profiler",
+                                "containers": [
+                                    {
+                                        "imagePullPolicy": "Always",
+                                        "image": "hyperpilot\/workload-profiler:gcp_influx",
+                                        "name": "deployer",
+                                        "ports": [
+                                            {
+                                                "containerPort": 7779,
+                                                "hostPort": 7779,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "500m",
+                                                "memory": "1024Mi"
+                                            }
+                                        },
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "/service_account",
+                                                "name": "home-ubuntu-service-account"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "~/service_account/"
+                                        },
+                                        "name": "home-ubuntu-service-account"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "workload-profiler"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "mongo-serve"
+                        },
+                        "name": "mongo-serve"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "mongo-serve"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "mongo-serve"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "mongo-serve",
+                                "containers": [
+                                    { 
+                                        "image": "aashreys\/mongo-auth:latest",
+                                        "name": "mongo-serve",
+                                        "ports": [
+                                            {
+                                                "containerPort": 27017,
+                                                "hostPort": 27017,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "env": [
+                                            {
+                                                "name": "AUTH",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "name": "MONGODB_ADMIN_USER",
+                                                "value": "analyzer"
+                                            },
+                                            {
+                                                "name": "MONGODB_ADMIN_PASS",
+                                                "value": "hyperpilot"
+                                            },
+                                            {
+                                                "name": "MONGODB_APPLICATION_DATABASE",
+                                                "value": "configdb"
+                                            },
+                                            {
+                                                "name": "MONGODB_APPLICATION_USER",
+                                                "value": "analyzer"
+                                            },
+                                            {
+                                                "name": "MONGODB_APPLICATION_PASS",
+                                                "value": "hyperpilot"
+                                            }
+                                        ],
+                                        "volumeMounts": [
+                                            {
+                                                "mountPath": "\/data\/db",
+                                                "name": "mongo-data"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "volumes": [
+                                    {
+                                        "hostPath": {
+                                            "path": "\/home\/ubuntu\/mongo_data"
+                                        },
+                                        "name": "mongo-data"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "mongo-serve"
             }
         ]
     }

@@ -1,16 +1,13 @@
 #!/bin/bash
 
-export MONGO_POD=`kubectl get pods | grep mongo | cut -d" " -f1`
+export MONGO_URL=`curl localhost:7777/v1/deployments/$1/services | jq '.data."mongo-serve".publicUrl' | cut -d'"' -f2`
+export DEPLOYER_URL=`curl localhost:7777/v1/deployments/$1/services | jq '.data."deployer".publicUrl' | cut -d'"' -f2`
+export PROFILER_URL=`curl localhost:7777/v1/deployments/$1/services | jq '.data."workload-profiler".publicUrl' | cut -d'"' -f2`
+export MONGO_POD=`kubectl get pods | grep mongo-serve | cut -d" " -f1`
 
-export MONGO_URL=`kubectl describe services mongo-serve-publicport | grep elb | cut -d ":" -f2 | xargs`
+kubectl exec -it $MONGO_POD -- mongo $MONGO_URL/admin --eval "db.createUser({user: 'analyzer', pwd: 'hyperpilot', roles: [ 'root' ]})"
 
-export DEPLOYER_URL=`kubectl describe services deployer-public | grep elb | cut -d ":" -f2 | xargs`
-
-export PROFILER_URL=`kubectl describe services workload-profiler-public | grep elb | cut -d ":" -f2 | xargs`
-
-kubectl exec -it $MONGO_POD -- mongo localhost:27017/admin --eval "db.createUser({user: 'analyzer', pwd: 'hyperpilot', roles: [ 'root' ]})"
-
-mongo $MONGO_URL:27017/admin -u analyzer -p hyperpilot benchmarks/create-dbuser.js
+mongo $MONGO_URL/admin -u analyzer -p hyperpilot benchmarks/create-dbuser.js
 
 (cd workloads/sizing-demo && ./update_db.sh $MONGO_URL) || cd ../..
 

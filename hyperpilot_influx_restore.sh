@@ -77,17 +77,13 @@ DATA_DIR=${DATA_DIR#\"}
 echo "meta dir: $META_DIR"
 echo "data dir: $DATA_DIR"
 
-dbs=($(influx -execute 'show databases' -format json | jq -c '.results[0].series[0].values[] | join([])'))
-
-for db in "${dbs[@]}"; do
-    normalized_db_name="${db#\"}"
-    normalized_db_name="${normalized_db_name%\"}"
-    echo "deleting local db $normalized_db_name.."
-    influxd -execute "drop database $normalized_db_name"
-done
-
 # kill process
+echo "Killing influx.."
 sudo pkill -f influxd
+
+echo "Removing meta and data directories.."
+sudo rm -rf $META_DIR
+sudo rm -rf $DATA_DIR
 
 ## start restoring
 # restore meta

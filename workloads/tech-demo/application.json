@@ -20,6 +20,5 @@
         "value": 300,
         "unit": "dollar"
     },
-    "deploymentTemplate": "tech-demo-base",
-    "taskDefinitions": []
+    "deploymentFile": "s3://workload-deploy-json/tech-demo-deploy-gcp.json"
 }

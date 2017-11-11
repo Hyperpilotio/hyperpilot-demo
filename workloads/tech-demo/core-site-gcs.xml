@@ -7,10 +7,10 @@
   </property>
      <property>
              <name>fs.gs.project.id</name>
-                   <value>hyperpilot-tim</value>
+                   <value>hyperpilot-shared-gcp</value>
      </property>
         <property>
                 <name>fs.gs.system.bucket</name>
-                      <value>hyperpilot-tim-deployer</value>
+                      <value>hyperpilot-shared-dataset</value>
         </property>
 </configuration>

@@ -43,7 +43,9 @@ if [[ -z "$NAME" ]]; then
     exit 1
 fi
 
-echo "NAME = $NAME"
+echo "snapshot NAME = $NAME"
+backup_full_path="$backup_file_path/cache/$NAME"
+echo "full path of backup files: $backup_full_path$"
 
 file="$NAME.tar.gz"
 
@@ -52,14 +54,13 @@ if [[ "$NO_CACHE" == "true" || ! -f $backup_file_path/$file ]]; then
     aws s3 cp s3://$bucket/$NAME.tar.gz $backup_file_path/$file
     ret_code=$?
     if [[ $ret_code != 0 ]]; then
-        #statements
-        echo "error occur while coping snapshot from S3"
+        echo "error occurred while coping snapshot from S3"
         exit $ret_code
     fi
 fi
 # untar zip file
-mkdir -p $backup_file_path/cache/$NAME
-tar zxvf $backup_file_path/$NAME.tar.gz -C $backup_file_path/cache/$NAME
+mkdir -p $backup_full_path
+tar zxvf $backup_file_path/$NAME.tar.gz -C $backup_full_path
 
 sys_info=$(influx -execute 'show diagnostics' -format json)
 # detect data dir
@@ -77,37 +78,45 @@ DATA_DIR=${DATA_DIR#\"}
 echo "meta dir: $META_DIR"
 echo "data dir: $DATA_DIR"
 
+dbs=($(influx -execute 'show databases' -format json | jq -c '.results[0].series[0].values[] | join([])'))
+
+for db in "${dbs[@]}"; do
+    normalized_db_name="${db#\"}"
+    normalized_db_name="${normalized_db_name%\"}"
+    echo "deleting local db $normalized_db_name.."
+    influx -execute "drop database $normalized_db_name"
+done
+
 # kill process
 echo "Killing influx.."
 sudo pkill -f influxd
 
-echo "Removing meta and data directories.."
-sudo rm -rf $META_DIR
-sudo rm -rf $DATA_DIR
+#echo "Removing meta and data directories.."
+#sudo rm -rf $META_DIR
+#sudo rm -rf $DATA_DIR
 
 ## start restoring
 # restore meta
-sudo influxd restore -metadir $META_DIR $backup_file_path/cache/$NAME
+echo "restoring metadata for $NAME from $backup_full_path to $META_DIR"
+sudo influxd restore -metadir $META_DIR $backup_full_path
+
 # restore database
-files=($(ls $backup_file_path/cache/$NAME))
+files=($(ls $backup_full_path))
 for db in "${files[@]}"; do
-    echo "restoring database $db"
-    # restore database
-    if ls $backup_file_path/cache/$NAME/$db/$db* 1> /dev/null 2>&1; then
-        echo "restoring data"
-        sudo influxd restore -database $db -datadir $DATA_DIR $backup_file_path/cache/$NAME/$db
+    if ls $backup_full_path/$db/$db* 1> /dev/null 2>&1; then
+        echo "restoring database $db from $backup_full_path to $DATA_DIR"
+        sudo influxd restore -database $db -datadir $DATA_DIR $backup_full_path/$db
         ret_code=$?
         if [[ $ret_code != 0 ]]; then
-            #statements
             echo "error restoring database $db"
             exit $ret_code
         fi
     else
-        echo "empty database $db"
+        echo "skiping empty database $db"
     fi
 done
 
 # update influx deployment
-printf "ok, done.\n please restart your influxd. \nbye!\n"
+printf "ok, restoring done.\n restarting your influxdb.\n"
 
 rm -rf $file

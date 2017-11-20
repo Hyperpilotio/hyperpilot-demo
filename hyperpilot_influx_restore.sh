@@ -45,7 +45,7 @@ fi
 
 echo "snapshot NAME = $NAME"
 backup_full_path="$backup_file_path/cache/$NAME"
-echo "full path of backup files: $backup_full_path$"
+echo "full path of backup files: $backup_full_path"
 
 file="$NAME.tar.gz"
 

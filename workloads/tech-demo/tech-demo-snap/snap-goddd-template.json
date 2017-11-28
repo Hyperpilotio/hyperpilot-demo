@@ -8,29 +8,32 @@
     "workflow": {
         "collect": {
             "metrics": {
-                "/intel/iostat/*": {
-                }
+                "/hyperpilot/goddd/*": {}
             },
             "config": {
-                "/intel/iostat": {
-                    "ReportSinceBoot": false
+                "/hyperpilot/goddd": {
+                    "endpoint": "http://goddd.default:8080"
                 }
             },
-            "tags": {
-                "/intel": {
-                    "nodename": "<%= NODE_NAME =>",
-                    "deploymentId": "<%= DEPLOYMENT_ID =>"
+            "process": [
+                {
+                    "plugin_name": "snap-plugin-processor-agent",
+                    "config": {
+                        "qos-data-store-url": "http://<%= QOS_DATA_STORE_SERVICE_HOST =>:7781",
+                        "sla-goal": 150,
+                        "metric-type": "quantile_90"
+                    }
                 }
-            },
+            ],
             "publish": [
                 {
                     "plugin_name": "influxdb",
                     "config": {
                         "host": "<%= INFLUXSRV_SERVICE_HOST =>",
                         "port": 8086,
-                        "database": "snapaverage",
+                        "database": "snap",
                         "user": "root",
-                        "password": "default",
+                        "password": "hyperpilot",
                         "https": false,
                         "skip-verify": false
                     }

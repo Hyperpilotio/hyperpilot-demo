@@ -23,13 +23,13 @@
             },
             "config": {
                 "/intel/use": {
-                    "proc_path": "\/proc_host"
+                    "proc_path": "\/proc"
                 }
             },
             "tags": {
                 "/intel": {
-                    "nodename": "<%= NODE_NAME =>",
-                    "deploymentId": "<%= DEPLOYMENT_ID =>"
+                    "nodename": "<%= a.env('NODE_NAME') =>",
+                    "deploymentId": "<%= a.deployment_id() =>"
                 }
             },
             "publish": [

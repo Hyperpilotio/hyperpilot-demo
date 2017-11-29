@@ -36,7 +36,7 @@
                 {
                     "plugin_name": "influxdb",
                     "config": {
-                        "host": "<%= INFLUXSRV_SERVICE_HOST =>",
+                        "host": "<%= a.env('INFLUXSRV_SERVICE_HOST') =>",
                         "port": 8086,
                         "database": "snapaverage",
                         "user": "root",

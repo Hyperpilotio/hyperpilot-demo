@@ -20,7 +20,7 @@
             "id": 2
         },
         {
-            "task": "ardb",
+            "task": "ardb-serve",
             "id": 1
         },
         {
@@ -433,30 +433,30 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "ardb"
+                            "app": "ardb-serve"
                         },
-                        "name": "ardb"
+                        "name": "ardb-serve"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "ardb"
+                                "app": "ardb-serve"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "ardb"
+                                    "app": "ardb-serve"
                                 }
                             },
                             "spec": {
-                                "hostname": "ardb",
+                                "hostname": "ardb-serve",
                                 "containers": [
                                     {
                                         "imagePullPolicy": "Always",
-                                        "image": "hyperpilot/ardb",
-                                        "name": "ardb",
+                                        "image": "hyperpilot/ardb-serve",
+                                        "name": "ardb-serve",
                                         "ports": [
                                             {
                                                 "containerPort": 16379,
@@ -479,7 +479,7 @@
                 "portTypes": [
                     1
                 ],
-                "family": "ardb"
+                "family": "ardb-serve"
             }
         ]
     }

@@ -493,7 +493,8 @@
                         "labels": {
                             "app": "benchmark-controller"
                         },
-                        "name": "benchmark-controller"
+                        "name": "benchmark-controller",
+                        "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,

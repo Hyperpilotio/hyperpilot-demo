@@ -38,6 +38,7 @@ if __name__ == '__main__':
             print("Unable to send benchmark request to controller")
             sys.exit(0)
 
+        # TODO: Use wait time
         for i in range(10):
             respJson = requests.get(
                 "%s/%s" % (benchmark_service_url, j["stageId"])).json()
@@ -46,3 +47,4 @@ if __name__ == '__main__':
                 time.sleep(30)
             elif status == "success":
                 print(respJson["results"])
+                break

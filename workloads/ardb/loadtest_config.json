@@ -1,0 +1,23 @@
+{
+    "stageId": "",
+    "intensity": 20,
+    "parserUrl": "https:\/\/s3.amazonaws.com\/hyperpilot-benchmark-parsers\/redis\/parser.js",
+    "loadTest": {
+        "image": "redis:3-alpine",
+        "path": "redis-benchmark",
+        "args": [
+            "-n",
+            "1000000",
+            "-t",
+            "GET"
+        ],
+        "intensityArgs": [
+            {
+                "name": "Number of connections",
+                "arg": "-c",
+                "startingValue": 10,
+                "step": 20
+            }
+        ]
+    }
+}

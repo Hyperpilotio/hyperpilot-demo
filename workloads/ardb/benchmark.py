@@ -15,6 +15,22 @@ class Deployer(object):
         return requests.get(service_url).text
 
 
+def wait_until_benchmark_status_success(stage_url, timeout, stepTime=10):
+    mustend = time.time() + timeout
+    while time.time() < mustend:
+        results = requests.get(stage_url).json()
+        if results.get("error", "") != "":
+            print("Benchmark failed with error: " + results["error"])
+        elif results["status"] == "running":
+            time.sleep(stepTime)
+        else:
+            print("Load test finished with status: %s" % results["status"])
+            print(json.dumps(results["results"][0], indent=4))
+            return
+
+    print("Unable to get benchmark results")
+
+
 if __name__ == '__main__':
     config_file = "./loadtest_config.json"
     deployer = Deployer("localhost")
@@ -38,13 +54,5 @@ if __name__ == '__main__':
             print("Unable to send benchmark request to controller")
             sys.exit(0)
 
-        # TODO: Use wait time
-        for i in range(10):
-            respJson = requests.get(
-                "%s/%s" % (benchmark_service_url, j["stageId"])).json()
-            status = respJson["status"]
-            if status == "running":
-                time.sleep(30)
-            elif status == "success":
-                print(respJson["results"])
-                break
+        stage_url = "%s/%s" % (benchmark_service_url, j["stageId"])
+        wait_until_benchmark_status_success(stage_url, 10 * 60)

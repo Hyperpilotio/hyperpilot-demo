@@ -6,17 +6,18 @@
         "image": "redis:3-alpine",
         "path": "redis-benchmark",
         "args": [
+            "--csv",
             "-n",
-            "1000000",
-            "-t",
-            "GET"
+            "1000",
+            "-d",
+            "10240"
         ],
         "intensityArgs": [
             {
                 "name": "Number of connections",
                 "arg": "-c",
-                "startingValue": 10,
-                "step": 20
+                "startingValue": 20,
+                "step": 1
             }
         ]
     }

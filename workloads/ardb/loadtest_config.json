@@ -1,5 +1,9 @@
 {
     "stageId": "",
+    "schedule": {
+        "interval": "30",
+        "workerCount": 3
+    },
     "intensity": 20,
     "parserUrl": "https:\/\/s3.amazonaws.com\/hyperpilot-benchmark-parsers\/redis\/parser.js",
     "loadTest": {
@@ -8,7 +12,7 @@
         "args": [
             "--csv",
             "-n",
-            "1000",
+            "10000",
             "-d",
             "10240"
         ],
@@ -16,8 +20,7 @@
             {
                 "name": "Number of connections",
                 "arg": "-c",
-                "startingValue": 20,
-                "step": 1
+                "startingValue": 20
             }
         ]
     }

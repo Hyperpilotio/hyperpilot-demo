@@ -412,6 +412,8 @@
                                         ]
                                     }
                                 ],
+                                "hostNetwork": true,
+                                "hostPID": true,
                                 "volumes": [
                                     {
                                         "hostPath": {
@@ -541,6 +543,8 @@
                                         ]
                                     }
                                 ],
+                                "hostNetwork": true,
+                                "hostPID": true,
                                 "volumes": [
                                     {
                                         "hostPath": {
@@ -670,6 +674,8 @@
                                         ]
                                     }
                                 ],
+                                "hostNetwork": true,
+                                "hostPID": true,
                                 "volumes": [
                                     {
                                         "hostPath": {

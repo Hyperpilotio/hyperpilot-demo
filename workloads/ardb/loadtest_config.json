@@ -1,27 +1,20 @@
 {
-    "stageId": "",
+    "database": "ardb",
+    "measurement": "ardb_benchmarks",
     "schedule": {
         "interval": "30",
         "workerCount": 3
     },
-    "intensity": 20,
-    "parserUrl": "https:\/\/s3.amazonaws.com\/hyperpilot-benchmark-parsers\/redis\/parser.js",
     "loadTest": {
-        "image": "redis:3-alpine",
         "path": "redis-benchmark",
         "args": [
             "--csv",
             "-n",
-            "10000",
+            "100000",
+            "-c",
+            "20",
             "-d",
             "10240"
-        ],
-        "intensityArgs": [
-            {
-                "name": "Number of connections",
-                "arg": "-c",
-                "startingValue": 20
-            }
         ]
     }
 }

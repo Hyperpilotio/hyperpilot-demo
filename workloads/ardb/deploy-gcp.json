@@ -24,10 +24,6 @@
             "id": 1
         },
         {
-            "task": "benchmark-controller",
-            "id": 2
-        },
-        {
             "task": "influxsrv",
             "id": 3
         }
@@ -464,7 +460,7 @@
                                         "ports": [
                                             {
                                                 "containerPort": 16379,
-                                                "hostPort": 6379,
+                                                "hostPort": 16379,
                                                 "protocol": "TCP"
                                             }
                                         ],
@@ -484,89 +480,6 @@
                     1
                 ],
                 "family": "ardb-serve"
-            },
-            {
-                "deployment": {
-                    "apiVersion": "extensions\/v1beta1",
-                    "kind": "Deployment",
-                    "metadata": {
-                        "labels": {
-                            "app": "benchmark-controller"
-                        },
-                        "name": "benchmark-controller",
-                        "namespace": "hyperpilot"
-                    },
-                    "spec": {
-                        "replicas": 1,
-                        "selector": {
-                            "matchLabels": {
-                                "app": "benchmark-controller"
-                            }
-                        },
-                        "template": {
-                            "metadata": {
-                                "labels": {
-                                    "app": "benchmark-controller"
-                                }
-                            },
-                            "spec": {
-                                "imagePullSecrets": [
-                                    {
-                                        "name": "myregistrykey"
-                                    }
-                                ],
-                                "containers": [
-                                    {
-                                        "image": "hyperpilot\/benchmark-controller",
-                                        "name": "benchmark-controller",
-                                        "imagePullPolicy": "Always",
-                                        "ports": [
-                                            {
-                                                "containerPort": 6001,
-                                                "hostPort": 6001,
-                                                "protocol": "TCP"
-                                            }
-                                        ],
-                                        "resources": {
-                                            "requests": {
-                                                "cpu": "500m",
-                                                "memory": "350M"
-                                            }
-                                        },
-                                        "volumeMounts": [
-                                            {
-                                                "mountPath": "\/var\/run\/docker.sock",
-                                                "name": "docker-sock"
-                                            },
-                                            {
-                                                "mountPath": "\/usr\/bin\/docker",
-                                                "name": "usr-bin-docker"
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "volumes": [
-                                    {
-                                        "hostPath": {
-                                            "path": "\/var\/run\/docker.sock"
-                                        },
-                                        "name": "docker-sock"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/usr\/bin\/docker"
-                                        },
-                                        "name": "usr-bin-docker"
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "portTypes": [
-                    1
-                ],
-                "family": "benchmark-controller"
             }
         ]
     }

@@ -394,10 +394,6 @@
                                             {
                                                 "mountPath": "\/usr\/local\/bin\/docker",
                                                 "name": "usr-bin-docker"
-                                            },
-                                            {
-                                                "mountPath": "\/proc_host",
-                                                "name": "proc"
                                             }
                                         ],
                                         "env": [
@@ -444,12 +440,6 @@
                                             "path": "\/usr\/bin\/docker"
                                         },
                                         "name": "usr-bin-docker"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/proc"
-                                        },
-                                        "name": "proc"
                                     }
                                 ]
                             }
@@ -525,10 +515,6 @@
                                             {
                                                 "mountPath": "\/usr\/local\/bin\/docker",
                                                 "name": "usr-bin-docker"
-                                            },
-                                            {
-                                                "mountPath": "\/proc_host",
-                                                "name": "proc"
                                             }
                                         ],
                                         "env": [
@@ -575,12 +561,6 @@
                                             "path": "\/usr\/bin\/docker"
                                         },
                                         "name": "usr-bin-docker"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/proc"
-                                        },
-                                        "name": "proc"
                                     }
                                 ]
                             }
@@ -656,10 +636,6 @@
                                             {
                                                 "mountPath": "\/usr\/local\/bin\/docker",
                                                 "name": "usr-bin-docker"
-                                            },
-                                            {
-                                                "mountPath": "\/proc_host",
-                                                "name": "proc"
                                             }
                                         ],
                                         "env": [
@@ -706,12 +682,6 @@
                                             "path": "\/usr\/bin\/docker"
                                         },
                                         "name": "usr-bin-docker"
-                                    },
-                                    {
-                                        "hostPath": {
-                                            "path": "\/proc"
-                                        },
-                                        "name": "proc"
                                     }
                                 ]
                             }

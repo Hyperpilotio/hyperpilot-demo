@@ -1,6 +1,6 @@
 {
-    "database": "ardb",
-    "measurement": "ardb_benchmarks",
+    "database": "snap",
+    "measurement": "hyperpilot/ardb",
     "schedule": {
         "interval": "30",
         "workerCount": 3
@@ -9,12 +9,14 @@
         "path": "redis-benchmark",
         "args": [
             "--csv",
+            "-h",
+            "ardb-serve",
+            "-p",
+            "16379",
             "-n",
-            "100000",
+            "10000",
             "-c",
-            "20",
-            "-d",
-            "10240"
+            "10"
         ]
     }
 }

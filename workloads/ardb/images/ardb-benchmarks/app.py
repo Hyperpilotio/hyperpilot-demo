@@ -76,9 +76,6 @@ if __name__ == '__main__':
         interval = j["schedule"]["interval"]
         measurement = j["measurement"]
         database = j["database"]
-        ardb_serve_url = j["ardb_serve_url"]
-        influxsrv_url = j["influxsrv_url"]
-
         for i in range(j["schedule"]["workerCount"]):
             BenchmarkWorker(config_file,
                             lock,

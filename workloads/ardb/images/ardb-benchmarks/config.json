@@ -4,19 +4,5 @@
     "schedule": {
         "interval": "30",
         "workerCount": 3
-    },
-    "loadTest": {
-        "path": "redis-benchmark",
-        "args": [
-            "--csv",
-            "-h",
-            "35.199.157.94",
-            "-p",
-            "16379",
-            "-n",
-            "10000",
-            "-c",
-            "10"
-        ]
     }
 }

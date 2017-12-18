@@ -473,6 +473,12 @@
                                     "image": "hyperpilot\/ardb-benchmarks",
                                     "name": "ardb-benchmarks",
                                     "imagePullPolicy": "Always",
+                                    "command": [
+                                        "/usr/local/bin/run.sh"
+                                    ],
+                                    "args": [
+                                        "redis-benchmark --csv -n 10000 -c 10"
+                                    ],
                                     "resources": {}
                                 }]
                             }

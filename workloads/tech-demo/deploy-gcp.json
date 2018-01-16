@@ -22,15 +22,15 @@
             "id": 4
         },
         {
-            "task": "snap-goddd",
+            "task": "node-agent-goddd",
             "id": 2
         },
         {
-            "task": "snap",
+            "task": "node-agent",
             "id": 3
         },
         {
-            "task": "snap",
+            "task": "node-agent",
             "id": 4
         },
         {
@@ -254,42 +254,42 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "snap",
+                            "app": "node-agent",
                             "version": "latest"
                         },
-                        "name": "snap",
+                        "name": "node-agent",
                         "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "snap",
+                                "app": "node-agent",
                                 "version": "latest"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "snap",
+                                    "app": "node-agent",
                                     "version": "latest"
                                 }
                             },
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:xenial",
-                                        "name": "snap",
+                                        "image": "hyperpilot\/node-agent",
+                                        "name": "node-agent",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https://s3.amazonaws.com/hyperpilot-tech-demo-snap/init-k8s.json"
+                                            "https://s3.amazonaws.com/hyperpilot-tech-demo-snap/node-agent-k8s.json"
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "1000m",
-                                                "memory": "2048Mi"
+                                                "cpu": "500m",
+                                                "memory": "100Mi"
                                             }
                                         },
                                         "imagePullPolicy": "Always",
@@ -329,7 +329,7 @@
                                             },
                                             {
                                                 "name": "SNAP_LOG_LEVEL",
-                                                "value": "1"
+                                                "value": "DEBUG"
                                             }
                                         ]
                                     }
@@ -372,7 +372,7 @@
                         }
                     }
                 },
-                "family": "snap"
+                "family": "node-agent"
             },
             {
                 "deployment": {
@@ -380,42 +380,42 @@
                     "kind": "Deployment",
                     "metadata": {
                         "labels": {
-                            "app": "snap-goddd",
+                            "app": "node-agent-goddd",
                             "version": "latest"
                         },
-                        "name": "snap-goddd",
+                        "name": "node-agent-goddd",
                         "namespace": "hyperpilot"
                     },
                     "spec": {
                         "replicas": 1,
                         "selector": {
                             "matchLabels": {
-                                "app": "snap-goddd",
+                                "app": "node-agent-goddd",
                                 "version": "latest"
                             }
                         },
                         "template": {
                             "metadata": {
                                 "labels": {
-                                    "app": "snap-goddd",
+                                    "app": "node-agent-goddd",
                                     "version": "latest"
                                 }
                             },
                             "spec": {
                                 "containers": [
                                     {
-                                        "image": "hyperpilot\/snap:xenial",
-                                        "name": "snap-goddd",
+                                        "image": "hyperpilot\/node-agent",
+                                        "name": "node-agent-goddd",
                                         "command": [
                                             "\/usr\/local\/bin\/run.sh"
                                         ],
                                         "args": [
-                                            "https://s3.amazonaws.com/hyperpilot-tech-demo-snap/init-snap-goddd.json"
+                                            "https://s3.amazonaws.com/hyperpilot-tech-demo-snap/node-agent-goddd.json"
                                         ],
                                         "resources": {
                                             "limits": {
-                                                "cpu": "1000m",
-                                                "memory": "2048Mi"
+                                                "cpu": "500m",
+                                                "memory": "100Mi"
                                             }
                                         },
                                         "imagePullPolicy": "Always",
@@ -455,7 +455,7 @@
                                             },
                                             {
                                                 "name": "SNAP_LOG_LEVEL",
-                                                "value": "1"
+                                                "value": "DEBUG"
                                             }
                                         ]
                                     }
@@ -498,7 +498,7 @@
                         }
                     }
                 },
-                "family": "snap-goddd"
+                "family": "node-agent-goddd"
             },
             {
                 "deployment": {

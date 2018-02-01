@@ -1,0 +1,69 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hyperpilotregistrykey
+  namespace: <CLUSTERID>
+type: kubernetes.io/dockerconfigjson
+data:
+  ".dockerconfigjson": ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmRIVnpaWEk2YUhsd1pYSXhNak09IgoJCX0KCX0KfQ==
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: analyzer-<CLUSTERID>
+  name: analyzer-<CLUSTERID>
+  namespace: <CLUSTERID>
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: analyzer-<CLUSTERID>
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: analyzer-<CLUSTERID>
+  name: analyzer-<CLUSTERID>
+  namespace: <CLUSTERID>
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: analyzer-<CLUSTERID>
+  template:
+    metadata:
+      labels:
+        app: analyzer-<CLUSTERID>
+    spec:
+      imagePullSecrets:
+      - name: hyperpilotregistrykey
+      hostname: analyzer-<CLUSTERID>
+      containers:
+      - imagePullPolicy: Always
+        image: hyperpilot/analyzer:live-alpha2
+        name: analyzer-<CLUSTERID>
+        ports:
+        - containerPort: 5000
+          hostPort: 5000
+          protocol: TCP
+        env:
+          - name: MONGODB_HOST
+            value: mongo-serve
+          - name: MONGODB_USERNAME
+            value: analyzer
+          - name: MONGODB_PASSWORD
+            value: hyperpilot
+          - name: INFLUXDB_HOST
+            value: influxsrv
+        resources:
+          requests:
+            cpu: 1
+            memory: 2048Mi

@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: influxsrv-<CLUSTERID>
+  name: influxsrv-<CLUSTERID>
+  namespace: <CLUSTERID>
+spec:
+  ports:
+  - name: port-1
+    port: 8086
+    protocol: TCP
+    targetPort: 8086
+  - name: port-2
+    port: 8088
+    protocol: TCP
+    targetPort: 8088
+  selector:
+    app: influxsrv-<CLUSTERID>
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: influxsrv-<CLUSTERID>
+  name: influxsrv-<CLUSTERID>
+  namespace: <CLUSTERID>
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: influxsrv-<CLUSTERID>
+    spec:
+      hostname: influxsrv-<CLUSTERID>
+      volumes:
+      - hostPath:
+          path: /home/hyperpilot/influx_data
+        name: influx-data
+      containers:
+      - env:
+        - name: ADMIN_USER
+          value: root
+        - name: PRE_CREATE_DB
+          value: snap;snapaverage
+        - name: INFLUXDB_INIT_PWD
+          value: default
+        image: hyperpilot/influx:1.3.6
+        name: influxsrv
+        ports:
+        - containerPort: 8083
+          hostPort: 8083
+          protocol: TCP
+        - containerPort: 8086
+          hostPort: 8086
+          protocol: TCP
+        - containerPort: 8088
+          hostPort: 8088
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/lib/influxdb
+          name: influx-data
+        resources:
+          requests:
+            cpu: 2
+            memory: 4096Mi

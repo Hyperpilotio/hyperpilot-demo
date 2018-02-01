@@ -1,0 +1,268 @@
+{
+  "name": "tech-demo",
+  "region": "us-west1-a",
+  "clusterType": "GCP",
+  "files": [],
+  "nodeMapping": [
+    {
+      "task": "mongo",
+      "id": 1
+    },
+    {
+      "task": "analyzer-ui",
+      "id": 2
+    },
+    {
+      "task": "remote-storage-adapter",
+      "id": 3
+    }
+  ],
+  "clusterDefinition": {
+    "nodes": [
+      {
+        "instanceType": "n1-standard-4",
+        "id": 1,
+        "labels": {
+          "hyperpilot/internal": "true"
+        }
+      },
+      {
+        "instanceType": "n1-standard-4",
+        "id": 2
+      },
+      {
+        "instanceType": "n1-standard-4",
+        "id": 3
+      },
+      {
+        "instanceType": "n1-standard-4",
+        "id": 4
+      },
+      {
+        "instanceType": "n1-standard-4",
+        "id": 5,
+        "labels": {
+          "hyperpilot/internal": "true"
+        }
+      },
+      {
+        "instanceType": "n1-standard-4",
+        "id": 6,
+        "labels": {
+          "hyperpilot/internal": "true"
+        }
+      }
+    ]
+  },
+  "kubernetes": {
+    "secrets": [
+      {
+        "apiVersion": "v1",
+        "kind": "Secret",
+        "metadata": {
+          "name": "myregistrykey",
+          "namespace": "hyperpilot"
+        },
+        "type": "kubernetes.io\/dockerconfigjson",
+        "data": {
+          ".dockerconfigjson": "ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImFIbHdaWEp3YVd4dmRIVnpaWEk2YUhsd1pYSXhNak09IgoJCX0KCX0KfQ=="
+        }
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "deployment": {
+          "apiVersion": "extensions\/v1beta1",
+          "kind": "Deployment",
+          "metadata": {
+            "labels": {
+              "app": "mongo"
+            },
+            "name": "mongo"
+          },
+          "spec": {
+            "replicas": 1,
+            "selector": {
+              "matchLabels": {
+                "app": "mongo"
+              }
+            },
+            "template": {
+              "metadata": {
+                "labels": {
+                  "app": "mongo"
+                }
+              },
+              "spec": {
+                "volumes": [
+                  {
+                    "hostPath": {
+                      "path": "~/mongo_data"
+                    },
+                    "name": "mongo-data"
+                  }
+                ],
+                "containers": [
+                  {
+                    "volumeMounts": [
+                      {
+                        "mountPath": "\/data\/db",
+                        "name": "mongo-data"
+                      }
+                    ],
+                    "image": "mongo",
+                    "name": "mongo",
+                    "ports": [
+                      {
+                        "containerPort": 27017,
+                        "hostPort": 27017,
+                        "protocol": "TCP"
+                      }
+                    ],
+                    "resources": {
+                      "requests": {
+                        "cpu": "500m",
+                        "memory": "512Mi"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "family": "mongo"
+      },
+      {
+        "deployment": {
+          "apiVersion": "extensions\/v1beta1",
+          "kind": "Deployment",
+          "metadata": {
+            "labels": {
+              "app": "analyzer-ui"
+            },
+            "name": "analyzer-ui"
+          },
+          "spec": {
+            "replicas": 1,
+            "selector": {
+              "matchLabels": {
+                "app": "analyzer-ui"
+              }
+            },
+            "template": {
+              "metadata": {
+                "labels": {
+                  "app": "analyzer-ui"
+                }
+              },
+              "spec": {
+                "hostname": "analyzer-ui",
+                "containers": [
+                  {
+                    "image": "hyperpilot\/analyzer-ui:alpha",
+                    "name": "analyzer-ui",
+                    "ports": [
+                      {
+                        "containerPort": 3000,
+                        "hostPort": 3000,
+                        "protocol": "TCP"
+                      }
+                    ],
+                    "resources": {
+                      "requests": {
+                        "cpu": "500m",
+                        "memory": "512Mi"
+                      }
+                    },
+                    "env": [
+                      {
+                        "name": "ANALYZER_HOST",
+                        "value": "analyzer"
+                      },
+                      {
+                        "name": "ANALYZER_PORT",
+                        "value": "True"
+                      },
+                      {
+                        "name": "INFLUXDB_HOST",
+                        "value": "influxsrv"
+                      },
+                      {
+                        "name": "MONGO_HOST",
+                        "value": "mongo-serve"
+                      },
+                      {
+                        "name": "MONGO_USERNAME",
+                        "value": "analyzer"
+                      },
+                      {
+                        "name": "MONGO_PASSWORD",
+                        "value": "hyperpilot"
+                      },
+                      {
+                        "name": "OPERATOR_HOST",
+                        "value": "hyperpilot-operator"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "family": "analyzer-ui"
+      },
+      {
+        "deployment": {
+          "apiVersion": "extensions\/v1beta1",
+          "kind": "Deployment",
+          "metadata": {
+            "labels": {
+              "app": "remote-storage-adapter"
+            },
+            "name": "remote-storage-adapter"
+          },
+          "spec": {
+            "replicas": 1,
+            "selector": {
+              "matchLabels": {
+                "app": "remote-storage-adapter"
+              }
+            },
+            "template": {
+              "metadata": {
+                "labels": {
+                  "app": "remote-storage-adapter"
+                }
+              },
+              "spec": {
+                "hostname": "remote-storage-adapter",
+                "containers": [
+                  {
+                    "image": "hyperpilot\/remote_storage_adapter",
+                    "name": "remote-storage-adapter",
+                    "ports": [
+                      {
+                        "containerPort": 9201,
+                        "hostPort": 9201,
+                        "protocol": "TCP"
+                      }
+                    ],
+                    "resources": {
+                      "requests": {
+                        "cpu": "500m",
+                        "memory": "512Mi"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "family": "remote-storage-adapter"
+      }
+    ]
+  }
+}

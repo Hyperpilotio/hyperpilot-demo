@@ -5,7 +5,7 @@
   "files": [],
   "nodeMapping": [
     {
-      "task": "mongo",
+      "task": "mongo-serve",
       "id": 1
     },
     {
@@ -76,21 +76,21 @@
           "kind": "Deployment",
           "metadata": {
             "labels": {
-              "app": "mongo"
+              "app": "mongo-serve"
             },
-            "name": "mongo"
+            "name": "mongo-serve"
           },
           "spec": {
             "replicas": 1,
             "selector": {
               "matchLabels": {
-                "app": "mongo"
+                "app": "mongo-serve"
               }
             },
             "template": {
               "metadata": {
                 "labels": {
-                  "app": "mongo"
+                  "app": "mongo-serve"
                 }
               },
               "spec": {
@@ -110,8 +110,14 @@
                         "name": "mongo-data"
                       }
                     ],
-                    "image": "mongo",
-                    "name": "mongo",
+                    "image": "hyperpilot\/mongo:adapter",
+                    "name": "mongo-serve",
+                    "env": [
+                      {
+                        "name": "MONGO_INITDB_DATABASE",
+                        "value": "authdb"
+                      }
+                    ],
                     "ports": [
                       {
                         "containerPort": 27017,
@@ -131,7 +137,7 @@
             }
           }
         },
-        "family": "mongo"
+        "family": "mongo-serve"
       },
       {
         "deployment": {
@@ -240,7 +246,7 @@
                 "hostname": "remote-storage-adapter",
                 "containers": [
                   {
-                    "image": "hyperpilot\/remote_storage_adapter",
+                    "image": "hyperpilot\/prometheus-adapter",
                     "name": "remote-storage-adapter",
                     "ports": [
                       {

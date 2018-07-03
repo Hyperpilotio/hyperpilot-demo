@@ -18,6 +18,22 @@
     ],
     "nodeMapping": [
         {
+            "task": "kafka-serve",
+            "id": 5
+        },
+        {
+            "task": "kafka-ui",
+            "id": 1
+        },
+        {
+            "task": "snap-k8s",
+            "id": 1
+        },
+        {
+            "task": "zookeeper",
+            "id": 1
+        },
+        {
             "task": "qos-data-store",
             "id": 4
         },
@@ -146,6 +162,253 @@
             }
         ],
         "taskDefinitions": [
+            {
+                "deployment": {
+                    "apiVersion": "extensions\/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "snap-k8s",
+                            "version": "latest"
+                        },
+                        "name": "snap-k8s",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "snap-k8s",
+                                "version": "latest"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "snap-k8s",
+                                    "version": "latest"
+                                }
+                            },
+                            "spec": {
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot\/snap:alpine-init",
+                                        "name": "snap",
+                                        "command": [
+                                            "\/usr\/local\/bin\/run.sh"
+                                        ],
+                                        "args": [
+                                            "https:\/\/s3.amazonaws.com\/hyperpilot-snap-collectors\/init-k8s.json"
+                                        ],
+                                        "resources": {
+                                            "requests": {
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        },
+                                        "imagePullPolicy": "Always",
+                                        "securityContext": {
+                                            "privileged": true
+                                        },
+                                        "env": [
+                                            {
+                                                "name": "NODE_NAME",
+                                                "valueFrom": {
+                                                    "fieldRef": {
+                                                        "fieldPath": "spec.nodeName"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "family": "snap-k8s"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "kafka-ui"
+                        },
+                        "name": "kafka-ui",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "kafka-ui"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "kafka-ui"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "kafka-ui",
+                                "containers": [
+                                    {
+                                        "image": "sheepkiller/kafka-manager",
+                                        "name": "kafka-ui",
+                                        "imagePullPolicy": "Always",
+                                        "env": [
+                                            {
+                                                "name": "ZK_HOSTS",
+                                                "value": "zookeeper:2181"
+                                            },
+                                            {
+                                                "name": "APPLICATION_SECRET",
+                                                "value": "letmein"
+                                            }
+                                        ],
+                                        "ports": [
+                                            {
+                                                "containerPort": 9000,
+                                                "hostPort": 9000,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "512.0m",
+                                                "memory": "1024Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "kafka-ui"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "kafka-serve"
+                        },
+                        "name": "kafka-serve",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "kafka-serve"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "kafka-serve"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "kafka-serve",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/kafka:tech-demo",
+                                        "name": "kafka-serve",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 9092,
+                                                "hostPort": 9092,
+                                                "protocol": "TCP"
+                                            },
+                                            {
+                                                "containerPort": 8082,
+                                                "hostPort": 8082,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "1024.0m",
+                                                "memory": "2048Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1,
+                    1
+                ],
+                "family": "kafka-serve"
+            },
+            {
+                "deployment": {
+                    "apiVersion": "extensions/v1beta1",
+                    "kind": "Deployment",
+                    "metadata": {
+                        "labels": {
+                            "app": "zookeeper"
+                        },
+                        "name": "zookeeper",
+                        "namespace": "hyperpilot"
+                    },
+                    "spec": {
+                        "replicas": 1,
+                        "selector": {
+                            "matchLabels": {
+                                "app": "zookeeper"
+                            }
+                        },
+                        "template": {
+                            "metadata": {
+                                "labels": {
+                                    "app": "zookeeper"
+                                }
+                            },
+                            "spec": {
+                                "hostname": "zookeeper",
+                                "containers": [
+                                    {
+                                        "image": "hyperpilot/zookeeper",
+                                        "name": "zookeeper",
+                                        "imagePullPolicy": "Always",
+                                        "ports": [
+                                            {
+                                                "containerPort": 2181,
+                                                "hostPort": 2181,
+                                                "protocol": "TCP"
+                                            }
+                                        ],
+                                        "resources": {
+                                            "limits": {
+                                                "cpu": "1024.0m",
+                                                "memory": "2048Mi"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "portTypes": [
+                    1
+                ],
+                "family": "zookeeper"
+            },
             {
                 "daemonset": {
                     "apiVersion": "extensions\/v1beta1",
